@@ -1,0 +1,1 @@
+/* global define */ (function() { 'use strict'; define(['angular'], function() { var runBlock = function() { window.inktank = { commit: '--1c3c93f' }; }; return [runBlock]; }); })();
