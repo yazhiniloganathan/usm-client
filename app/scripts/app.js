@@ -1,21 +1,10 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'angular', 'RouteConfig', 'ApiModule', 'requests/requestModule', 'controllers/root', 'controllers/pool', 'controllers/osd', 'controllers/osd-host', 'controllers/pool-new', 'controllers/tools', 'controllers/pool-modify', 'navbar/navbarModule', 'services/menu', 'run', 'controllers/first', 'controllers/userdropdown', 'controllers/bell', 'controllers/cluster', 'services/configuration', 'services/error', 'git', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-animate', 'restangular'], function(_, angular, RouteConfig, APIModule, RequestModule, RootController, PoolController, OSDController, OSDHostController, PoolNewController, ToolsController, PoolModifyController, NavbarModule, MenuService, PostInitRunBlock, FirstTimeController, UserDropDownController, BellController, ClusterController, ConfigurationService, ErrorService, GitRunBlock) {
+    define(['lodash', 'angular', 'RouteConfig', 'controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'services/menu-svc', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-animate', 'patternfly'], function(_, angular, RouteConfig, MenuController, DashboardController, ClusterController, MenuService) {
 
-        // This file initializes the application node graph.
-        //
-        // This application contains 3 custom modules:
-        //
-        //  * The JSON API surface lives in **APIModule**.
-        //  * The **RequestModule** contains the Request Controller
-        //    and Request Tracker Singleton.
-        //  * The **NavbarModule** contains the top menubar
-        var app = angular.module('manageApp', [
-                'ngAnimate',
-            APIModule,
-            RequestModule,
-            NavbarModule,
+        var app = angular.module('usmClientApp', [
+             //   'ngAnimate',
                 'ngCookies',
                 'ngResource',
                 'ngSanitize',
@@ -26,31 +15,17 @@
         // Controllers themselves are meant to be stateless and are
         // designed to re-store the view state every time they are
         // loaded. Treat them as if they are loaded once on page
-        // initialization and then not used again.
-        //
-        // Typically one controllers one view, as this reduces overall
-        // complexity. We don't always do that. @see RootController.
-            .controller('RootController', RootController)
-            .controller('PoolController', PoolController)
-            .controller('PoolNewController', PoolNewController)
-            .controller('OSDController', OSDController)
-            .controller('OSDHostController', OSDHostController)
-            .controller('ToolController', ToolsController)
-            .controller('PoolModifyController', PoolModifyController)
-            .controller('FirstTimeController', FirstTimeController)
-            .controller('UserDropDownController', UserDropDownController)
-            .controller('BellController', BellController)
+        // initialization and then not used again.       
+            .controller('MenuController', MenuController)
+            .controller('DashboardController', DashboardController)
             .controller('ClusterController', ClusterController)
         // Services are where a module can store state. They are loaded
         // once at start up and because they're shared module wide, they can
         // be used to maintain state between controllers.
             .service('MenuService', MenuService)
-            .service('ConfigurationService', ConfigurationService)
-            .service('ErrorService', ErrorService)
         // Run blocks are run once at module startup.
         // This is an ideal place to exec one time tasks.
-            .run(PostInitRunBlock)
-            .run(GitRunBlock)
+            .run(function(){})
         // Service Providers may be individually configured by modules.
             .config(['$logProvider',
             function($logProvider) {
@@ -68,8 +43,8 @@
         // startup till require has loaded all the dependencies.
         angular.element(document).ready(function() {
             _.each([{
-                    clazz: 'manageApp',
-                    module: ['manageApp']
+                    clazz: 'usmClientApp',
+                    module: ['usmClientApp']
                 }
             ], function(selector) {
                 try {

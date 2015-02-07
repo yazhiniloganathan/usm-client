@@ -8,24 +8,29 @@
         // **Constructor**
         var Service = function() {
             this.menus = [{
-                    label: 'Cluster',
-                    id: 'cluster',
+                    label: 'Dashboard',
+                    id: 'dashboard',
                     href: '/',
                     active: true
                 }, {
-                    label: 'OSD',
-                    id: 'osd',
-                    href: '/osd',
+                    label: 'Clusters',
+                    id: 'clusters',
+                    href: '/clusters',
                     active: false
                 }, {
-                    label: 'Pools',
-                    id: 'pool',
-                    href: '/pool',
+                    label: 'Hosts',
+                    id: 'hosts',
+                    href: '/hosts',
                     active: false
                 }, {
-                    label: 'Logs',
-                    id: 'tools',
-                    href: '/tools',
+                    label: 'Storage',
+                    id: 'storage',
+                    href: '/storage',
+                    active: false
+                }, {
+                    label: 'Admin',
+                    id: 'admin',
+                    href: '/admin',
                     active: false
                 }
             ];
