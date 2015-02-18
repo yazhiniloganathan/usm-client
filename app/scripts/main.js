@@ -3,9 +3,6 @@
     'use strict';
     require.config({
         shim: {
-            'angular-growl': {
-                deps: ['angular']
-            },
             'angular-resource': {
                 deps: ['angular']
             },
@@ -33,6 +30,9 @@
             'patternfly': {
                 deps: ['jquery']
             },
+            'angular-patternfly': {
+                deps: ['angular']
+            },
             'angular': {
                 deps: ['jquery'],
                 exports: 'angular'
@@ -46,12 +46,12 @@
             'angular-sanitize': '../bower_components/angular-sanitize/angular-sanitize',
             'angular-route': '../bower_components/angular-route/angular-route',
             'patternfly': '../bower_components/patternfly/dist/js/patternfly',
+            'angular-patternfly': '../bower_components/angular-patternfly/dist/angular-patternfly',
             'angular-strap': '../bower_components/angular-strap/dist/angular-strap.min',
             'angular-animate': '../bower_components/angular-animate/angular-animate',
             'restangular': '../bower_components/restangular/dist/restangular',
             'lodash': '../bower_components/lodash/dist/lodash',
             'moment': '../bower_components/momentjs/moment',
-            'angular-growl': '../bower_components/angular-growl/build/angular-growl',
             'idbwrapper': '../bower_components/idbwrapper/idbstore'
         }
     });
