@@ -17,6 +17,10 @@
                 templateUrl: 'views/clusters.html',
                 menuId: 'cluster',
                 controller: 'ClusterController',
+            }).when('/clusters/new', {
+                templateUrl: 'views/clusters-new.html',
+                menuId: 'cluster',
+                controller: 'ClusterNewController',
             }).otherwise({
                 redirectTo: '/'
             });
