@@ -1,7 +1,7 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'angular', 'RouteConfig', 'controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'controllers/cluster-new', 'services/menu-svc', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-animate', 'patternfly', 'angular-patternfly'], function(_, angular, RouteConfig, MenuController, DashboardController, ClusterController, ClusterNewController, MenuService) {
+    define(['lodash', 'angular', 'RouteConfig', 'controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'controllers/cluster-new', 'services/menu-svc', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly'], function(_, angular, RouteConfig, MenuController, DashboardController, ClusterController, ClusterNewController, MenuService) {
 
         var app = angular.module('usmClientApp', [
              //   'ngAnimate',

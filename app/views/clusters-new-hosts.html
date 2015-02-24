@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-md-8">
+
+    <h3>
+      Available Hosts 
+      <button class="btn btn-primary pull-right">Add Hosts</button>
+    </h3>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-md-8">
+            <form role="form" class="search-pf has-button">
+              <div class="form-group has-clear">
+                <div class="search-pf-input-group">
+                  <label for="search1" class="sr-only">Search</label>
+                  <input id="search1" type="search" class="form-control" placeholder="Search">
+                  <button type="button" class="clear" aria-hidden="true" style="display: none;"><span class="pficon pficon-close"></span></button>
+                </div>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-4"> 
+            <span class="pull-right">8 Hosts</span>
+          </div>
+        </div>
+      </div>
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th><input type="checkbox"/></th>
+            <th>Hostname</th>
+            <th>IP Address</th>
+            <th>Operating System</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox"/></td>
+            <td> host1.domain </td>
+            <td> 10.70.43.84 </td>
+            <td> Red Hat Enterprise Linux 7.1</td>
+            <td> Verified</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"/></td>
+            <td> host2.domain </td>
+            <td> 10.70.44.84 </td>
+            <td> Red Hat Enterprise Linux 7.1</td>
+            <td> Verified</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"/></td>
+            <td> host3.domain </td>
+            <td> 10.70.45.84 </td>
+            <td> Red Hat Enterprise Linux 7.1</td>
+            <td> Test</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <h3>Selected Hosts</h3>
+    <span class="text-muted"> Select at least 6 hosts </span>
+    <ul class="list-unstyled selected-hosts-list">
+      <li>
+        host1.domain 
+        <a class="pficon pficon-close pull-right"></a>
+      </li>
+      <li>
+        host2.domain
+        <a class="pficon pficon-close pull-right"></a>
+      </li>
+      <li>
+        host3.domain
+        <a class="pficon pficon-close pull-right"></a>
+      </li>
+    </ul>
+  </div>
+</div>

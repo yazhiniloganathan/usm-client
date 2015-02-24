@@ -18,6 +18,9 @@
             'angular-strap': {
                 deps: ['angular', 'angular-animate']
             },
+            'angular-strap-tpl': {
+                deps: ['angular-strap']
+            },
             'angular-animate': {
                 deps: ['angular']
             },
@@ -48,6 +51,7 @@
             'patternfly': '../bower_components/patternfly/dist/js/patternfly',
             'angular-patternfly': '../bower_components/angular-patternfly/dist/angular-patternfly',
             'angular-strap': '../bower_components/angular-strap/dist/angular-strap.min',
+            'angular-strap-tpl': '../bower_components/angular-strap/dist/angular-strap.tpl.min',
             'angular-animate': '../bower_components/angular-animate/angular-animate',
             'restangular': '../bower_components/restangular/dist/restangular',
             'lodash': '../bower_components/lodash/dist/lodash',

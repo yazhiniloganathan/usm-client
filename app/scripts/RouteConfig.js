@@ -21,6 +21,7 @@
                 templateUrl: 'views/clusters-new.html',
                 menuId: 'cluster',
                 controller: 'ClusterNewController',
+                controllerAs: 'cluster'
             }).otherwise({
                 redirectTo: '/'
             });

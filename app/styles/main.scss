@@ -1,4 +1,34 @@
 @import 'font-awesome/scss/font-awesome';
+@import 'wizard';
+
 .panel-clusters {
     padding: 0px;
+}
+.selected-hosts-list {
+	padding-top:10px;
+}
+
+.selected-hosts-list li {
+	padding: 5px;
+}
+
+.selected-hosts-list a {
+	text-decoration: none;
+	cursor: pointer;
+	margin-top: 5px;
+}
+
+.clusters-new-steps {
+	li {
+		padding: 10px;
+		font-size: 16px;
+	}
+}
+
+.clusters-new-active-step {
+	text-decoration: underline;
+}
+
+.clusters-new-inactive-step {
+	text-decoration: none;
 }
