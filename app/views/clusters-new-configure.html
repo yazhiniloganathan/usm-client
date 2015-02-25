@@ -8,19 +8,14 @@
   <div class="form-group">
     <label class="col-md-2 control-label" for="storageType">Storage Type</label>
     <div class="col-md-4">
-      <select pf-select ng-model="cluster.storageType" id="storageType" class="form-control">
-        <option value="file" ng-selected="true" selected>File</option>
-        <option value="block">Block</option>
-        <option value="object">Object</option>
+      <select pf-select ng-model="cluster.storageType" id="storageType" class="form-control" ng-options="storageType.title for storageType in cluster.storageTypes">
       </select>
     </div>
   </div>
   <div class="form-group">
     <label class="col-md-2 control-label" for="clusterType">Cluster Type</label>
     <div class="col-md-4">
-      <select pf-select ng-model="cluster.clusterType" id="clusterType" class="form-control">
-        <option value="gluster" ng-selected="true" selected>Gluster</option>
-        <option value="ceph">Ceph</option>
+      <select pf-select ng-model="cluster.clusterType" id="clusterType" class="form-control" ng-options="clusterType.title for clusterType in cluster.clusterTypes">
       </select>
     </div>
   </div>

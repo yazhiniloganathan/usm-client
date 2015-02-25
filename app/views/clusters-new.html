@@ -39,8 +39,10 @@
       </div>
 
       <div class="col-md-6 col-md-offset-8">
-        <button type="button" class="btn btn-default btn-lg" ng-click='cluster.moveStep(-1)'>Cancel</button>
-        <button type="button" class="btn btn-primary btn-lg" ng-click='cluster.moveStep(1)'>Next</button>
+        <button type="button" class="btn btn-default btn-lg" ng-show='cluster.isCancelAvailable()' ng-click='cluster.cancel()'>Cancel</button>
+        <button type="button" class="btn btn-default btn-lg" ng-show='!cluster.isCancelAvailable()' ng-click='cluster.moveStep(-1)'>Back</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-show='!cluster.isSubmitAvailable()' ng-click='cluster.moveStep(1)'>Next</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-show='cluster.isSubmitAvailable()' ng-click='cluster.submit()'>Submit</button>
       </div>
 
     </div>
