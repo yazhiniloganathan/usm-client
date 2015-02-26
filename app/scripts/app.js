@@ -1,10 +1,11 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'angular', 'RouteConfig', 'controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'controllers/cluster-new', 'controllers/cluster-add-hosts', 'services/menu-svc', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly'], function(_, angular, RouteConfig, MenuController, DashboardController, ClusterController, ClusterNewController, ClusterAddHostsController, MenuService) {
+    define(['lodash', 'angular', 'RouteConfig', 'ApiModule','controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'controllers/cluster-new', 'controllers/cluster-add-hosts', 'controllers/host', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular'], function(_, angular, RouteConfig, APIModule, MenuController, DashboardController, ClusterController, ClusterNewController, ClusterAddHostsController, HostController, MenuService, ConfigurationService, ErrorService) {
 
         var app = angular.module('usmClientApp', [
              //   'ngAnimate',
+                APIModule,
                 'ngCookies',
                 'ngResource',
                 'ngSanitize',
@@ -21,10 +22,13 @@
             .controller('ClusterController', ClusterController)
             .controller('ClusterNewController', ClusterNewController)
             .controller('ClusterAddHostsController', ClusterAddHostsController)
+            .controller('HostController', HostController)
         // Services are where a module can store state. They are loaded
         // once at start up and because they're shared module wide, they can
         // be used to maintain state between controllers.
             .service('MenuService', MenuService)
+            .service('ConfigurationService', ConfigurationService)
+            .service('ErrorService', ErrorService)
         // Run blocks are run once at module startup.
         // This is an ideal place to exec one time tasks.
             .run(function(){})
@@ -33,7 +37,11 @@
             function($logProvider) {
                 $logProvider.debugEnabled(false);
             }
-        ]).config(RouteConfig);
+        ]).config(RouteConfig)
+            .config(['$httpProvider', function($httpProvider){
+                $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+                $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+            }]);
 
         console.log(app);
 

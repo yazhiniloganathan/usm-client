@@ -47,12 +47,12 @@ define(['lodash'], function(_) {
         // We instantiate 2 root restangular instances with different configurations.
         // The first one is for simple JSON API requests.
         var restangular = Restangular.withConfig(function(RestangularConfigurer) {
-            RestangularConfigurer.setBaseUrl('/api/v2').setResponseExtractor(djangoPaginationResponseExtractor).setErrorInterceptor(ErrorService.errorInterceptor);
+            RestangularConfigurer.setBaseUrl('http://10.70.42.87:8000/api/v1/').setResponseExtractor(djangoPaginationResponseExtractor).setErrorInterceptor(ErrorService.errorInterceptor);
         });
         // The second gives us access to the raw response so we can look at the status code.
         // Useful for APIs that return 202 responses for asynchronous tasks.
         var restangularFull = Restangular.withConfig(function(RestangularConfigurer) {
-            RestangularConfigurer.setBaseUrl('/api/v2').setFullResponse(true).setResponseExtractor(djangoPaginationResponseExtractor).setErrorInterceptor(ErrorService.errorInterceptor);
+            RestangularConfigurer.setBaseUrl('/api/v1').setFullResponse(true).setResponseExtractor(djangoPaginationResponseExtractor).setErrorInterceptor(ErrorService.errorInterceptor);
         });
         // **constructor**
         var Service = function() {
@@ -69,24 +69,6 @@ define(['lodash'], function(_) {
                 return this.getList().then(function(clusters) {
                     if (clusters.length) {
                         var cluster = _.first(clusters);
-
-                        // Fetch the last selected cluster from localStorage
-                        if(typeof(Storage)!=="undefined") {
-                            var lastClusterId = JSON.parse(localStorage.getItem('cluster'));
-                            var lastCluster = undefined;
-                            if(!_.isUndefined(lastClusterId)) {
-                                lastCluster = _.find(clusters, function(cluster) {
-                                    return cluster.id === lastClusterId;
-                                })
-                            }
-                            if(!_.isUndefined(lastCluster)) {
-                                cluster = lastCluster;
-                            }
-                            else {
-                                localStorage.setItem('cluster', JSON.stringify(cluster.id));
-                            }
-                        }
-
                         self.clusterId = cluster.id;
                         self.clusterModel = cluster;
                         return;
@@ -99,9 +81,9 @@ define(['lodash'], function(_) {
             // **getList**
             // **@returns** a promise with a list of all the clusters Calamari knows about.
             getList: function() {
-                return this.restangular.all('cluster').getList().then(function(clusters) {
+                return this.restangular.all('clusters').getList().then(function(clusters) {
                     clusters = _.sortBy(clusters, function(cluster){
-                        return cluster.name;
+                        return cluster.cluster_name;
                     });
                     return clusters;
                 });
@@ -142,6 +124,9 @@ define(['lodash'], function(_) {
                     id = this.clusterId;
                 }
                 return this.restangularFull.one('cluster', id);
+            },
+            put: function(cluster) {
+
             },
             // **switchCluster**
             // This will be invoked when the user switches the cluster

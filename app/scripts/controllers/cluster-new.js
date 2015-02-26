@@ -1,23 +1,16 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash'], function(_) {
+    define(['lodash', 'helpers/cluster-helpers'], function(_, ClusterHelpers) {
 
-        var ClusterNewController = function($scope, $modal, $location) {
+        var ClusterNewController = function($scope, $modal, $location, $http) {
             this.step = 1;
             var self = this;
-            this.storageTypes = [
-                { type:'file', title:'File' },
-                { type:'block', title:'Block' },
-                { type:'object', title:'Object' }
-            ];
-            this.storageType = this.storageTypes[0];
-
-            this.clusterTypes = [
-                { type:'gluster', title:'Gluster' },
-                { type:'ceph', title:'Ceph' }
-            ];
+            this.clusterTypes = ClusterHelpers.getClusterTypes();
             this.clusterType = this.clusterTypes[0];
+
+            this.storageTypes = ClusterHelpers.getStorageTypes();
+            this.storageType = this.storageTypes[0];
 
             this.hosts = [];
 
@@ -39,6 +32,7 @@
 
                 modal.$scope.onAddHosts = function() {
                     self.onAddHosts(modal.$scope.hostsToAdd);
+                    modal.$scope.$hide();
                 }
             };
 
@@ -63,9 +57,40 @@
             };
 
             this.submit = function() {
+                var hosts = [];
+                _.forEach(this.hosts, function(host){
+                    var localhost = {
+                        node_name: host.hostname,
+                        management_ip: host.hostname,
+                        cluster_ip: host.hostname,
+                        public_ip: host.hostname,
+                        ssh_username: host.username,
+                        ssh_password: host.password,
+                        ssh_key_fingerprint: "FINGER",
+                        ssh_port: 22,
+                        node_type: "1"
+                    };
+                    hosts.push(localhost);
+                });
+
+                var cluster = {
+                    cluster_name: this.clusterName,
+                    cluster_type: this.clusterType.type,
+                    storage_type: this.storageType.type,
+                    nodes: hosts
+                };
+
+                $http.post('http://10.70.42.87:8000/api/v1/create_cluster', cluster).
+                  success(function (data, status, headers, config) {
+                    console.log(status);
+                  }).
+                  error(function (data, status, headers, config) {
+                    console.log(status);
+                  });
+
                 $location.path('/clusters');
             };
         };
-        return ['$scope', '$modal', '$location', ClusterNewController];
+        return ['$scope', '$modal', '$location', '$http', ClusterNewController];
     });
 })();

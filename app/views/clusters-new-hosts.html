@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-9">
 
     <h3>
       Available Hosts 
@@ -24,7 +24,7 @@
             </form>
           </div>
           <div class="col-md-4"> 
-            <span class="pull-right">8 Hosts</span>
+            <span class="pull-right">{{cluster.hosts.length}} Hosts</span>
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
            <tr ng-repeat="host in cluster.hosts">
               <td><input type="checkbox" ng-model="host.selected"/></td>
               <td>{{host.hostname}}</td>
-              <td>{{host.ipaddress}}</td>
+              <td> NA </td>
               <td> NA </td>
               <td>Verified</td>
             </tr>
@@ -51,13 +51,13 @@
       </table>
     </div>
   </div>
-  <div class="col-md-2">
+  <div class="col-md-3">
     <h3>Selected Hosts</h3>
-    <span class="text-muted"> Select at least 6 hosts </span>
+    <span class="text-muted"> Select at least 2 hosts </span>
     <ul class="list-unstyled selected-hosts-list">
       <li ng-repeat="host in cluster.hosts | filter: { selected: true }">
         {{host.hostname}}
-        <a class="pficon pficon-close pull-right"></a>
+        <a class="pficon pficon-close pull-right" ng-click="host.selected=false"></a>
       </li>
     </ul>
   </div>

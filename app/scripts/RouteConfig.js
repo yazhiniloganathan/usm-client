@@ -22,6 +22,11 @@
                 menuId: 'cluster',
                 controller: 'ClusterNewController',
                 controllerAs: 'cluster'
+            }).when('/hosts', {
+                templateUrl: 'views/hosts.html',
+                menuId: 'hosts',
+                controller: 'HostController',
+                controllerAs: 'hosts'
             }).otherwise({
                 redirectTo: '/'
             });

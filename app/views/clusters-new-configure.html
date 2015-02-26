@@ -2,20 +2,20 @@
   <div class="form-group">
     <label class="col-md-2 control-label" for="textInput">Name</label>
     <div class="col-md-4">
-      <input type="text" id="textInput" class="form-control" ng-model="cluster.clusterName">
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-2 control-label" for="storageType">Storage Type</label>
-    <div class="col-md-4">
-      <select pf-select ng-model="cluster.storageType" id="storageType" class="form-control" ng-options="storageType.title for storageType in cluster.storageTypes">
-      </select>
+      <input type="text" id="textInput" class="form-control" ng-model="cluster.clusterName"/>
     </div>
   </div>
   <div class="form-group">
     <label class="col-md-2 control-label" for="clusterType">Cluster Type</label>
     <div class="col-md-4">
-      <select pf-select ng-model="cluster.clusterType" id="clusterType" class="form-control" ng-options="clusterType.title for clusterType in cluster.clusterTypes">
+      <select pf-select ng-model="cluster.clusterType" id="clusterType" class="form-control" ng-options="clusterType.type for clusterType in cluster.clusterTypes">
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label" for="storageType">Storage Type</label>
+    <div class="col-md-4">
+      <select pf-select ng-model="cluster.storageType" id="storageType" class="form-control" ng-options="storageType.type for storageType in cluster.storageTypes">
       </select>
     </div>
   </div>
