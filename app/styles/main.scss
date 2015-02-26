@@ -1,4 +1,5 @@
 @import 'font-awesome/scss/font-awesome';
+@import 'modules/angular-motion';
 @import 'wizard';
 
 .panel-clusters {
@@ -16,6 +17,14 @@
 	text-decoration: none;
 	cursor: pointer;
 	margin-top: 5px;
+}
+
+.add-hosts-modal-dialog {
+	width: 800px;
+}
+
+.table-hosts-to-add {
+	border: 1px solid #dddddd;
 }
 
 .clusters-new-steps {

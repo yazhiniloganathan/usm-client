@@ -3,7 +3,7 @@
 
     <h3>
       Available Hosts 
-      <button class="btn btn-primary pull-right">Add Hosts</button>
+      <button class="btn btn-primary pull-right" ng-click='cluster.addHosts()'>Add Hosts</button>
     </h3>
 
     <div class="panel panel-default">
@@ -40,27 +40,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><input type="checkbox"/></td>
-            <td> host1.domain </td>
-            <td> 10.70.43.84 </td>
-            <td> Red Hat Enterprise Linux 7.1</td>
-            <td> Verified</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"/></td>
-            <td> host2.domain </td>
-            <td> 10.70.44.84 </td>
-            <td> Red Hat Enterprise Linux 7.1</td>
-            <td> Verified</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"/></td>
-            <td> host3.domain </td>
-            <td> 10.70.45.84 </td>
-            <td> Red Hat Enterprise Linux 7.1</td>
-            <td> Test</td>
-          </tr>
+           <tr ng-repeat="host in cluster.hosts">
+              <td><input type="checkbox" ng-model="host.selected"/></td>
+              <td>{{host.hostname}}</td>
+              <td>{{host.ipaddress}}</td>
+              <td> NA </td>
+              <td>Verified</td>
+            </tr>
         </tbody>
       </table>
     </div>
@@ -69,16 +55,8 @@
     <h3>Selected Hosts</h3>
     <span class="text-muted"> Select at least 6 hosts </span>
     <ul class="list-unstyled selected-hosts-list">
-      <li>
-        host1.domain 
-        <a class="pficon pficon-close pull-right"></a>
-      </li>
-      <li>
-        host2.domain
-        <a class="pficon pficon-close pull-right"></a>
-      </li>
-      <li>
-        host3.domain
+      <li ng-repeat="host in cluster.hosts | filter: { selected: true }">
+        {{host.hostname}}
         <a class="pficon pficon-close pull-right"></a>
       </li>
     </ul>

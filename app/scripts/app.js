@@ -1,7 +1,7 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'angular', 'RouteConfig', 'controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'controllers/cluster-new', 'services/menu-svc', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly'], function(_, angular, RouteConfig, MenuController, DashboardController, ClusterController, ClusterNewController, MenuService) {
+    define(['lodash', 'angular', 'RouteConfig', 'controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'controllers/cluster-new', 'controllers/cluster-add-hosts', 'services/menu-svc', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly'], function(_, angular, RouteConfig, MenuController, DashboardController, ClusterController, ClusterNewController, ClusterAddHostsController, MenuService) {
 
         var app = angular.module('usmClientApp', [
              //   'ngAnimate',
@@ -20,6 +20,7 @@
             .controller('DashboardController', DashboardController)
             .controller('ClusterController', ClusterController)
             .controller('ClusterNewController', ClusterNewController)
+            .controller('ClusterAddHostsController', ClusterAddHostsController)
         // Services are where a module can store state. They are loaded
         // once at start up and because they're shared module wide, they can
         // be used to maintain state between controllers.
