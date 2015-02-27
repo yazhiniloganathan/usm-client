@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-10 col-md-11">
+  <div class="col-sm-12 col-md-12">
     <!--
     <ol class="breadcrumb">
       <li><a href="#">Clusters</a></li>
@@ -9,45 +9,43 @@
 
     <h1>New Cluster</h1>
 
-    <div class="col-sm-10 col-md-11">
-      <div class="wizard">
-        <a ng-class="cluster.step == 1 ? 'current': ''"><span class="badge">1</span> Configure </a>
-        <a ng-class="cluster.step == 2 ? 'current': ''"><span class="badge">2</span> Hosts</a>
-        <a ng-class="cluster.step == 3 ? 'current': ''"><span class="badge">3</span> Options</a>
-        <a ng-class="cluster.step == 4 ? 'current': ''"><span class="badge">4</span> Summary</a>
-      </div>
-
-      <!--
-      <ul class="list-inline clusters-new-steps">
-        <li ng-class="step == 1 ? 'clusters-new-active-step' : 'clusters-new-inactive-step'">1>CONFIGURE</li>
-        <li ng-class="step == 2 ? 'clusters-new-active-step' : 'clusters-new-inactive-step'">2>HOSTS</li>
-        <li ng-class="step == 3 ? 'clusters-new-active-step' : 'clusters-new-inactive-step'">3>OPTIONS</li>
-        <li ng-class="step == 4 ? 'clusters-new-active-step' : 'clusters-new-inactive-step'">4>SUMMARY</li>
-      </ul>
-      -->
-
-      <div class="content" ng-switch on="cluster.step">
-        <div ng-switch-when="1" >
-          <div ng-include src="'views/clusters-new-configure.html'"> </div>
-        </div>
-        <div ng-switch-when="2">
-          <div ng-include src="'views/clusters-new-hosts.html'"> </div>
-        </div>
-        <div ng-switch-when="3">
-          <div ng-include src="'views/clusters-new-options.html'"> </div>
-        </div>
-        <div ng-switch-when="4">
-          <div ng-include src="'views/clusters-new-summary.html'"> </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-md-offset-8">
-        <button type="button" class="btn btn-default btn-lg" ng-show='cluster.isCancelAvailable()' ng-click='cluster.cancel()'>Cancel</button>
-        <button type="button" class="btn btn-default btn-lg" ng-show='!cluster.isCancelAvailable()' ng-click='cluster.moveStep(-1)'>Back</button>
-        <button type="button" class="btn btn-primary btn-lg" ng-show='!cluster.isSubmitAvailable()' ng-click='cluster.moveStep(1)'>Next</button>
-        <button type="button" class="btn btn-primary btn-lg" ng-show='cluster.isSubmitAvailable()' ng-click='cluster.submit()'>Submit</button>
-      </div>
-
+    <div class="wizard">
+      <a ng-class="cluster.step == 1 ? 'current': ''"><span class="badge">1</span> Configure </a>
+      <a ng-class="cluster.step == 2 ? 'current': ''"><span class="badge">2</span> Hosts</a>
+      <a ng-class="cluster.step == 3 ? 'current': ''"><span class="badge">3</span> Options</a>
+      <a ng-class="cluster.step == 4 ? 'current': ''"><span class="badge">4</span> Summary</a>
     </div>
+
+    <!--
+    <ul class="list-inline clusters-new-steps">
+      <li ng-class="step == 1 ? 'clusters-new-active-step' : 'clusters-new-inactive-step'">1>CONFIGURE</li>
+      <li ng-class="step == 2 ? 'clusters-new-active-step' : 'clusters-new-inactive-step'">2>HOSTS</li>
+      <li ng-class="step == 3 ? 'clusters-new-active-step' : 'clusters-new-inactive-step'">3>OPTIONS</li>
+      <li ng-class="step == 4 ? 'clusters-new-active-step' : 'clusters-new-inactive-step'">4>SUMMARY</li>
+    </ul>
+    -->
+
+    <div class="content" ng-switch on="cluster.step">
+      <div ng-switch-when="1" >
+        <div ng-include src="'views/clusters-new-configure.html'"> </div>
+      </div>
+      <div ng-switch-when="2">
+        <div ng-include src="'views/clusters-new-hosts.html'"> </div>
+      </div>
+      <div ng-switch-when="3">
+        <div ng-include src="'views/clusters-new-options.html'"> </div>
+      </div>
+      <div ng-switch-when="4">
+        <div ng-include src="'views/clusters-new-summary.html'"> </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-md-offset-8">
+      <button type="button" class="btn btn-default btn-lg" ng-show='cluster.isCancelAvailable()' ng-click='cluster.cancel()'>Cancel</button>
+      <button type="button" class="btn btn-default btn-lg" ng-show='!cluster.isCancelAvailable()' ng-click='cluster.moveStep(-1)'>Back</button>
+      <button type="button" class="btn btn-primary btn-lg" ng-show='!cluster.isSubmitAvailable()' ng-click='cluster.moveStep(1)'>Next</button>
+      <button type="button" class="btn btn-primary btn-lg" ng-show='cluster.isSubmitAvailable()' ng-click='cluster.submit()'>Submit</button>
+    </div>
+
   </div><!-- /col -->
 </div> <!-- /row -->

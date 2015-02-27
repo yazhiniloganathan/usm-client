@@ -75,8 +75,8 @@
 
                 var cluster = {
                     cluster_name: this.clusterName,
-                    cluster_type: this.clusterType.type,
-                    storage_type: this.storageType.type,
+                    cluster_type: this.clusterType.id,
+                    storage_type: this.storageType.id,
                     nodes: hosts
                 };
 
