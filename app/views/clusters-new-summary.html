@@ -8,5 +8,24 @@
 
     <dt>Storage Type</dt>
     <dd> {{cluster.storageType.type}} </dd>
-
 </dl>
+
+<h3>Hosts</h3>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Hostname</th>
+      <th>IP Address</th>
+      <th>Management IP</th>
+      <th>Cluster IP</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr ng-repeat="host in cluster.hosts | filter: { selected: true }">
+        <td>{{host.hostname}}</td>
+        <td>{{host.hostname}}</td>
+        <td>{{host.hostname}}</td>
+        <td>{{host.hostname}}</td>
+      </tr>
+  </tbody>
+</table>
