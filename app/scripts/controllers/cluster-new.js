@@ -13,6 +13,7 @@
             this.storageType = this.storageTypes[0];
 
             this.hosts = [];
+            this.hosts.push({isDummy:true, isNew:true, isEdit:false});
 
             this.addHosts = function() {
                 var modal = $modal({
@@ -38,6 +39,35 @@
 
             this.onAddHosts = function(hosts) {
                 self.hosts = hosts;
+            }
+
+            this.onAddRow = function(host) {
+                host.isDummy = false;
+                host.isEdit = true;
+                this.hosts.push({isDummy:true, isNew:true, isEdit:false});
+            }
+
+            this.updateFingerprint = function(host) {
+                var delim = "-";
+
+                function S4() {
+                    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+                }
+                host.fingerprint = (S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4());
+            }
+
+            this.onEditHost = function(host) {
+                host.isEdit = true;
+            }
+
+            this.onSaveHost = function(host) {
+                host.isEdit = false;
+            }
+
+            this.onRemoveHost = function(host) {
+                _.remove(this.hosts, function(currenthost) {
+                    return !currenthost.isDummy && currenthost.hostname === host.hostname;
+                });
             }
 
             this.moveStep = function(nextStep) {
