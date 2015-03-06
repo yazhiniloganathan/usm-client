@@ -15,32 +15,6 @@
             this.hosts = [];
             this.hosts.push({isDummy:true, isNew:true, isEdit:false});
 
-            this.addHosts = function() {
-                var modal = $modal({
-                    title: 'Add Hosts',
-                    template: 'views/clusters-new-hosts-add.html'
-                });
-                modal.$scope.hostToAdd = {};
-                modal.$scope.hostsToAdd = [];
-                modal.$scope.onAddHost = function() {
-                    modal.$scope.hostsToAdd.push(modal.$scope.hostToAdd);
-                    var password = modal.$scope.hostToAdd.password;
-                    modal.$scope.hostToAdd = {};
-                    if(modal.$scope.rememberPassword) {
-                        modal.$scope.hostToAdd.password = password;
-                    }
-                }
-
-                modal.$scope.onAddHosts = function() {
-                    self.onAddHosts(modal.$scope.hostsToAdd);
-                    modal.$scope.$hide();
-                }
-            };
-
-            this.onAddHosts = function(hosts) {
-                self.hosts = hosts;
-            }
-
             this.onAddRow = function(host) {
                 host.isDummy = false;
                 host.isEdit = true;

@@ -1,7 +1,7 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'angular', 'RouteConfig', 'ApiModule','controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'controllers/cluster-new', 'controllers/cluster-add-hosts', 'controllers/host', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular'], function(_, angular, RouteConfig, APIModule, MenuController, DashboardController, ClusterController, ClusterNewController, ClusterAddHostsController, HostController, MenuService, ConfigurationService, ErrorService) {
+    define(['lodash', 'angular', 'RouteConfig', 'ApiModule','controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'controllers/cluster-new', 'controllers/host', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular'], function(_, angular, RouteConfig, APIModule, MenuController, DashboardController, ClusterController, ClusterNewController, HostController, MenuService, ConfigurationService, ErrorService) {
 
         var app = angular.module('usmClientApp', [
              //   'ngAnimate',
@@ -21,7 +21,6 @@
             .controller('DashboardController', DashboardController)
             .controller('ClusterController', ClusterController)
             .controller('ClusterNewController', ClusterNewController)
-            .controller('ClusterAddHostsController', ClusterAddHostsController)
             .controller('HostController', HostController)
         // Services are where a module can store state. They are loaded
         // once at start up and because they're shared module wide, they can
