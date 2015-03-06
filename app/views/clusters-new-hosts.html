@@ -31,56 +31,65 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th class="col-md-3">Hostname</th>
-            <th class="col-md-2">IP Address</th>
-            <th class="col-md-5">Credentials</th>
+            <th class="col-md-1"><input type="checkbox"></input></th>
+            <th class="col-md-4">Hostname</th>
+            <th class="col-md-1">IP Address</th>
+            <th class="col-md-4">Credentials</th>
             <th class="col-md-1">Status</th>
             <th class="col-md-1">Actions</th>
           </tr>
         </thead>
         <tbody>
-           <tr ng-repeat="host in cluster.hosts | filter: { isDummy: false}">
-              <td>
-                <span ng-show="!host.isEdit"> {{host.hostname}} </span>
-                <input type="text" class="form-control" ng-model="host.hostname" ng-show="host.isEdit" ng-blur="cluster.updateFingerprint(host)"> </input>
-                <span class="text-muted"> Fingerprint: {{host.fingerprint}} </span>
-              </td>
-              <td>
-                {{host.ipaddress}}
-              </td>
-              <td>
-                <span ng-if="!host.isNew">N/A</span>
-                <span ng-if="host.isNew && !host.isEdit">{{host.username}}/......</span>
-                <div ng-show="host.isEdit">
-                  <input type="text" class="form-control" ng-model="host.username" placeholder="User name"> </input>
-                  <input type="password" class="form-control" ng-model="host.password" placeholder="Password"> </input>
-                </div>
-              </td>
-              <td>{{host.status}}</td>
-              <td>
-                <button class="btn btn-default" type="button" ng-show="!host.isEdit" ng-click="cluster.onEditHost(host)">
-                  <span class="pficon pficon-edit"></span>
-                </button>
-                <button class="btn btn-default" type="button" ng-show="host.isEdit" ng-click="cluster.onSaveHost(host)">
-                  <span class="pficon pficon-ok"></span>
-                </button>
-                <button class="btn btn-default" type="button" ng-click="cluster.onRemoveHost(host)">
-                  <span class="pficon pficon-close"></span>
-                </button>
-              </td>
-            </tr>
+          <tr ng-repeat="host in cluster.hosts | filter: { isDummy: false}">
+            <td class="col-md-1"><input type="checkbox" class="add-host-control" ng-model="host.selected"></input></td>
+            <td>
+              <ul class="list-unstyled">
+                <li>
+                  <span ng-show="!host.isEdit"> {{host.hostname}} </span>
+                  <input type="text" class="add-host-control" ng-model="host.hostname" ng-show="host.isEdit" ng-blur="cluster.updateFingerprint(host)"> </input>
+                </li>
+                <li>
+                  <span class="text-muted"> Fingerprint: {{host.fingerprint}} </span>
+                </li>
+              </ul>
+            </td>
+            <td>
+              {{host.ipaddress}}
+            </td>
+            <td>
+              <span ng-if="!host.isNew">N/A</span>
+              <span ng-if="host.isNew && !host.isEdit">{{host.username}}/......</span>
+              <div ng-show="host.isEdit">
+                <input type="text" class="add-host-control" ng-model="host.username" placeholder="User name"> </input>
+                <input type="password" class="add-host-control" ng-model="host.password" placeholder="Password"> </input>
+              </div>
+            </td>
+            <td>{{host.status}}</td>
+            <td>
+              <button class="btn btn-default" type="button" ng-show="!host.isEdit" ng-click="cluster.onEditHost(host)">
+                <span class="pficon pficon-edit"></span>
+              </button>
+              <button class="btn btn-default" type="button" ng-show="host.isEdit" ng-click="cluster.onSaveHost(host)">
+                <span class="pficon pficon-ok"></span>
+              </button>
+              <button class="btn btn-default" type="button" ng-click="cluster.onRemoveHost(host)">
+                <span class="pficon pficon-close"></span>
+              </button>
+            </td>
+          </tr>
 
-            <tr ng-repeat="host in cluster.hosts | filter: { isDummy: true}">
-              <td>
-                <button class="btn btn-default" type="button" ng-click="cluster.onAddRow(host)">
-                  <span class="pficon pficon-add"></span>
-                </button>
-              </td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+          <tr ng-repeat="host in cluster.hosts | filter: { isDummy: true}">
+            <td>
+              <button class="btn btn-default" type="button" ng-click="cluster.onAddRow(host)">
+                <span class="pficon pficon-add"></span>
+              </button>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
         </tbody>
       </table>
     </div>
