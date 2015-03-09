@@ -47,12 +47,12 @@ define(['lodash'], function(_) {
         // We instantiate 2 root restangular instances with different configurations.
         // The first one is for simple JSON API requests.
         var restangular = Restangular.withConfig(function(RestangularConfigurer) {
-            RestangularConfigurer.setBaseUrl('http://10.70.42.87:8000/api/v1/').setResponseExtractor(djangoPaginationResponseExtractor).setErrorInterceptor(ErrorService.errorInterceptor);
+            RestangularConfigurer.setBaseUrl('/api/v1/').setResponseExtractor(djangoPaginationResponseExtractor).setErrorInterceptor(ErrorService.errorInterceptor);
         });
         // The second gives us access to the raw response so we can look at the status code.
         // Useful for APIs that return 202 responses for asynchronous tasks.
         var restangularFull = Restangular.withConfig(function(RestangularConfigurer) {
-            RestangularConfigurer.setBaseUrl('/api/v1').setFullResponse(true).setResponseExtractor(djangoPaginationResponseExtractor).setErrorInterceptor(ErrorService.errorInterceptor);
+            RestangularConfigurer.setBaseUrl('/api/v1/').setFullResponse(true).setResponseExtractor(djangoPaginationResponseExtractor).setErrorInterceptor(ErrorService.errorInterceptor);
         });
         // **constructor**
         var Service = function() {
@@ -125,8 +125,11 @@ define(['lodash'], function(_) {
                 }
                 return this.restangularFull.one('cluster', id);
             },
-            put: function(cluster) {
-
+            // **create**
+            // **@param** cluster - Information about the cluster and list of hosts.
+            // **@returns** a promise which returns a request id to track the task.
+            create: function(cluster) {
+                return this.restangularFull.all('clusters').post(cluster);
             },
             // **switchCluster**
             // This will be invoked when the user switches the cluster

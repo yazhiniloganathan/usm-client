@@ -1,24 +1,37 @@
 /*global define*/
 define(['lodash'], function(_) {
     'use strict';
-    // Wraps the **/api/v2/cluster/&lt;fsid&gt;/server** API.
-    var ServerService = function(ClusterService) {
+    // Wraps the **/api/v2/hosts** API.
+    var ServerService = function(Restangular, ErrorService) {
+        // We instantiate 2 root restangular instances with different configurations.
+        // The first one is for simple JSON API requests.
+        var restangular = Restangular.withConfig(function(RestangularConfigurer) {
+            RestangularConfigurer.setBaseUrl('/api/v1/').setErrorInterceptor(ErrorService.errorInterceptor);
+        });
+        // The second gives us access to the raw response so we can look at the status code.
+        // Useful for APIs that return 202 responses for asynchronous tasks.
+        var restangularFull = Restangular.withConfig(function(RestangularConfigurer) {
+            RestangularConfigurer.setBaseUrl('/api/v1/').setFullResponse(true).setErrorInterceptor(ErrorService.errorInterceptor);
+        });
+
         // **Constructor**
         var Service = function() {
-            this.restangular = ClusterService;
+            this.restangular = restangular;
+            this.restangularFull = restangularFull;
         };
         Service.prototype = _.extend(Service.prototype, {
+
             // **getList**
-            // **@returns** a promise with all servers this Ceph Cluster has discovered.
+            // **@returns** a promise with all servers discovered.
             getList: function() {
-                return this.restangular.cluster().all('server').getList().then(function(servers) {
+                return this.restangular.all('hosts').getList().then(function(servers) {
                     return servers;
                 });
             },
             // **get**
             // **@returns** a promise with this specific server's metadata.
             get: function(id) {
-                return this.restangular.cluster().one('server', id).get().then(function(server) {
+                return this.restangular.one('hosts', id).get().then(function(server) {
                     return server;
                 });
             },
@@ -34,5 +47,5 @@ define(['lodash'], function(_) {
         });
         return new Service();
     };
-    return ['ClusterService', ServerService];
+    return ['Restangular', 'ErrorService', ServerService];
 });

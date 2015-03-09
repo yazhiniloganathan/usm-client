@@ -3,7 +3,7 @@
     'use strict';
     define(['lodash', 'helpers/cluster-helpers'], function(_, ClusterHelpers) {
 
-        var ClusterNewController = function($scope, $modal, $location, $http) {
+        var ClusterNewController = function($scope, $modal, $location, ClusterService) {
             this.step = 1;
             var self = this;
             this.clusterTypes = ClusterHelpers.getClusterTypes();
@@ -83,18 +83,12 @@
                     storage_type: this.storageType.id,
                     nodes: hosts
                 };
-
-                $http.post('http://10.70.42.87:8000/api/v1/create_cluster', cluster).
-                  success(function (data, status, headers, config) {
-                    console.log(status);
-                  }).
-                  error(function (data, status, headers, config) {
-                    console.log(status);
-                  });
-
-                $location.path('/clusters');
+                ClusterService.create(cluster).then(function(result) {
+                    console.log(result);
+                    $location.path('/clusters');
+                });
             };
         };
-        return ['$scope', '$modal', '$location', '$http', ClusterNewController];
+        return ['$scope', '$modal', '$location', 'ClusterService', ClusterNewController];
     });
 })();

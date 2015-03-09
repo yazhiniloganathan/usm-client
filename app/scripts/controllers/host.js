@@ -1,19 +1,15 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'helpers/cluster-helpers'], function(_, ClusterHelpers) {
+    define(['lodash'], function(_) {
 
-        var HostController = function($scope, $http) {
+        var HostController = function(ServerService) {
             var self = this;
             this.list = [];
-            $http.get('http://10.70.42.87:8000/api/v1/hosts').
-              success(function (data, status, headers, config) {
-                self.list = data;
-              }).
-              error(function (data, status, headers, config) {
-                console.log(status);
-              });
+            ServerService.getList().then(function(result) {
+              self.list = data;
+            });
         };
-        return ['$scope', '$http', HostController];
+        return ['ServerService', HostController];
     });
 })();
