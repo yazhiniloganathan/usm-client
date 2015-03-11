@@ -7,7 +7,7 @@
             var self = this;
             this.list = [];
             ServerService.getList().then(function(result) {
-              self.list = data;
+              self.list = result;
             });
         };
         return ['ServerService', HostController];

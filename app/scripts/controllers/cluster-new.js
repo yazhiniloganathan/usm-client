@@ -3,7 +3,7 @@
     'use strict';
     define(['lodash', 'helpers/cluster-helpers'], function(_, ClusterHelpers) {
 
-        var ClusterNewController = function($scope, $modal, $location, ClusterService) {
+        var ClusterNewController = function($scope, $modal, $location, ClusterService, UtilService) {
             this.step = 1;
             var self = this;
             this.clusterTypes = ClusterHelpers.getClusterTypes();
@@ -18,16 +18,19 @@
             this.onAddRow = function(host) {
                 host.isDummy = false;
                 host.isEdit = true;
+                host.isMon = false;
                 this.hosts.push({isDummy:true, isNew:true, isEdit:false});
             }
 
             this.updateFingerprint = function(host) {
-                var delim = "-";
-
-                function S4() {
-                    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-                }
-                host.fingerprint = (S4() + S4() + delim + S4() + delim + S4() + delim + S4() + delim + S4() + S4() + S4());
+                UtilService.getIpAddress(host.hostname)
+                .then(function(ipaddress){
+                    host.ipaddress = ipaddress;
+                    return UtilService.getSshFingerprint(host.ipaddress);
+                })
+                .then(function(fingerprint) {
+                    host.fingerprint = fingerprint;
+                });
             }
 
             this.onEditHost = function(host) {
@@ -63,18 +66,21 @@
             this.submit = function() {
                 var hosts = [];
                 _.forEach(this.hosts, function(host){
-                    var localhost = {
-                        node_name: host.hostname,
-                        management_ip: host.hostname,
-                        cluster_ip: host.hostname,
-                        public_ip: host.hostname,
-                        ssh_username: host.username,
-                        ssh_password: host.password,
-                        ssh_key_fingerprint: "FINGER",
-                        ssh_port: 22,
-                        node_type: "1"
-                    };
-                    hosts.push(localhost);
+                    if(!host.isDummy) {
+                        var node_type = self.clusterType.id === 1 ? 4 : (host.isMon ? 1 : 2);
+                        var localhost = {
+                            node_name: host.hostname,
+                            management_ip: host.ipaddress,
+                            cluster_ip: host.ipaddress,
+                            public_ip: host.ipaddress,
+                            ssh_username: host.username,
+                            ssh_password: host.password,
+                            ssh_key_fingerprint: host.fingerprint,
+                            ssh_port: 22,
+                            node_type: node_type
+                        };
+                        hosts.push(localhost);
+                    }
                 });
 
                 var cluster = {
@@ -89,6 +95,6 @@
                 });
             };
         };
-        return ['$scope', '$modal', '$location', 'ClusterService', ClusterNewController];
+        return ['$scope', '$modal', '$location', 'ClusterService', 'UtilService', ClusterNewController];
     });
 })();

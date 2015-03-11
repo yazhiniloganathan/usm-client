@@ -7,53 +7,77 @@
     padding: 0px;
 }
 .selected-hosts-list {
-	padding-top:10px;
+    padding-top:10px;
 }
 
 .selected-hosts-list li {
-	padding: 5px;
+    padding: 5px;
 }
 
 .selected-hosts-list a {
-	text-decoration: none;
-	cursor: pointer;
-	margin-top: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 5px;
 }
 
 .add-hosts-modal-dialog {
-	width: 800px;
+    width: 800px;
 }
 
 .table-hosts-to-add {
-	border: 1px solid #dddddd;
+    border: 1px solid #dddddd;
 }
 
 .clusters-new-steps {
-	li {
-		padding: 10px;
-		font-size: 16px;
-	}
+    li {
+        padding: 10px;
+        font-size: 16px;
+    }
 }
 
 .clusters-new-active-step {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 .clusters-new-inactive-step {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 .cluster-new-hosts-action {
-	font-size: 20px;
+    font-size: 20px;
+}
+
+.host-details-th {
+    margin-left: 17px;
+}
+
+.host-details {
+    position: relative;
+    left: 25px;
+    margin-top: -20px;
 }
 
 .add-host-control {
-	border: 1px solid #BABABA;
-	padding: 2px 6px;
-	margin-right: 5px;
+    border: 1px solid #BABABA;
+    padding: 2px 6px;
+    margin-right: 5px;
 
-	&:focus {
-		border-color: #66AFE9;
-		@include box-shadow(0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6));
-	}
+    &:focus {
+        border-color: #66AFE9;
+        @include box-shadow(0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6));
+    }
+}
+
+.host-is-mon-icon {
+    opacity: 0.2;
+}
+
+.host-is-mon-link {
+    outline: 0;
+    color: #333;
+
+    &:active, &:focus {
+        outline: 0;
+        color: #333;
+    }
 }

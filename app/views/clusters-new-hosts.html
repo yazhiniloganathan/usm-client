@@ -13,7 +13,7 @@
               <div class="form-group has-clear">
                 <div class="search-pf-input-group">
                   <label for="search1" class="sr-only">Search</label>
-                  <input id="search1" type="search" class="form-control" placeholder="Search">
+                  <input id="search1" type="search" class="form-control" placeholder="Search"></input>
                   <button type="button" class="clear" aria-hidden="true" style="display: none;"><span class="pficon pficon-close"></span></button>
                 </div>
               </div>
@@ -31,27 +31,32 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th class="col-md-1"><input type="checkbox"></input></th>
-            <th class="col-md-4">Hostname</th>
+            <!-- <th class="col-md-1"><input type="checkbox"></input></th> -->
+            <th class="col-md-4"><input type="checkbox"></input><span class="host-details-th">Hostname</span></th>
             <th class="col-md-1">IP Address</th>
-            <th class="col-md-4">Credentials</th>
-            <th class="col-md-1">Status</th>
+            <th class="col-md-5">Credentials</th>
+            <th class="col-md-1" ng-show="cluster.clusterType.id === 2"><span class="fa fa-desktop fa-lg"></span></th>
             <th class="col-md-1">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="host in cluster.hosts | filter: { isDummy: false}">
-            <td class="col-md-1"><input type="checkbox" class="add-host-control" ng-model="host.selected"></input></td>
+            <!-- <td class="col-md-1"><input type="checkbox" class="add-host-control" ng-model="host.selected"></input></td> -->
             <td>
-              <ul class="list-unstyled">
-                <li>
-                  <span ng-show="!host.isEdit"> {{host.hostname}} </span>
-                  <input type="text" class="add-host-control" ng-model="host.hostname" ng-show="host.isEdit" ng-blur="cluster.updateFingerprint(host)"> </input>
-                </li>
-                <li>
-                  <span class="text-muted"> Fingerprint: {{host.fingerprint}} </span>
-                </li>
-              </ul>
+              <div>
+                <input type="checkbox" class="add-host-control" ng-model="host.selected">
+              </div>
+              <div class="host-details">
+                <ul class="list-unstyled">
+                  <li>
+                    <span ng-show="!host.isEdit"> {{host.hostname}} </span>
+                    <input type="text" class="add-host-control" ng-model="host.hostname" ng-show="host.isEdit" ng-blur="cluster.updateFingerprint(host)"> </input>
+                  </li>
+                  <li>
+                    <span class="text-muted"> Fingerprint: {{host.fingerprint}} </span>
+                  </li>
+                </ul>
+              </div>
             </td>
             <td>
               {{host.ipaddress}}
@@ -64,7 +69,11 @@
                 <input type="password" class="add-host-control" ng-model="host.password" placeholder="Password"> </input>
               </div>
             </td>
-            <td>{{host.status}}</td>
+            <td class="host-is-mon" ng-show="cluster.clusterType.id === 2">
+              <a class="host-is-mon-link" href="" ng-click="host.isMon=!host.isMon">
+                <span class="fa fa-desktop fa-lg" ng-class="host.isMon ? '': 'host-is-mon-icon'"></span>
+              </a>
+            </td>
             <td>
               <button class="btn btn-default" type="button" ng-show="!host.isEdit" ng-click="cluster.onEditHost(host)">
                 <span class="pficon pficon-edit"></span>
@@ -86,8 +95,7 @@
             </td>
             <td></td>
             <td></td>
-            <td></td>
-            <td></td>
+            <td ng-show="cluster.clusterType.id === 2"></td>
             <td></td>
           </tr>
         </tbody>

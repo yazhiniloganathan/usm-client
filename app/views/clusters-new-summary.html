@@ -16,16 +16,14 @@
     <tr>
       <th>Hostname</th>
       <th>IP Address</th>
-      <th>Management IP</th>
       <th>Cluster IP</th>
     </tr>
   </thead>
   <tbody>
       <tr ng-repeat="host in cluster.hosts | filter: { selected: true }">
         <td>{{host.hostname}}</td>
-        <td>{{host.hostname}}</td>
-        <td>{{host.hostname}}</td>
-        <td>{{host.hostname}}</td>
+        <td>{{host.ipaddress}}</td>
+        <td>{{host.ipaddress}}</td>
       </tr>
   </tbody>
 </table>
