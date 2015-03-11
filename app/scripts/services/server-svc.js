@@ -35,6 +35,12 @@ define(['lodash'], function(_) {
                     return server;
                 });
             },
+            // **remove**
+            // **@param** id - id of server you wish to remove.
+            // **@returns** a promise with the request id for the operation.
+            remove: function(id) {
+                return this.restangular.one('hosts', id).remove();
+            },
             // **getGrains**
             // **@returns** a promise with the metadata, key value pairs associated with
             // this specific server, aka grains in Salt Stack parlance.

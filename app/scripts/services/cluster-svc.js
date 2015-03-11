@@ -131,6 +131,14 @@ define(['lodash'], function(_) {
             create: function(cluster) {
                 return this.restangularFull.all('clusters').post(cluster);
             },
+            // **remove**
+            // **@param** id - id of cluster you wish to remove.
+            // This is a **destructive** operation and will remove
+            // any data on this cluster.
+            // **@returns** a promise with the request id for the operation.
+            remove: function(id) {
+                return this.restangular.one('clusters', id).remove();
+            },
             // **switchCluster**
             // This will be invoked when the user switches the cluster
             // using the cluster dropdown in the top of the page

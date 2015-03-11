@@ -5,7 +5,6 @@
 
         var ClusterController = function($scope, $location, ClusterService) {
             ClusterService.getList().then(function(clusters){
-                console.log(clusters);
                 $scope.clusters = clusters;
             });
 
@@ -24,6 +23,22 @@
             $scope.create = function() {
                 $location.path('/clusters/new');
             };
+
+            $scope.remove = function() {
+                _.each($scope.clusters, function(cluster) {
+                    if(cluster.selected) {
+                        ClusterService.remove(cluster.cluster_id).then(function(result){
+                            console.log(result);
+                        });
+                    }
+                });
+            };
+
+            $scope.isDeleteAvailable = function() {
+                return _.filter($scope.clusters, function(cluster){
+                    return cluster.selected;
+                }).length;
+            }
         };
         return ['$scope', '$location', 'ClusterService', ClusterController];
     });
