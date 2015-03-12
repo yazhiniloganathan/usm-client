@@ -3,10 +3,21 @@
     'use strict';
     define(['lodash', 'helpers/cluster-helpers'], function(_, ClusterHelpers) {
 
-        var ClusterController = function($scope, $location, ClusterService) {
-            ClusterService.getList().then(function(clusters){
-                $scope.clusters = clusters;
+        var ClusterController = function($scope, $location, $interval, ClusterService) {
+
+            reloadData();
+
+            var timer = $interval(reloadData, 5000);
+
+            $scope.$on('$destroy', function() {
+                $interval.cancel(timer);
             });
+
+            function reloadData() {
+                ClusterService.getList().then(function(clusters){
+                    $scope.clusters = clusters;
+                });
+            }
 
             $scope.getClusterTypeTitle = function(type) {
                 return ClusterHelpers.getClusterType(type).type;
@@ -28,6 +39,7 @@
                 _.each($scope.clusters, function(cluster) {
                     if(cluster.selected) {
                         ClusterService.remove(cluster.cluster_id).then(function(result){
+                            reloadData();
                             console.log(result);
                         });
                     }
@@ -40,6 +52,6 @@
                 }).length;
             }
         };
-        return ['$scope', '$location', 'ClusterService', ClusterController];
+        return ['$scope', '$location', '$interval', 'ClusterService', ClusterController];
     });
 })();
