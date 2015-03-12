@@ -14,6 +14,16 @@
 
             this.hosts = [];
             this.hosts.push({isDummy:true, isNew:true, isEdit:false});
+            this.selectAllHosts = false;
+
+            this.bulkSelectHosts = function() {
+                this.selectAllHosts = !this.selectAllHosts;
+                _.each(this.hosts, function(host){
+                    if(!host.isDummy) {
+                        host.selected = self.selectAllHosts;
+                    }
+                });
+            }
 
             this.onAddRow = function(host) {
                 host.isDummy = false;

@@ -32,7 +32,10 @@
         <thead>
           <tr>
             <!-- <th class="col-md-1"><input type="checkbox"></input></th> -->
-            <th class="col-md-4"><input type="checkbox"></input><span class="host-details-th">Hostname</span></th>
+            <th class="col-md-4">
+              <input type="checkbox" ng-click="cluster.bulkSelectHosts()"></input>
+              <span class="host-details-th">Hostname</span>
+            </th>
             <th class="col-md-1">IP Address</th>
             <th class="col-md-5">Credentials</th>
             <th class="col-md-1" ng-show="cluster.clusterType.id === 2"><span class="fa fa-desktop fa-lg"></span></th>
