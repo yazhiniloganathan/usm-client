@@ -6,18 +6,33 @@
         var HostController = function($scope, $interval, ServerService) {
             var self = this;
             this.list = [];
-
-            reloadData();
+            this.selectAllHosts = false;
 
             var timer = $interval(reloadData, 5000);
-
             $scope.$on('$destroy', function() {
                 $interval.cancel(timer);
             });
+            reloadData();
 
             function reloadData() {
-                ServerService.getList().then(function(result) {
-                    self.list = result;
+                ServerService.getList().then(function(hosts) {
+                    var selectedHosts = _.filter(self.list, function(host){
+                        return host.selected;
+                    });
+                    _.each(hosts, function(host) {
+                        var selected = _.find(selectedHosts, function(selectedHost){
+                            return host.node_id === selectedHost.node_id;
+                        });
+                        host.selected = !_.isUndefined(selected);
+                    });
+                    self.list = hosts;
+                });
+            }
+
+            this.bulkSelectHosts = function() {
+                this.selectAllHosts = !this.selectAllHosts;
+                _.each(self.list, function(host){
+                    host.selected = self.selectAllHosts;
                 });
             }
 

@@ -5,16 +5,25 @@
 
         var ClusterController = function($scope, $location, $interval, ClusterService) {
 
-            reloadData();
+            $scope.clusters = [];
 
             var timer = $interval(reloadData, 5000);
-
             $scope.$on('$destroy', function() {
                 $interval.cancel(timer);
             });
+            reloadData();
 
             function reloadData() {
                 ClusterService.getList().then(function(clusters){
+                    var selectedClusters = _.filter($scope.clusters, function(cluster){
+                        return cluster.selected;
+                    });
+                    _.each(clusters, function(cluster) {
+                        var selected = _.find(selectedClusters, function(selectedCluster){
+                            return cluster.cluster_id === selectedCluster.cluster_id;
+                        });
+                        cluster.selected = !_.isUndefined(selected);
+                    });
                     $scope.clusters = clusters;
                 });
             }
