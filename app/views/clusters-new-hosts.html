@@ -38,7 +38,9 @@
             </th>
             <th class="col-md-1">IP Address</th>
             <th class="col-md-5">Credentials</th>
-            <th class="col-md-1" ng-show="cluster.clusterType.id === 2"><span class="fa fa-desktop fa-lg"></span></th>
+            <th class="col-md-1" ng-show="cluster.clusterType.id === 2">
+              <span class="fa fa-desktop fa-lg"  data-placement="bottom" bs-tooltip="'Ceph monitor host'"></span>
+            </th>
             <th class="col-md-1">Actions</th>
           </tr>
         </thead>
@@ -74,7 +76,7 @@
             </td>
             <td class="host-is-mon" ng-show="cluster.clusterType.id === 2">
               <a class="host-is-mon-link" href="" ng-click="host.isMon=!host.isMon">
-                <span class="fa fa-desktop fa-lg" ng-class="host.isMon ? '': 'host-is-mon-icon'"></span>
+                <span class="fa fa-desktop fa-lg" ng-class="host.isMon ? '': 'host-is-mon-icon'" data-placement="bottom" bs-tooltip="'Use this host as Ceph monitor'"></span>
               </a>
             </td>
             <td>
