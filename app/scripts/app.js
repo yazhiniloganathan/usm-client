@@ -1,11 +1,12 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'angular', 'RouteConfig', 'ApiModule','controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'controllers/cluster-new', 'controllers/host', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular'], function(_, angular, RouteConfig, APIModule, MenuController, DashboardController, ClusterController, ClusterNewController, HostController, MenuService, ConfigurationService, ErrorService) {
+    define(['lodash', 'angular', 'RouteConfig', 'ApiModule', 'components/requests/requestsModule', 'controllers/menu', 'controllers/dashboard', 'controllers/cluster', 'controllers/cluster-new', 'controllers/host', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular'], function(_, angular, RouteConfig, APIModule, RequestModule, MenuController, DashboardController, ClusterController, ClusterNewController, HostController, MenuService, ConfigurationService, ErrorService) {
 
         var app = angular.module('usmClientApp', [
              //   'ngAnimate',
                 APIModule,
+                RequestModule,
                 'ngCookies',
                 'ngResource',
                 'ngSanitize',
@@ -33,10 +34,11 @@
             .run(function(){})
         // Service Providers may be individually configured by modules.
             .config(['$logProvider',
-            function($logProvider) {
-                $logProvider.debugEnabled(false);
-            }
-        ]).config(RouteConfig)
+                function($logProvider) {
+                    $logProvider.debugEnabled(false);
+                }
+            ])
+            .config(RouteConfig)
             .config(['$httpProvider', function($httpProvider){
                 $httpProvider.defaults.xsrfCookieName = 'csrftoken';
                 $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';

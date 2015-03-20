@@ -3,7 +3,7 @@
     'use strict';
     define(['lodash', 'helpers/cluster-helpers'], function(_, ClusterHelpers) {
 
-        var ClusterNewController = function($scope, $modal, $location, ClusterService, UtilService) {
+        var ClusterNewController = function($scope, $modal, $location, ClusterService, UtilService, RequestTrackingService) {
             this.step = 1;
             var self = this;
             this.clusterTypes = ClusterHelpers.getClusterTypes();
@@ -101,10 +101,11 @@
                 };
                 ClusterService.create(cluster).then(function(result) {
                     console.log(result);
+                    RequestTrackingService.add(result.data, 'CLUSTER');
                     $location.path('/clusters');
                 });
             };
         };
-        return ['$scope', '$modal', '$location', 'ClusterService', 'UtilService', ClusterNewController];
+        return ['$scope', '$modal', '$location', 'ClusterService', 'UtilService', 'RequestTrackingService', ClusterNewController];
     });
 })();
