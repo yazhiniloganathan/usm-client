@@ -35,7 +35,7 @@
         // Service Providers may be individually configured by modules.
             .config(['$logProvider',
                 function($logProvider) {
-                    $logProvider.debugEnabled(false);
+                    $logProvider.debugEnabled(true);
                 }
             ])
             .config(RouteConfig)

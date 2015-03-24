@@ -25,7 +25,7 @@
             SuccessfulRequest: function($modal, options) {
                 options = options || {};
                 return $modal(_.extend({
-                    content: 'This may take a while. We\'ll let you know when it\'s done. You can also look at the notification queue to check your request\'s progress.',
+                    content: 'This may take a while. We\'ll let you know when it\'s done.',
                     container: 'body',
                     template: 'views/custom-modal.html',
                     backdrop: 'static', // disable mouse clicks for now since I can't wrap them or supply a callback

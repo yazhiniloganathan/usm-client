@@ -4,6 +4,7 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
     /* Bind this service as soon as App is running
      */
     var id = 0;
+    var timer = 5000;
     var requestTrackingService = function($q, $log, $timeout, RequestService) {
         var Service = function() {
             this.id = id++;
@@ -16,11 +17,13 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
                 autoIncrement: false,
                 onStoreReady: function(){
                     $log.info('UserRequest store is ready!');
+                    self.timeout = $timeout(self.processRequests, timer);
                 },
                 onError: function() {
                     $log.error('Unable to create UserRequest store');
                 }
             });
+            _.bindAll(this, 'add', 'remove', 'getTrackedRequests', 'getLength', 'processRequests');
         }
         Service.prototype = _.extend(Service.prototype, {
             add: function(id, entityType) {
@@ -65,8 +68,9 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
                 return d.promise;
             },
             processRequests: function() {
-                var self = this.
-                this.getTrackedRequests().then(function(requests) {
+                var self = this;
+                $log.debug('Refreshing the requests in the store');
+                self.getTrackedRequests().then(function(requests) {
                     _.each(requests, function(trackedRequest) {
                         RequestService.get(trackedRequest.id).then(function (request){
                             if (request.error) {
@@ -89,6 +93,7 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
                         });
                     });
                 });
+                self.timeout = $timeout(self.processRequests, timer);
             }
         });
         return new Service();

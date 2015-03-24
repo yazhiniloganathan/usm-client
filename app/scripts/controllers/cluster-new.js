@@ -1,9 +1,9 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'helpers/cluster-helpers'], function(_, ClusterHelpers) {
+    define(['lodash', 'helpers/cluster-helpers', 'helpers/modal-helpers'], function(_, ClusterHelpers, ModalHelpers) {
 
-        var ClusterNewController = function($scope, $modal, $location, ClusterService, UtilService, RequestTrackingService) {
+        var ClusterNewController = function($scope, $log, $modal, $location, ClusterService, UtilService, RequestTrackingService) {
             this.step = 1;
             var self = this;
             this.clusterTypes = ClusterHelpers.getClusterTypes();
@@ -101,11 +101,23 @@
                 };
                 ClusterService.create(cluster).then(function(result) {
                     console.log(result);
-                    RequestTrackingService.add(result.data, 'CLUSTER');
-                    $location.path('/clusters');
+                    if(result.status === 201) {
+                        RequestTrackingService.add(result.data, 'CLUSTER');
+                        var modal = ModalHelpers.SuccessfulRequest($modal, {
+                            title: 'Create Cluster Request Successful',
+                            container: '.usmClientApp'
+                        });
+                        modal.$scope.$hide = _.wrap(modal.$scope.$hide, function($hide) {
+                            $hide();
+                            $location.path('/clusters');
+                        });
+                    }
+                    else {
+                        $log.error('Unexpected response from Clusters.create', result);
+                    }
                 });
             };
         };
-        return ['$scope', '$modal', '$location', 'ClusterService', 'UtilService', 'RequestTrackingService', ClusterNewController];
+        return ['$scope', '$log', '$modal', '$location', 'ClusterService', 'UtilService', 'RequestTrackingService', ClusterNewController];
     });
 })();
