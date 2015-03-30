@@ -6,16 +6,30 @@
     </div>
   </div>
   <div class="form-group">
-    <label class="col-md-2 control-label" for="clusterType">Cluster Type</label>
+    <label class="col-md-2 control-label" for="storageType">Storage Type</label>
     <div class="col-md-4">
-      <select pf-select ng-model="cluster.clusterType" id="clusterType" class="form-control" ng-options="clusterType.type for clusterType in cluster.clusterTypes">
+      <select pf-select ng-model="cluster.storageType" id="storageType" class="form-control" ng-options="storageType.type for storageType in cluster.storageTypes">
       </select>
     </div>
   </div>
   <div class="form-group">
-    <label class="col-md-2 control-label" for="storageType">Storage Type</label>
+    <label class="col-md-2 control-label" for="clusterType">Cluster Type</label>
     <div class="col-md-4">
-      <select pf-select ng-model="cluster.storageType" id="storageType" class="form-control" ng-options="storageType.type for storageType in cluster.storageTypes">
+      <select pf-select ng-model="cluster.clusterType" id="clusterType" class="form-control" ng-options="clusterType.type for clusterType in cluster.clusterTypes" ng-change="cluster.onClusterTypeChanged()">
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label" for="workload">Workload</label>
+    <div class="col-md-4">
+      <select pf-select ng-model="cluster.workload" id="workload" class="form-control" ng-options="workload.type for workload in cluster.workloads">
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label" for="deploymentType">Deployment Type</label>
+    <div class="col-md-4">
+      <select pf-select ng-model="cluster.deploymentType" id="deploymentType" class="form-control" ng-options="deploymentType.type for deploymentType in cluster.deploymentTypes">
       </select>
     </div>
   </div>

@@ -3,17 +3,45 @@
     'use strict';
     define(['lodash', 'helpers/cluster-helpers', 'helpers/modal-helpers'], function(_, ClusterHelpers, ModalHelpers) {
 
-        var ClusterNewController = function($scope, $log, $modal, $location, ClusterService, UtilService, RequestTrackingService) {
+        var ClusterNewController = function($scope, $log, $modal, $location, ClusterService, ServerService, UtilService, RequestTrackingService) {
             this.step = 1;
             var self = this;
-            this.clusterTypes = ClusterHelpers.getClusterTypes();
-            this.clusterType = this.clusterTypes[0];
 
             this.storageTypes = ClusterHelpers.getStorageTypes();
             this.storageType = this.storageTypes[0];
 
+            this.clusterTypes = ClusterHelpers.getClusterTypes();
+            this.clusterType = this.clusterTypes[0];
+
+            this.workloads = [
+                { id:0, type: 'Generic' }
+            ];
+            this.workload = this.workloads[0];
+
+            this.deploymentTypes = this.clusterType.deploymentTypes;
+            this.deploymentType = this.deploymentTypes[0];
+
+            this.onClusterTypeChanged = function() {
+                this.deploymentTypes = this.clusterType.deploymentTypes;
+                this.deploymentType = this.deploymentTypes[0];
+            };
+
             this.hosts = [];
-            this.hosts.push({isDummy:true, isNew:true, isEdit:false});
+
+            ServerService.getFreeHosts().then(function(freeHosts) {
+                _.each(freeHosts, function(freeHost) {
+                    var host = {
+                        hostname: freeHost.node_name,
+                        ipaddress: freeHost.management_ip,
+                        isNew: false,
+                        isDummy: false
+                    };
+                    self.hosts.push(host);
+                    self.updateFingerprint(host);
+                });
+                self.hosts.push({isDummy:true, isNew:true, isEdit:false});
+            });
+
             this.selectAllHosts = false;
 
             this.bulkSelectHosts = function() {
@@ -83,12 +111,14 @@
                             management_ip: host.ipaddress,
                             cluster_ip: host.ipaddress,
                             public_ip: host.ipaddress,
-                            ssh_username: host.username,
-                            ssh_password: host.password,
                             ssh_key_fingerprint: host.fingerprint,
                             ssh_port: 22,
                             node_type: node_type
                         };
+                        if(host.isNew) {
+                            host.ssh_username = host.username;
+                            host.ssh_password = host.password;
+                        }
                         hosts.push(localhost);
                     }
                 });
@@ -118,6 +148,6 @@
                 });
             };
         };
-        return ['$scope', '$log', '$modal', '$location', 'ClusterService', 'UtilService', 'RequestTrackingService', ClusterNewController];
+        return ['$scope', '$log', '$modal', '$location', 'ClusterService', 'ServerService', 'UtilService', 'RequestTrackingService', ClusterNewController];
     });
 })();

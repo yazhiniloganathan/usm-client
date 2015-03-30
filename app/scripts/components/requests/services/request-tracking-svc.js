@@ -86,6 +86,9 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
                             else if (request.status === 'STARTED'){
                                 $log.info('Request ' + trackedRequest.id + ' is in progress');
                             }
+                            else if (request.status){
+                                $log.info('Request ' + trackedRequest.id + ' is in unknown state: '+ request.status);
+                            }
                         }, function (resp) {
                             if (resp.status === 404) {
                                 $log.warn('Request ' + trackedRequest.id + ' NOT FOUND');

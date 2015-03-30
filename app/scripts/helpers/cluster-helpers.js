@@ -3,15 +3,31 @@
     'use strict';
     define(['lodash'], function(_) {
 
-        var clusterTypes = [
-            { id:1, type:'Gluster' },
-            { id:2, type:'Ceph' }
-        ];
-
         var storageTypes = [
             { id:1, type:'Block Storage' },
             { id:2, type:'File Storage' },
             { id:3, type:'Object Storage' }
+        ];
+
+        var clusterTypes = [
+            {
+                id:1,
+                type:'Gluster',
+                deploymentTypes: [
+                    { id:1, type:'Demo (2 hosts)', nodeCount:2 },
+                    { id:2, type:'Minimum (3 hosts)', nodeCount:3 },
+                    { id:3, type:'Standard (6 hosts)', nodeCount:6 }
+                ]
+            },
+            {
+                id:2,
+                type:'Ceph',
+                deploymentTypes: [
+                    { id:1, type:'Demo (2 hosts)', nodeCount:2 },
+                    { id:2, type:'Minimum (3 hosts)', nodeCount:3 },
+                    { id:3, type:'Standard (10 hosts)', nodeCount:10 }
+                ]
+            }
         ];
 
         var clusterStates = [

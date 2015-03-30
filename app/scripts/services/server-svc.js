@@ -28,6 +28,13 @@ define(['lodash'], function(_) {
                     return servers;
                 });
             },
+            // **getFreeHosts**
+            // **@returns** a promise with all servers discovered.
+            getFreeHosts: function() {
+                return this.restangular.all('discovered-hosts').getList().then(function(servers) {
+                    return servers;
+                });
+            },
             // **get**
             // **@returns** a promise with this specific server's metadata.
             get: function(id) {

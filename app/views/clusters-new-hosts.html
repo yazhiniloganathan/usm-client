@@ -56,6 +56,7 @@
                   <li>
                     <span ng-show="!host.isEdit"> {{host.hostname}} </span>
                     <input type="text" class="add-host-control" ng-model="host.hostname" ng-show="host.isEdit" ng-blur="cluster.updateFingerprint(host)"> </input>
+                    <span class="label label-success cluster-hosts-discovered-label" ng-show="!host.isNew">Free</span>
                   </li>
                   <li>
                     <span class="text-muted"> Fingerprint: {{host.fingerprint}} </span>
@@ -80,13 +81,13 @@
               </a>
             </td>
             <td>
-              <button class="btn btn-default" type="button" ng-show="!host.isEdit" ng-click="cluster.onEditHost(host)">
+              <button class="btn btn-default" type="button" ng-show="!host.isEdit" ng-disabled="!host.isNew" ng-click="cluster.onEditHost(host)">
                 <span class="pficon pficon-edit"></span>
               </button>
-              <button class="btn btn-default" type="button" ng-show="host.isEdit" ng-click="cluster.onSaveHost(host)">
+              <button class="btn btn-default" type="button" ng-show="host.isEdit" ng-disabled="!host.isNew" ng-click="cluster.onSaveHost(host)">
                 <span class="pficon pficon-ok"></span>
               </button>
-              <button class="btn btn-default" type="button" ng-click="cluster.onRemoveHost(host)">
+              <button class="btn btn-default" type="button" ng-disabled="!host.isNew" ng-click="cluster.onRemoveHost(host)">
                 <span class="pficon pficon-close"></span>
               </button>
             </td>
