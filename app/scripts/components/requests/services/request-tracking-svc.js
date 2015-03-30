@@ -5,7 +5,7 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
      */
     var id = 0;
     var timer = 5000;
-    var requestTrackingService = function($q, $log, $timeout, RequestService) {
+    var requestTrackingService = function($q, $log, $timeout, RequestService, growl) {
         var Service = function() {
             this.id = id++;
             $log.debug('Creating Request Tracking Service [' + this.id + ']');
@@ -26,7 +26,7 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
             _.bindAll(this, 'add', 'remove', 'getTrackedRequests', 'getLength', 'processRequests');
         }
         Service.prototype = _.extend(Service.prototype, {
-            add: function(id, entityType) {
+            add: function(id, operation) {
                 var d = $q.defer();
                 if (id === null || id === undefined) {
                     // resolve empty ids immediately
@@ -35,7 +35,7 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
                 else {
                     this.requests.put({
                         id: id,
-                        entityType: entityType,
+                        operation: operation,
                         timestamp: Date.now()
                     }, function(id) {
                         $log.info('Tracking new request '+id);
@@ -73,16 +73,17 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
                 self.getTrackedRequests().then(function(requests) {
                     _.each(requests, function(trackedRequest) {
                         RequestService.get(trackedRequest.id).then(function (request){
-                            if (request.error) {
-                                //TODO: show error popup
+                            if (request.status === 'FAILED') {
+                                self.showError(trackedRequest.operation + ' is failed');
+                                $log.info(trackedRequest.operation + ' is failed');
                                 self.remove(trackedRequest.id);
                             }
-                            else if (request.state === 'complete'){
-                                //TODO: show sucess popup
-                                $log.info('Request ' + trackedRequest.id + ' is completed');
+                            else if (request.status === 'SUCCESS'){
+                                self.showNotification(trackedRequest.operation + ' is completed sucessfully');
+                                $log.info(trackedRequest.operation + ' is completed sucessfully');
                                 self.remove(trackedRequest.id);   
                             }
-                            else {
+                            else if (request.status === 'STARTED'){
                                 $log.info('Request ' + trackedRequest.id + ' is in progress');
                             }
                         }, function (resp) {
@@ -94,6 +95,16 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
                     });
                 });
                 self.timeout = $timeout(self.processRequests, timer);
+            },
+            showError: function(msg) {
+                // TODO: too tightly coupled use $broadcast
+                growl.error('ERROR: ' + msg, {
+                    ttl: -1
+                });
+            },
+            showNotification: function(msg) {
+                // TODO: too tightly coupled use $broadcast
+                growl.success(msg);
             }
         });
         return new Service();
@@ -102,10 +113,10 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
     var service = null;
     return function RequestTrackingServiceProvider() {
         // This is an app wide singleton
-        this.$get = ['$q', '$log', '$timeout', 'RequestService', 
-            function($q, $log, $timeout, RequestService){
+        this.$get = ['$q', '$log', '$timeout', 'RequestService', 'growl',
+            function($q, $log, $timeout, RequestService, growl){
                 if(service == null) {
-                    service = requestTrackingService($q, $log, $timeout, RequestService);
+                    service = requestTrackingService($q, $log, $timeout, RequestService, growl);
                 }
                 return service;
             }

@@ -102,7 +102,7 @@
                 ClusterService.create(cluster).then(function(result) {
                     console.log(result);
                     if(result.status === 201) {
-                        RequestTrackingService.add(result.data, 'CLUSTER');
+                        RequestTrackingService.add(result.data, 'Creating cluster \'' + cluster.cluster_name + '\'');
                         var modal = ModalHelpers.SuccessfulRequest($modal, {
                             title: 'Create Cluster Request Successful',
                             container: '.usmClientApp'

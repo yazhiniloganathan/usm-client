@@ -43,8 +43,8 @@ define(['lodash'], function(_) {
             // **get**
             // **@returns** a promise with a single request by it's ID.
             get: function(id) {
-                return this.restangular.one('tasks', id).get().then(function(resp) {
-                    return resp.data;
+                return this.restangular.one('tasks', id).customGET('status').then(function(resp) {
+                    return resp.task;
                 });
             },
             // **getComplete**
