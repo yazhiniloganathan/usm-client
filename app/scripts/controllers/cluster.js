@@ -4,6 +4,11 @@
     define(['lodash', 'helpers/cluster-helpers'], function(_, ClusterHelpers) {
 
         var ClusterController = function($scope, $location, $interval, ClusterService) {
+            ClusterService.getList().then(function(clusters) {
+                if(clusters.length === 0) {
+                    $location.path('/first');
+                }
+            });
 
             $scope.clusters = [];
 

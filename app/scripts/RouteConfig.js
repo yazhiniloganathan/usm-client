@@ -13,6 +13,11 @@
                 templateUrl: 'views/dashboard.html',
                 menuId: 'dashboard',
                 controller: 'DashboardController',
+            }).when('/first', {
+                templateUrl: 'views/first.html',
+                menuId: '',
+                controller: 'FirstTimeController',
+                controllerAs: 'first'
             }).when('/clusters', {
                 templateUrl: 'views/clusters.html',
                 menuId: 'cluster',

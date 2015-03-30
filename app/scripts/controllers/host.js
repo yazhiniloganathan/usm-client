@@ -3,7 +3,13 @@
     'use strict';
     define(['lodash'], function(_) {
 
-        var HostController = function($scope, $interval, ServerService) {
+        var HostController = function($scope, $interval, $location, ClusterService, ServerService) {
+            ClusterService.getList().then(function(clusters) {
+                if(clusters.length === 0) {
+                    $location.path('/first');
+                }
+            });
+
             var self = this;
             this.list = [];
             this.selectAllHosts = false;
@@ -53,6 +59,6 @@
                 }).length;
             }
         };
-        return ['$scope', '$interval', 'ServerService', HostController];
+        return ['$scope', '$interval', '$location', 'ClusterService', 'ServerService', HostController];
     });
 })();
