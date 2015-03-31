@@ -19,8 +19,8 @@
             <tr>
               <th> <input type="checkbox"/> </th>
               <th>Name</th>
-              <th>Type</th>
-              <th>Storage</th>
+              <th>Storage Type</th>
+              <th>Cluster Type</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -28,8 +28,8 @@
             <tr ng-repeat="cluster in clusters">
               <td> <input type="checkbox" ng-model="cluster.selected"></input></td>
               <td>{{cluster.cluster_name}}</td>
-              <td>{{getClusterTypeTitle(cluster.cluster_type)}}</td>
               <td>{{getStorageTypeTitle(cluster.storage_type)}}</td>
+              <td>{{getClusterTypeTitle(cluster.cluster_type)}}</td>
               <td>{{getStatusTitle(cluster.cluster_status)}}</td>
             </tr>
           </tbody>

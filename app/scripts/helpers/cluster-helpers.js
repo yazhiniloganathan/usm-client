@@ -4,9 +4,9 @@
     define(['lodash'], function(_) {
 
         var storageTypes = [
-            { id:1, type:'Block Storage' },
-            { id:2, type:'File Storage' },
-            { id:3, type:'Object Storage' }
+            { id:1, type:'Block' },
+            { id:2, type:'File' },
+            { id:3, type:'Object' }
         ];
 
         var clusterTypes = [

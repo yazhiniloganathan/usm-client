@@ -134,7 +134,7 @@
                     if(result.status === 201) {
                         RequestTrackingService.add(result.data, 'Creating cluster \'' + cluster.cluster_name + '\'');
                         var modal = ModalHelpers.SuccessfulRequest($modal, {
-                            title: 'Create Cluster Request Successful',
+                            title: 'Create Cluster Request is Successful',
                             container: '.usmClientApp'
                         });
                         modal.$scope.$hide = _.wrap(modal.$scope.$hide, function($hide) {

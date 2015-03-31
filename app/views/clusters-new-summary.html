@@ -17,18 +17,20 @@
 </dl>
 
 <h3>Hosts</h3>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
       <th>Hostname</th>
       <th>IP Address</th>
-      <th>Cluster IP</th>
+      <th ng-show="cluster.clusterType.id === 2">Type</th>
+      <th>Cluster IP Adress</th>
     </tr>
   </thead>
   <tbody>
       <tr ng-repeat="host in cluster.hosts | filter: { selected: true }">
         <td>{{host.hostname}}</td>
         <td>{{host.ipaddress}}</td>
+        <td ng-show="cluster.clusterType.id === 2">{{host.isMon ? 'Monitor' : 'OSD'}}</td>
         <td>{{host.ipaddress}}</td>
       </tr>
   </tbody>
