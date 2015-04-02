@@ -104,7 +104,7 @@
             this.submit = function() {
                 var hosts = [];
                 _.forEach(this.hosts, function(host){
-                    if(!host.isDummy) {
+                    if(!host.isDummy && host.selected) {
                         var node_type = self.clusterType.id === 1 ? 4 : (host.isMon ? 1 : 2);
                         var localhost = {
                             node_name: host.hostname,
@@ -116,8 +116,8 @@
                             node_type: node_type
                         };
                         if(host.isNew) {
-                            host.ssh_username = host.username;
-                            host.ssh_password = host.password;
+                            localhost.ssh_username = host.username;
+                            localhost.ssh_password = host.password;
                         }
                         hosts.push(localhost);
                     }
