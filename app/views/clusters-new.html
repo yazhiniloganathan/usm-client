@@ -40,13 +40,12 @@
       </div>
     </div>
 
-    <div class="col-md-2 col-md-offset-10">
-      <div class="pull-right">
-        <button type="button" class="btn btn-default btn-lg" ng-show='cluster.isCancelAvailable()' ng-click='cluster.cancel()'>Cancel</button>
-        <button type="button" class="btn btn-default btn-lg" ng-show='!cluster.isCancelAvailable()' ng-click='cluster.moveStep(-1)'>Back</button>
-        <button type="button" class="btn btn-primary btn-lg" ng-show='!cluster.isSubmitAvailable()' ng-click='cluster.moveStep(1)'>Next</button>
-        <button type="button" class="btn btn-primary btn-lg" ng-show='cluster.isSubmitAvailable()' ng-click='cluster.submit()'>Submit</button>
-      </div>
+
+    <div>
+      <button type="button" class="btn btn-default" ng-show='cluster.isCancelAvailable()' ng-click='cluster.cancel()'>Cancel</button>
+      <button type="button" class="btn btn-default" ng-show='!cluster.isCancelAvailable()' ng-click='cluster.moveStep(-1)'>&lt;&nbsp;&nbsp;Back</button>
+      <button type="button" class="btn btn-default" ng-show='!cluster.isSubmitAvailable()' ng-click='cluster.moveStep(1)'>Next&nbsp;&nbsp;&gt;</button>
+      <button type="button" class="btn btn-primary" ng-show='cluster.isSubmitAvailable()' ng-click='cluster.submit()'>Create Cluster</button>
     </div>
 
   </div><!-- /col -->
