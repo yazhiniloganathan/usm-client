@@ -1,0 +1,31 @@
+.wizard {
+    font-size: 16px;
+    padding: 10px 0px 20px;
+}
+
+.wizard .default {
+    display: inline-block;
+    padding-right: 30px;
+}
+
+.wizard .active {
+    display: inline-block;
+    padding-right: 30px;
+    color:#199DDE;
+}
+
+.wizard-step-dot {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 8px;
+
+    &:after {
+        display: block;
+        content: "";
+        background: #199DDE;
+        position: relative;
+        height: 1px;
+        width: 50%;
+        top: -6px;
+    }
+}

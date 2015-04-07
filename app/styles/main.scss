@@ -1,7 +1,7 @@
 @import 'font-awesome/scss/font-awesome';
 @import 'modules/angular-motion';
 @import 'modules/angular-growl.min';
-@import 'wizard';
+@import 'wizard-new';
 @import 'compass/css3/box-shadow';
 
 .panel-clusters {
@@ -27,6 +27,16 @@
 
 .table-hosts-to-add {
     border: 1px solid #dddddd;
+}
+
+.clusters-new-top {
+    background-color: #F5F5F5;
+    border-bottom: 1px solid;
+    border-color: #DDD;
+}
+
+.clusters-new-config {
+    padding-top: 20px;
 }
 
 .clusters-new-steps {
