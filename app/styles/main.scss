@@ -4,6 +4,18 @@
 @import 'wizard';
 @import 'compass/css3/box-shadow';
 
+.navbar-product-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #F1F1F1;
+    padding-left: 10px;
+
+    &:hover {
+        color: #F1F1F1;
+        text-decoration: none;
+    }
+}
+
 .panel-clusters {
     padding: 0px;
 }
