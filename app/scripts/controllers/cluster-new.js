@@ -5,7 +5,12 @@
 
         var ClusterNewController = function($scope, $log, $modal, $location, ClusterService, ServerService, UtilService, RequestTrackingService) {
             this.step = 1;
+            this.summaryHostsSortOrder = undefined;
             var self = this;
+
+            this.sortHostsInSummary = function() {
+                this.summaryHostsSortOrder = this.summaryHostsSortOrder === '-hostname' ? 'hostname': '-hostname';
+            };
 
             this.storageTypes = ClusterHelpers.getStorageTypes();
             this.storageType = this.storageTypes[0];
