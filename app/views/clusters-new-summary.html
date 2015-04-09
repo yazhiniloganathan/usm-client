@@ -20,14 +20,17 @@
 <table class="table table-hover table-bordered">
   <thead>
     <tr>
-      <th>Hostname</th>
+      <th class="cluster-host-header" ng-click="cluster.sortHostsInSummary();">
+         <label class="cluster-host-arrow-button">Hostname</label>
+         <span ng-class="cluster.summaryHostsSortOrder === '-hostname' ? 'fa fa-angle-up': 'fa fa-angle-down'"></span>
+      </th>
       <th>IP Address</th>
       <th ng-show="cluster.clusterType.id === 2">Type</th>
       <th>Cluster IP Adress</th>
     </tr>
   </thead>
   <tbody>
-      <tr ng-repeat="host in cluster.hosts | filter: { selected: true }">
+      <tr ng-repeat="host in cluster.hosts | filter: { selected: true } | orderBy: cluster.summaryHostsSortOrder">
         <td>{{host.hostname}}</td>
         <td>{{host.ipaddress}}</td>
         <td ng-show="cluster.clusterType.id === 2">{{host.isMon ? 'Monitor' : 'OSD'}}</td>
@@ -35,3 +38,4 @@
       </tr>
   </tbody>
 </table>
+
