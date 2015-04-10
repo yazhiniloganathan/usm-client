@@ -1,7 +1,7 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'angular', 'RouteConfig', 'ApiModule', 'components/requests/requestsModule', 'controllers/menu', 'controllers/dashboard', 'controllers/first', 'controllers/cluster', 'controllers/cluster-new', 'controllers/host', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular', 'angular-growl'], function(_, angular, RouteConfig, APIModule, RequestModule, MenuController, DashboardController, FirstTimeController, ClusterController, ClusterNewController, HostController, MenuService, ConfigurationService, ErrorService) {
+    define(['lodash', 'angular', 'RouteConfig', 'ApiModule', 'components/requests/requestsModule', 'controllers/menu', 'controllers/dashboard', 'controllers/first', 'controllers/cluster', 'controllers/cluster-new', 'controllers/host', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular', 'angular-growl', 'ng-autofocus'], function(_, angular, RouteConfig, APIModule, RequestModule, MenuController, DashboardController, FirstTimeController, ClusterController, ClusterNewController, HostController, MenuService, ConfigurationService, ErrorService) {
 
         var app = angular.module('usmClientApp', [
                'ngAnimate',
@@ -11,7 +11,8 @@
                 'ngResource',
                 'ngSanitize',
                 'ngRoute',
-                'mgcrea.ngStrap'
+                'mgcrea.ngStrap',
+                'autofocus'
         ])
         // Controllers are responsible for initial view state.
         // Controllers themselves are meant to be stateless and are
