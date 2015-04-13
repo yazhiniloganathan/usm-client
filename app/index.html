@@ -92,7 +92,11 @@
         </ul>
         <ul class="nav navbar-nav navbar-primary" ng-controller="MenuController">
           <li class="menu-item" ng-class="{'active' : menu.active}" ng-repeat="menu in menus">
-            <a ng-click='navigate(menu)'>{{menu.label}}</a>
+            <a ng-show="!menu.hasSubMenus" ng-click="navigate(menu)">{{menu.label}}</a>
+            <a ng-show="menu.hasSubMenus" data-animation="am-flip-x" data-template="views/menu-dropdown.tpl.html" bs-dropdown="menu.subMenus">
+              {{menu.label}}
+              <span class="caret"></span>
+            </a>
           </li>
         </ul>
       </div>

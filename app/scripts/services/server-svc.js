@@ -22,10 +22,19 @@ define(['lodash'], function(_) {
         Service.prototype = _.extend(Service.prototype, {
 
             // **getList**
-            // **@returns** a promise with all servers discovered.
+            // **@returns** a promise with all servers.
             getList: function() {
                 return this.restangular.all('hosts').getList().then(function(servers) {
                     return servers;
+                });
+            },
+            // **getList**
+            // **@returns** a promise with all servers.
+            getListByCluster: function(clusterId) {
+                return this.restangular.all('hosts').getList().then(function(servers) {
+                    return _.filter(servers, function(server) {
+                        return server.cluster === clusterId;
+                    });
                 });
             },
             // **getFreeHosts**
@@ -55,6 +64,27 @@ define(['lodash'], function(_) {
             getGrains: function(id) {
                 return this.restangular.base().one('server', id).one('grains').get().then(function(server) {
                     return server;
+                });
+            },
+            // **getStorageDevices**
+            // **@returns** a promise with all storage devices in the server.
+            getStorageDevices: function(hostId) {
+                return this.restangular.one('hosts', hostId).all('storageDevices').getList().then(function(devices) {
+                    return devices;
+                });
+            },
+            // **getStorageDevicesFree**
+            // **@returns** a promise with all storage devices which are not being used in the server.
+            getStorageDevicesFree: function(hostId, hostname) {
+                return this.getStorageDevices(hostId).then(function(devices){
+                    if(hostname) {
+                        _.each(devices, function(device){
+                            device.hostname = hostname;
+                        });
+                    }
+                    return _.filter(devices, function(device) {
+                        return device.inuse === false && device.device_type === 'disk';
+                    });
                 });
             }
         });

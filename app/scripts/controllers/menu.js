@@ -4,9 +4,14 @@
 		var MenuController = function($scope, $location, MenuService) {
 			$scope.menus = MenuService.getMenus();
 
-			$scope.navigate = function(menu) {
+			$scope.navigate = function(menu, parentMenu) {
 				$location.path(menu.href);
-				MenuService.setActive(menu.id);
+				if(parentMenu) {
+					MenuService.setActive(parentMenu.id);
+				}
+				else {
+					MenuService.setActive(menu.id);
+				}
 			};
 		}
 		return ['$scope', '$location', 'MenuService', MenuController];

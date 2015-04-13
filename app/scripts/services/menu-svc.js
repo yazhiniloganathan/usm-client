@@ -11,26 +11,43 @@
                     label: 'Dashboard',
                     id: 'dashboard',
                     href: '/',
+                    hasSubMenus: false,
                     active: true
                 }, {
                     label: 'Clusters',
                     id: 'clusters',
                     href: '/clusters',
+                    hasSubMenus: false,
                     active: false
                 }, {
                     label: 'Hosts',
                     id: 'hosts',
                     href: '/hosts',
+                    hasSubMenus: false,
                     active: false
                 }, {
                     label: 'Storage',
                     id: 'storage',
                     href: '/storage',
+                    hasSubMenus: true,
+                    subMenus: [
+                        {
+                            title: 'Volumes',
+                            id: 'volumes',
+                            href: '/volumes'
+                        },
+                        {
+                            title: 'Pools',
+                            id: 'pools',
+                            href: '/pools'
+                        }
+                    ],
                     active: false
                 }, {
                     label: 'Admin',
                     id: 'admin',
                     href: '/admin',
+                    hasSubMenus: false,
                     active: false
                 }
             ];

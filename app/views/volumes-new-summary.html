@@ -1,0 +1,15 @@
+<h3>Devices for Volume</h3>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Device</th>
+      <th>Replication</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr ng-repeat="device in volume.storageDevices">
+        <td>{{device.hostname}} : {{device.storage_device_name}}</td>
+        <td ng-if="device.repStart" rowspan="{{volume.copyCount}}">Replicated</td>
+      </tr>
+  </tbody>
+</table>
