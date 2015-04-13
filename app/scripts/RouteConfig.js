@@ -32,6 +32,16 @@
                 menuId: 'hosts',
                 controller: 'HostController',
                 controllerAs: 'hosts'
+            }).when('/volumes', {
+                templateUrl: 'views/volumes.html',
+                menuId: 'storage',
+                controller: 'VolumeController',
+                controllerAs: 'volumes'
+            }).when('/volumes/new', {
+                templateUrl: 'views/volumes-new.html',
+                menuId: 'storage',
+                controller: 'VolumeNewController',
+                controllerAs: 'volume'
             }).otherwise({
                 redirectTo: '/'
             });

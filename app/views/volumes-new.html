@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-sm-12 col-md-12">
+
+    <h1>New Volume</h1>
+
+    <div class="wizard">
+      <a ng-class="volume.step == 1 ? 'current': ''"><span class="badge">1</span> Configure Volume</a>
+      <a ng-class="volume.step == 2 ? 'current': ''"><span class="badge">2</span> Review Summary</a>
+    </div>
+
+    <div class="content" ng-switch on="volume.step">
+      <div ng-switch-when="1" >
+        <div ng-include src="'views/volumes-new-configure.html'"> </div>
+      </div>
+      <div ng-switch-when="2">
+        <div ng-include src="'views/volumes-new-summary.html'"> </div>
+      </div>
+    </div>
+
+    <div>
+      <button type="button" class="btn btn-default" ng-show='volume.isCancelAvailable()' ng-click='volume.cancel()'>Cancel</button>
+      <button type="button" class="btn btn-default" ng-show='!volume.isCancelAvailable()' ng-click='volume.moveStep(-1)'>&lt;&nbsp;&nbsp;Back</button>
+      <button type="button" class="btn btn-default" ng-show='!volume.isSubmitAvailable()' ng-click='volume.moveStep(1)'>Next&nbsp;&nbsp;&gt;</button>
+      <button type="button" class="btn btn-primary" ng-show='volume.isSubmitAvailable()' ng-click='volume.submit()'>Create Volume</button>
+    </div>
+
+  </div><!-- /col -->
+</div> <!-- /row -->

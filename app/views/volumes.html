@@ -1,0 +1,40 @@
+<div class="row">  
+  <div class="col-md-12">
+    <div class="page-header page-header-bleed-right">
+      <h1>Volumes</h1>
+    </div>
+
+    <div class="panel panel-default panel-clusters">
+
+      <div class="panel-heading clearfix">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary btn-lg" ng-click="volumes.create()">Create</button>
+          <button type="button" class="btn btn-danger btn-lg" ng-disabled="!isDeleteAvailable()"ng-click="volumes.remove()">Delete</button>
+        </div>
+      </div>
+
+      <div class="panel-body panel-clusters">
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th> <input type="checkbox"/> </th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Cluster</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="volume in volumes.list">
+              <td> <input type="checkbox" ng-model="volume.selected"></input></td>
+              <td>{{volume.name}}</td>
+              <td>{{volume.type}}</td>
+              <td>{{volume.cluster}}</td>
+              <td>{{volume.status}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
