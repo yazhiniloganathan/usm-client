@@ -60,7 +60,8 @@
             'lodash': '../bower_components/lodash/dist/lodash',
             'moment': '../bower_components/momentjs/moment',
             'idbwrapper': '../bower_components/idbwrapper/idbstore',
-            'angular-growl': '../bower_components/angular-growl-v2/build/angular-growl'
+            'angular-growl': '../bower_components/angular-growl-v2/build/angular-growl',
+            'ng-autofocus': '../bower_components/ng-autofocus/autofocus.min'
         }
     });
 

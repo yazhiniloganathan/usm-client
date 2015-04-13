@@ -91,7 +91,7 @@
             }
 
             this.moveStep = function(nextStep) {
-                this.step = this.step + nextStep;
+                this.step = (this.step === 1 && this.clusterName === undefined) ? this.step : this.step + nextStep;
             };
 
             this.isCancelAvailable = function() {
