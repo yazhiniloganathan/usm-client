@@ -44,7 +44,8 @@
                     self.hosts.push(host);
                     self.updateFingerprint(host);
                 });
-                self.hosts.push({isDummy:true, isNew:true, isEdit:false});
+               self.hosts.push({isDummy:true, isNew:true, isEdit:false});
+               
             });
 
             this.selectAllHosts = false;
@@ -65,11 +66,21 @@
                 this.hosts.push({isDummy:true, isNew:true, isEdit:false});
             }
 
+            this.onSaveNewHost = function(newHost) {
+                this.hosts.unshift({isDummy:false, isNew:true, isEdit:false, isMon:false, hostname:newHost.hostname, username:newHost.username, password:newHost.password, ipaddress:newHost.ipaddress, fingerprint:newHost.fingerprint});
+                newHost.hostname = null;
+                newHost.username = null;
+                newHost.password = null;
+            }
+
             this.updateFingerprint = function(host) {
                 UtilService.getIpAddress(host.hostname)
                 .then(function(ipaddress){
                     host.ipaddress = ipaddress;
+                    self.errorMsg = '';
                     return UtilService.getSshFingerprint(host.ipaddress);
+                }, function(){
+                    self.errorMsg = " Could not resolve the hostname";
                 })
                 .then(function(fingerprint) {
                     host.fingerprint = fingerprint;

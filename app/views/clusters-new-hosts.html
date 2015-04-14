@@ -1,14 +1,12 @@
 <div class="row">
   <div class="col-md-9">
-
     <h3>
       Available Hosts
     </h3>
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
+    <div class="panel panel-default removed-border">
+      <div class="panel-heading white-background">
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-9">
             <form role="form" class="search-pf has-button">
               <div class="form-group has-clear">
                 <div class="search-pf-input-group">
@@ -22,28 +20,33 @@
               </div>
             </form>
           </div>
-          <div class="col-md-4"> 
-            <span class="pull-right">{{cluster.hosts.length}} Hosts</span>
+          <div class="col-md-3"> 
+            <span class="set-margin-for-host-length">{{cluster.hosts.length}} Hosts</span>
+            <button class="btn btn-default" ng-disabled="isAddRow" ng-click="isAddRow = true; newhost=null ; cluster.errorMsg = ''">Add</button>
           </div>
         </div>
       </div>
 
+      <div ng-show="isAddRow">
+        <div class="col-md-3 backgroung-color-for-header">
+          <input type="text" class="add-host-control top-bottom-margin" ng-model="newhost.hostname" placeholder="Hostname" ng-blur="cluster.updateFingerprint(newhost)"> </input>
+        </div>
+        <div class="col-md-3 backgroung-color-for-header">
+          <input type="text" class="add-host-control top-bottom-margin" ng-model="newhost.username" placeholder="Username"> </input>
+        </div>
+        <div class="col-md-3 backgroung-color-for-header">
+           <input type="password" class="add-host-control top-bottom-margin" ng-model="newhost.password" placeholder="Password"> </input>
+        </div>
+        <div class="col-md-3 backgroung-color-for-header">
+          <button class="btn btn-default top-bottom-margin" ng-disabled="!(newhost.hostname && newhost.username && newhost.password) || cluster.errorMsg.length !== 0" ng-click="cluster.onSaveNewHost(newhost)">Ok</button> 
+          <button class="btn btn-default top-bottom-margin" ng-click="isAddRow = false;">Cancel</button>
+        </div>
+        <div ng-show="cluster.errorMsg.length>0" class="col-md-12 backgroung-color-for-header">
+         <label>Authentication Error!.</label> {{cluster.errorMsg}}
+        </div>
+      </div>
+
       <table class="table table-hover">
-        <thead>
-          <tr>
-            <!-- <th class="col-md-1"><input type="checkbox"></input></th> -->
-            <th class="col-md-4">
-              <input type="checkbox" ng-click="cluster.bulkSelectHosts()"></input>
-              <span class="host-details-th">Hostname</span>
-            </th>
-            <th class="col-md-1">IP Address</th>
-            <th class="col-md-5">Credentials</th>
-            <th class="col-md-1" ng-show="cluster.clusterType.id === 2">
-              <span class="fa fa-desktop fa-lg"  data-placement="bottom" bs-tooltip="'Ceph monitor host'"></span>
-            </th>
-            <th class="col-md-1">Actions</th>
-          </tr>
-        </thead>
         <tbody>
           <tr ng-repeat="host in cluster.hosts | filter: { isDummy: false}">
             <!-- <td class="col-md-1"><input type="checkbox" class="add-host-control" ng-model="host.selected"></input></td> -->
