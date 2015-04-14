@@ -73,7 +73,7 @@ define(['lodash', 'idbwrapper'], function(_, IDBStore) {
                 self.getTrackedRequests().then(function(requests) {
                     _.each(requests, function(trackedRequest) {
                         RequestService.get(trackedRequest.id).then(function (request){
-                            if (request.status === 'FAILED') {
+                            if (request.status === 'FAILED' || request.status === 'FAILURE') {
                                 self.showError(trackedRequest.operation + ' is failed');
                                 $log.info(trackedRequest.operation + ' is failed');
                                 self.remove(trackedRequest.id);
