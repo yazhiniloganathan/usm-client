@@ -3,7 +3,7 @@
     <h3>
       Available Hosts
     </h3>
-    <div class="panel panel-default removed-border">
+    <div class="panel panel-default cluster-hosts-panel removed-border">
       <div class="panel-heading white-background">
         <div class="row">
           <div class="col-md-9">
@@ -38,11 +38,15 @@
            <input type="password" class="add-host-control top-bottom-margin" ng-model="newhost.password" placeholder="Password"> </input>
         </div>
         <div class="col-md-3 backgroung-color-for-header">
-          <button class="btn btn-default top-bottom-margin" ng-disabled="!(newhost.hostname && newhost.username && newhost.password) || cluster.errorMsg.length !== 0" ng-click="cluster.onSaveNewHost(newhost)">Ok</button> 
+          <button class="btn btn-default top-bottom-margin" ng-disabled="cluster.isVerifyingHost || !(newhost.hostname && newhost.username && newhost.password) || cluster.cautionMsg === 'Error!.'" ng-click="cluster.onSaveNewHost(newhost)">Ok</button> 
+          <span class="fa-ul loader" ng-show="cluster.isVerifyingHost">
+           <i class="fa-li fa fa-spinner fa-spin loader-margin"></i>
+          </span>
           <button class="btn btn-default top-bottom-margin" ng-click="isAddRow = false;">Cancel</button>
         </div>
         <div ng-show="cluster.errorMsg.length>0" class="col-md-12 backgroung-color-for-header">
-         <label>Authentication Error!.</label> {{cluster.errorMsg}}
+         <label ng-bind="cluster.cautionMsg"></label> 
+         <span ng-bind="cluster.errorMsg"></span>
         </div>
       </div>
 
@@ -70,14 +74,6 @@
             <td>
               {{host.ipaddress}}
             </td>
-            <td>
-              <span ng-if="!host.isNew">N/A</span>
-              <span ng-if="host.isNew && !host.isEdit">{{host.username}}/......</span>
-              <div ng-show="host.isEdit">
-                <input type="text" class="add-host-control" ng-model="host.username" placeholder="User name"> </input>
-                <input type="password" class="add-host-control" ng-model="host.password" placeholder="Password"> </input>
-              </div>
-            </td>
             <td class="host-is-mon" ng-show="cluster.clusterType.id === 2">
               <a class="host-is-mon-link" href="" ng-click="host.isMon=!host.isMon">
                 <span class="fa fa-desktop fa-lg" ng-class="host.isMon ? '': 'host-is-mon-icon'" data-placement="bottom" bs-tooltip="'Use this host as Ceph monitor'"></span>
@@ -95,27 +91,17 @@
               </button>
             </td>
           </tr>
-
-          <tr ng-repeat="host in cluster.hosts | filter: { isDummy: true}">
-            <td>
-              <button class="btn btn-default" type="button" ng-click="cluster.onAddRow(host)">
-                <span class="pficon pficon-add"></span>
-              </button>
-            </td>
-            <td></td>
-            <td></td>
-            <td ng-show="cluster.clusterType.id === 2"></td>
-            <td></td>
-          </tr>
         </tbody>
       </table>
     </div>
   </div>
   <div class="col-md-3">
     <h3>Selected Hosts</h3>
-    <span class="text-muted"> Select at least 2 hosts </span>
+    <span class="text-muted">
+       Select at least {{cluster.deploymentType.nodeCount}} hosts
+    </span>
     <ul class="list-unstyled selected-hosts-list">
-      <li ng-repeat="host in cluster.hosts | filter: { selected: true }">
+      <li ng-repeat="host in cluster.filtered = (cluster.hosts | filter: { selected: true })">
         {{host.hostname}}
         <a class="pficon pficon-close pull-right" ng-click="host.selected=false"></a>
       </li>

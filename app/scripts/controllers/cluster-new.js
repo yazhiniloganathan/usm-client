@@ -67,19 +67,43 @@
             }
 
             this.onSaveNewHost = function(newHost) {
-                this.hosts.unshift({isDummy:false, isNew:true, isEdit:false, isMon:false, hostname:newHost.hostname, username:newHost.username, password:newHost.password, ipaddress:newHost.ipaddress, fingerprint:newHost.fingerprint});
-                newHost.hostname = null;
-                newHost.username = null;
-                newHost.password = null;
+                self.isVerifyingHost = true;
+                self.errorMsg = "";
+                self.cautionMsg = "";
+                var hostObject = {
+                 "host": newHost.ipaddress,
+                 "port": 22,
+                 "fingerprint": newHost.fingerprint,
+                 "username": newHost.username,
+                 "password": newHost.password
+                }
+                UtilService.getVerifyHost(hostObject)
+                .then(function(){
+                  self.hosts.unshift({isDummy:false, isNew:true, isEdit:false, isMon:false, hostname:newHost.hostname, username:newHost.username, password:newHost.password, ipaddress:newHost.ipaddress, fingerprint:newHost.fingerprint});
+                  self.errorMsg = "";
+                  self.cautionMsg = "";
+                  newHost.hostname = null;
+                  newHost.username = null;
+                  newHost.password = null;
+                  self.isVerifyingHost = false;
+                }, function(){
+                    self.cautionMsg = 'Authentication Error!.';
+                    self.errorMsg = " The username and password is incorrect.";
+                    self.isVerifyingHost = false;
+                })
             }
 
             this.updateFingerprint = function(host) {
+                self.errorMsg = "";
+                self.cautionMsg = "";
                 UtilService.getIpAddress(host.hostname)
                 .then(function(ipaddress){
                     host.ipaddress = ipaddress;
-                    self.errorMsg = '';
+                    self.errorMsg = "";
+                    self.cautionMsg = "";
                     return UtilService.getSshFingerprint(host.ipaddress);
                 }, function(){
+                    self.cautionMsg = "Error!.";
                     self.errorMsg = " Could not resolve the hostname";
                 })
                 .then(function(fingerprint) {

@@ -1,21 +1,33 @@
-.set-margin-for-host-length {
+.cluster-hosts-panel {
+
+}
+
+.cluster-hosts-panel .set-margin-for-host-length {
     margin-right : 6px;
     margin-left : -14px;
 }
 
-.top-bottom-margin {
+.cluster-hosts-panel .backgroung-color-for-header {
+    background-color : #afd3f6;
+}
+
+.cluster-hosts-panel .top-bottom-margin {
     margin-top : 12px;
     margin-bottom : 12px;
 }
 
-.removed-border {
+.cluster-hosts-panel .removed-border {
     border-color: #fff;
 }
 
-.white-background {
+.cluster-hosts-panel .white-background {
     background-color : #fff !important;
 }
 
-.backgroung-color-for-header {
-    background-color : #afd3f6;
+.loader {
+	
+}
+
+.loader .loader-margin {
+	margin-top : 15px;
 }
