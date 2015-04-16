@@ -1,9 +1,9 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'helpers/volume-helpers'], function(_, VolumeHelpers) {
+    define(['lodash', 'helpers/volume-helpers', 'helpers/modal-helpers'], function(_, VolumeHelpers, ModalHelpers) {
 
-        var VolumeNewController = function($scope, $q, $log, $location, ClusterService, ServerService, VolumeService, RequestTrackingService) {
+        var VolumeNewController = function($scope, $q, $log, $location, $modal, ClusterService, ServerService, VolumeService, RequestTrackingService) {
             this.step = 1;
             var self = this;
 
@@ -19,9 +19,11 @@
             this.targetSizeUnit = this.targetSizeUnits[0];
 
             this.storageDevices = [];
+            this.actualSize = 0;
 
             this.findStorageDevices = function() {
                 self.storageDevices = [];
+                self.actualSize = 0;
                 ServerService.getListByCluster(this.cluster.cluster_id).then(function(hosts) {
                     var deviceRequests = [];
                     _.each(hosts, function(host){
@@ -33,6 +35,8 @@
                         selectedDevices = VolumeHelpers.getStorageDervicesForVolumeBasic(
                             self.targetSize, self.copyCount, devicesList);
                         self.storageDevices = selectedDevices;
+                        self.actualSize = VolumeHelpers.getVolumeSize(
+                            self.storageDevices, self.copyCount);
                     });
                 });
             }
@@ -91,6 +95,6 @@
                 });
             };
         };
-        return ['$scope', '$q', '$log', '$location', 'ClusterService', 'ServerService', 'VolumeService', 'RequestTrackingService', VolumeNewController];
+        return ['$scope', '$q', '$log', '$location', '$modal', 'ClusterService', 'ServerService', 'VolumeService', 'RequestTrackingService', VolumeNewController];
     });
 })();

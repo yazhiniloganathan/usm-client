@@ -93,6 +93,19 @@
             return selectedDevices;
         };
 
+        var getVolumeSize = function(devices, copyCount) {
+            var volumeSize = 0;
+            for(var subVol=0; subVol<devices.length/copyCount; subVol++) {
+                var subVolSize = 0;
+                _.each(_.range(copyCount), function(copyNo){
+                    var device = devices[ subVol * copyCount + copyNo];
+                    subVolSize = device.size > subVolSize ? device.size : subVolSize;
+                });
+                volumeSize = volumeSize + subVolSize;
+            }
+            return volumeSize;
+        };
+
         return {
             getVolumeType: function(id) {
                 return _.find(volumeTypes, function(type) {
@@ -113,7 +126,8 @@
             getTargetSizeUnits: function() {
                 return targetSizeUnits;
             },
-            getStorageDervicesForVolumeBasic: getStorageDervicesForVolumeBasic
+            getStorageDervicesForVolumeBasic: getStorageDervicesForVolumeBasic,
+            getVolumeSize: getVolumeSize
         };
     });
 })();
