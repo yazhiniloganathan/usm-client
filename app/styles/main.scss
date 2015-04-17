@@ -1,6 +1,7 @@
 @import 'font-awesome/scss/font-awesome';
 @import 'modules/angular-motion';
 @import 'modules/angular-growl.min';
+@import 'modules/usm_colors';
 @import 'wizard-new';
 @import 'compass/css3/box-shadow';
 
@@ -115,12 +116,13 @@
     margin-left: 40%;
 }
 
-.cluster-host-arrow-button {
+.cluster-summary-host-header-text {
     margin-right: 12px;
 }
 
-.cluster-host-header {
+.cluster-summary-host-header {
     cursor: pointer;
+    color: $itblue;
 }
 
 .error-validation-msg {
