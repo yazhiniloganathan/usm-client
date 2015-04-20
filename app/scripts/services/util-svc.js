@@ -20,7 +20,12 @@ define(['lodash'], function(_) {
             this.restangularFull = restangularFull;
         };
         Service.prototype = _.extend(Service.prototype, {
-
+            
+            // **getVerify**
+            // **@returns** a promise with host varification.
+            getVerifyHost: function(hostObject) {
+                return this.restangular.all('utils/validate-host').post(hostObject);
+            },
             // **getList**
             // **@returns** a promise with ssh fingerprint.
             getSshFingerprint: function(ipAddress) {
