@@ -39,13 +39,10 @@
                         hostname: freeHost.node_name,
                         ipaddress: freeHost.management_ip,
                         isNew: false,
-                        isDummy: false
                     };
                     self.hosts.push(host);
                     self.updateFingerprint(host);
                 });
-               self.hosts.push({isDummy:true, isNew:true, isEdit:false});
-               
             });
 
             this.selectAllHosts = false;
@@ -53,17 +50,8 @@
             this.bulkSelectHosts = function() {
                 this.selectAllHosts = !this.selectAllHosts;
                 _.each(this.hosts, function(host){
-                    if(!host.isDummy) {
-                        host.selected = self.selectAllHosts;
-                    }
+                    host.selected = self.selectAllHosts;
                 });
-            }
-
-            this.onAddRow = function(host) {
-                host.isDummy = false;
-                host.isEdit = true;
-                host.isMon = false;
-                this.hosts.push({isDummy:true, isNew:true, isEdit:false});
             }
 
             this.onSaveNewHost = function(newHost) {
@@ -79,7 +67,7 @@
                 }
                 UtilService.getVerifyHost(hostObject)
                 .then(function(){
-                  self.hosts.unshift({isDummy:false, isNew:true, isEdit:false, isMon:false, hostname:newHost.hostname, username:newHost.username, password:newHost.password, ipaddress:newHost.ipaddress, fingerprint:newHost.fingerprint});
+                  self.hosts.unshift({isNew:true, isMon:false, hostname:newHost.hostname, username:newHost.username, password:newHost.password, ipaddress:newHost.ipaddress, fingerprint:newHost.fingerprint});
                   self.errorMsg = "";
                   self.cautionMsg = "";
                   newHost.hostname = null;
@@ -111,17 +99,9 @@
                 });
             }
 
-            this.onEditHost = function(host) {
-                host.isEdit = true;
-            }
-
-            this.onSaveHost = function(host) {
-                host.isEdit = false;
-            }
-
             this.onRemoveHost = function(host) {
                 _.remove(this.hosts, function(currenthost) {
-                    return !currenthost.isDummy && currenthost.hostname === host.hostname;
+                    return currenthost.hostname === host.hostname;
                 });
             }
 
@@ -144,7 +124,7 @@
             this.submit = function() {
                 var hosts = [];
                 _.forEach(this.hosts, function(host){
-                    if(!host.isDummy && host.selected) {
+                    if(host.selected) {
                         var node_type = self.clusterType.id === 1 ? 4 : (host.isMon ? 1 : 2);
                         var localhost = {
                             node_name: host.hostname,
