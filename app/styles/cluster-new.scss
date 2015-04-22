@@ -1,33 +1,25 @@
 .cluster-hosts-panel {
-
+    &:after {
+        display: block;
+        content: "";
+        background: #ccc;
+        position: relative;
+        height: 2px;
+        margin: 35px 20px 0px 20px;
+    }
 }
 
-.cluster-hosts-panel .set-margin-for-host-length {
+.cluster-hosts-panel .avaliable-hosts-count {
     margin-right : 6px;
-    margin-left : -14px;
+    font-weight: 600;
 }
 
-.cluster-hosts-panel .backgroung-color-for-header {
-    background-color : #afd3f6;
-}
-
-.cluster-hosts-panel .top-bottom-margin {
-    margin-top : 12px;
-    margin-bottom : 12px;
-}
-
-.cluster-hosts-panel .removed-border {
-    border-color: #fff;
-}
-
-.cluster-hosts-panel .white-background {
-    background-color : #fff !important;
-}
-
-.loader {
-	
-}
-
-.loader .loader-margin {
-	margin-top : 15px;
+.cluster-add-host-row {
+    background-color: lightgrey;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 2px;
 }
