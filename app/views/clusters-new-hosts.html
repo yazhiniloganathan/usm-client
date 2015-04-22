@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-7">
+  <div class="col-md-8">
     <h3>
       Available Hosts
     </h3>
@@ -56,45 +56,47 @@
       </div>
     </div>
 
-    <table class="table table-hover">
-      <tbody>
-        <tr ng-repeat="host in cluster.hosts">
-          <td>
-            <div>
-              <input type="checkbox" class="add-host-control" ng-model="host.selected">
-            </div>
-            <div class="host-details">
-              <ul class="list-unstyled">
-                <li>
-                  <span> {{host.hostname}} </span>
-                  <span class="label label-success cluster-hosts-discovered-label" ng-show="!host.isNew">Free</span>
-                </li>
-                <li>
-                  <span class="text-muted"> Fingerprint: {{host.fingerprint}} </span>
-                </li>
-              </ul>
-            </div>
-          </td>
-          <td>
-            {{host.ipaddress}}
-          </td>
-          <td class="host-is-mon" ng-show="cluster.clusterType.id === 2">
+    <div class="available-hosts-list">
+      <div class="row host-row" ng-repeat="host in cluster.hosts" ng-click="host.selected=!host.selected">
+        <div class="col-md-1 host-col-middle">
+          <i ng-show="host.selected" class="fa fa-2x fa-check-square-o"></i>
+        </div>
+        <div class="col-md-6">
+          <div class="host-details">
+            <ul class="list-unstyled">
+              <li>
+                <span> {{host.hostname}} </span>
+              </li>
+              <li>
+                <span class="text-muted"> Fingerprint: {{host.fingerprint}} </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2 host-col-middle">
+          {{host.ipaddress}}
+        </div>
+        <div class="col-md-1 host-col-middle verified-col">
+           <span class="fa fa-lg fa-check-circle-o verified-col-icon" ng-show="!host.isNew"></span>
+        </div>
+        <div class="col-md-1 host-col-middle">
+          <div class="host-is-mon" ng-show="cluster.clusterType.id === 2">
             <a class="host-is-mon-link" href="" ng-click="host.isMon=!host.isMon">
               <span class="fa fa-desktop fa-lg" ng-class="host.isMon ? '': 'host-is-mon-icon'" data-placement="bottom" bs-tooltip="'Use this host as Ceph monitor'"></span>
             </a>
-          </td>
-          <td>
-            <button class="btn btn-default" type="button" ng-disabled="!host.isNew" ng-click="cluster.onRemoveHost(host)">
-              <span class="pficon pficon-close"></span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+        <div class="col-md-1 host-col-middle">
+          <button class="btn btn-default" type="button" ng-disabled="!host.isNew" ng-click="cluster.onRemoveHost(host)">
+            <span class="pficon pficon-close"></span>
+          </button>
+        </div>
+      </div>
+    </div>
 
   </div>
 
-  <div class="col-md-5">
+  <div class="col-md-4">
     <h3>Selected Hosts</h3>
     <span class="text-muted">
        Select at least {{cluster.deploymentType.nodeCount}} hosts

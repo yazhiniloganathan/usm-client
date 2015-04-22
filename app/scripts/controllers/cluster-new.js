@@ -39,6 +39,7 @@
                         hostname: freeHost.node_name,
                         ipaddress: freeHost.management_ip,
                         isNew: false,
+                        selected: false
                     };
                     self.hosts.push(host);
                     self.updateFingerprint(host);

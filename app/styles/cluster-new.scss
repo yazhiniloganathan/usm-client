@@ -1,3 +1,6 @@
+@import 'compass/css3/box-shadow';
+@import 'modules/usm_colors';
+
 .cluster-hosts-panel {
     &:after {
         display: block;
@@ -22,4 +25,26 @@
     padding-top: 10px;
     padding-bottom: 10px;
     border-radius: 2px;
+}
+
+.available-hosts-list {
+    .host-row {
+        @include box-shadow(1px 1px 3px black);
+        margin: 5px 0px;
+        padding: 5px;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: #D5ECF9;
+            border-bottom-color: #A7CADF;
+        }
+    }
+
+    .verified-col {
+        color: green;
+    }
+
+    .host-col-middle {
+        margin-top: 10px;
+    }
 }
