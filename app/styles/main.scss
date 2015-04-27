@@ -132,3 +132,35 @@
 .form-size-selector {
     width: 55px !important;
 }
+
+.task-icon {
+    font-size: 12px;
+}
+
+.task-icon-count {
+    border-radius: 10px;
+}
+
+.progress-dropdown {
+    width: 300px;
+    right: 0px;
+    left: auto !important;
+
+    .header {
+        padding: 10px;
+        border-bottom: 1px solid #BCA4A4;
+    }
+
+    .content {
+        height: 250px;
+    }
+
+    .task-item {
+        border-bottom: 1px solid #BCA4A4;
+        padding: 4px;
+    }
+
+    .task-progress {
+        margin-bottom: 5px;
+    }
+}
