@@ -42,6 +42,11 @@
                 menuId: 'storage',
                 controller: 'VolumeNewController',
                 controllerAs: 'volume'
+            }).when('/volumes/expand/:id', {
+                templateUrl: 'views/volumes-expand.html',
+                menuId: 'storage',
+                controller: 'VolumeExpandController',
+                controllerAs: 'volume'
             }).otherwise({
                 redirectTo: '/'
             });

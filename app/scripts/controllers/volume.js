@@ -45,6 +45,17 @@
                 $location.path('/volumes/new');
             };
 
+            this.expand = function(volume) {
+                var selectedVolumes = _.filter(self.list, function(volume){
+                    return volume.selected;
+                });
+
+                if(selectedVolumes.length>0) {
+                    var selectedVolume = _.first(selectedVolumes);
+                    $location.path('/volumes/expand/'+selectedVolume.volume_id);
+                }
+            };
+
             this.isDeleteAvailable = function() {
                 return false;
             };

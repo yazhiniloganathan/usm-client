@@ -1,11 +1,11 @@
 <div class="row wizard-top">
   <div class="col-sm-12 col-md-12">
-    <h1>New Volume</h1>
+    <h1>Expand Volume</h1>
 
     <div class="wizard">
       <div ng-class="volume.step == 1 ? 'active' : (volume.step > 1 ? 'visited' : 'default')">
         <div class="wizard-step-dot"><i class="fa fa-circle"></i></div>
-        <div class="step-text">1. Configure Volume</div>
+        <div class="step-text">1. Expand Volume</div>
       </div>
       <div ng-class="volume.step == 2 ? 'active' : (volume.step > 2 ? 'visited' : 'default')">
         <div class="wizard-step-dot-last"><i class="fa fa-circle"></i></div>
@@ -20,10 +20,10 @@
 
     <div class="content" ng-switch on="volume.step">
       <div ng-switch-when="1" >
-        <div ng-include src="'views/volumes-new-configure.html'"> </div>
+        <div ng-include src="'views/volumes-expand-configure.html'"> </div>
       </div>
       <div ng-switch-when="2">
-        <div ng-include src="'views/volumes-new-summary.html'"> </div>
+        <div ng-include src="'views/volumes-expand-summary.html'"> </div>
       </div>
     </div>
 
@@ -31,7 +31,7 @@
       <button type="button" class="btn btn-default" ng-show='volume.isCancelAvailable()' ng-click='volume.cancel()'>Cancel</button>
       <button type="button" class="btn btn-default" ng-show='!volume.isCancelAvailable()' ng-click='volume.moveStep(-1)'>&lt;&nbsp;&nbsp;Back</button>
       <button type="button" class="btn btn-default" ng-show='!volume.isSubmitAvailable()' ng-click='volume.moveStep(1)'>Next&nbsp;&nbsp;&gt;</button>
-      <button type="button" class="btn btn-primary" ng-show='volume.isSubmitAvailable()' ng-click='volume.submit()'>Create Volume</button>
+      <button type="button" class="btn btn-primary" ng-show='volume.isSubmitAvailable()' ng-click='volume.submit()'>Expand Volume</button>
     </div>
 
   </div><!-- /col -->

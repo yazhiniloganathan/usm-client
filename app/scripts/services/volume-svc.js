@@ -28,12 +28,32 @@ define(['lodash'], function(_) {
                     return servers;
                 });
             },
+            // **get**
+            // **@returns** a promise with volume metadata.
+            get: function(id) {
+                return this.restangular.one('volumes', id).get().then(function(volume) {
+                    return volume;
+                });
+            },
+            // **get**
+            // **@returns** a promise with list of bricks.
+            getBricks: function(id) {
+                return this.restangular.one('volumes', id).all('bricks').getList().then(function(bricks) {
+                    return bricks;
+                });
+            },
             // **create**
-            // **@param** cluster - Information about the volume and list of bricks.
+            // **@param** volume - Information about the volume and list of bricks.
             // **@returns** a promise which returns a request id to track the task.
-            create: function(cluster) {
+            create: function(volume) {
                 return this.restangularFull.all('volumes').post(cluster);
             },
+            // **create**
+            // **@param** volume - Information about the volume and list of bricks.
+            // **@returns** a promise which returns a request id to track the task.
+            expand: function(volume) {
+                return this.restangularFull.all('bricks').post(cluster);
+            }
         });
         return new Service();
     };

@@ -5,6 +5,7 @@
 @import 'wizard-new';
 @import 'compass/css3/box-shadow';
 @import 'cluster-new';
+@import 'volume';
 
 .navbar-product-name {
     font-size: 15px;
@@ -43,7 +44,7 @@
     border: 1px solid #dddddd;
 }
 
-.clusters-new-top {
+.wizard-top {
     background-color: #F5F5F5;
     border-bottom: 1px solid;
     border-color: #DDD;
@@ -128,3 +129,6 @@
     padding-right: 10px;
 }
 
+.form-size-selector {
+    width: 55px !important;
+}
