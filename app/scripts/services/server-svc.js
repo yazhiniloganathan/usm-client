@@ -78,7 +78,7 @@ define(['lodash'], function(_) {
             // **getStorageDevices**
             // **@returns** a promise with all storage devices in the server.
             getStorageDevices: function(hostId) {
-                return this.restangular.one('hosts', hostId).all('storageDevices').getList().then(function(devices) {
+                return this.restangular.one('hosts', hostId).all('storage-devices').getList().then(function(devices) {
                     return devices;
                 });
             },

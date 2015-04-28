@@ -24,8 +24,8 @@ define(['lodash'], function(_) {
             // **getList**
             // **@returns** a promise with all volumes.
             getList: function() {
-                return this.restangular.all('volumes').getList().then(function(servers) {
-                    return servers;
+                return this.restangular.all('volumes').getList().then(function(volumes) {
+                    return volumes;
                 });
             },
             // **get**
@@ -46,13 +46,13 @@ define(['lodash'], function(_) {
             // **@param** volume - Information about the volume and list of bricks.
             // **@returns** a promise which returns a request id to track the task.
             create: function(volume) {
-                return this.restangularFull.all('volumes').post(cluster);
+                return this.restangularFull.all('volumes').post(volume);
             },
             // **create**
             // **@param** volume - Information about the volume and list of bricks.
             // **@returns** a promise which returns a request id to track the task.
             expand: function(volume) {
-                return this.restangularFull.all('bricks').post(cluster);
+                return this.restangularFull.all('bricks').post(volume);
             }
         });
         return new Service();
