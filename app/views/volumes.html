@@ -20,6 +20,7 @@
             <tr>
               <th> <input type="checkbox"/> </th>
               <th>Name</th>
+              <th>Cluster</th>
               <th>Type</th>
               <th>Copies</th>
               <th>Status</th>
@@ -29,6 +30,7 @@
             <tr ng-repeat="volume in volumes.list">
               <td> <input type="checkbox" ng-model="volume.selected"></input></td>
               <td>{{volume.volume_name}}</td>
+              <td>{{volume.cluster_name}}</td>
               <td>{{volumes.getVolumeType(volume.volume_type)}}</td>
               <td>{{volume.replica_count}}</td>
               <td>{{volumes.getVolumeState(volume.volume_status)}}</td>

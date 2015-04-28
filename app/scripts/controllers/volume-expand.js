@@ -8,9 +8,9 @@
                 var self = this;
                 self.capacity = { 
                     percentage: 0,
-                    used: 35,
-                    total: 82,
-                    unit: "GB"
+                    used: 0,
+                    total: 0,
+                    unit: 0
                 };
                 self.newcapacity = {};
                 this.volumeId = $routeParams.id;
@@ -42,7 +42,7 @@
                 this.findStorageDevices = function() {
                     self.storageDevices = [];
                     self.actualSize = 0;
-                    ServerService.getListByCluster(this.cluster.cluster_id).then(function(hosts) {
+                    ServerService.getListByCluster(this.cluster).then(function(hosts) {
                         var deviceRequests = [];
                         _.each(hosts, function(host){
                             deviceRequests.push(ServerService.getStorageDevicesFree(host.node_id, host.node_name));
