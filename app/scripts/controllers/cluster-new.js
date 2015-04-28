@@ -75,33 +75,6 @@
                 }
             };
 
-            this.onSaveNewHost = function(newHost) {
-                self.isVerifyingHost = true;
-                self.errorMsg = "";
-                self.cautionMsg = "";
-                var hostObject = {
-                 "host": newHost.ipaddress,
-                 "port": 22,
-                 "fingerprint": newHost.fingerprint,
-                 "username": newHost.username,
-                 "password": newHost.password
-                }
-                UtilService.getVerifyHost(hostObject)
-                .then(function(){
-                  self.hosts.unshift({isNew:true, isMon:false, hostname:newHost.hostname, username:newHost.username, password:newHost.password, ipaddress:newHost.ipaddress, fingerprint:newHost.fingerprint});
-                  self.errorMsg = "";
-                  self.cautionMsg = "";
-                  newHost.hostname = null;
-                  newHost.username = null;
-                  newHost.password = null;
-                  self.isVerifyingHost = false;
-                }, function(){
-                    self.cautionMsg = 'Authentication Error!.';
-                    self.errorMsg = " The username and password is incorrect.";
-                    self.isVerifyingHost = false;
-                })
-            }
-
             this.updateFingerprint = function(host) {
                 self.errorMsg = "";
                 self.cautionMsg = "";
@@ -117,6 +90,82 @@
                 })
                 .then(function(fingerprint) {
                     host.fingerprint = fingerprint;
+                });
+            }
+
+            this.onSaveNewHost = function(newHost) {
+                self.isVerifyingHost = true;
+                self.errorMsg = "";
+                self.cautionMsg = "";
+                var hostObject = {
+                 "host": newHost.ipaddress,
+                 "port": 22,
+                 "fingerprint": newHost.fingerprint,
+                 "username": newHost.username,
+                 "password": newHost.password
+                }
+                UtilService.getVerifyHost(hostObject)
+                .then(function(){
+                    var host = {
+                        isMon:false,
+                        hostname: newHost.hostname,
+                        username: newHost.username,
+                        password: newHost.password,
+                        ipaddress: newHost.ipaddress,
+                        fingerprint: newHost.fingerprint
+                    };
+                    self.hosts.unshift(host);
+                    self.errorMsg = "";
+                    self.cautionMsg = "";
+                    self.isVerifyingHost = false;
+                    self.onAddHost(host);
+                    newHost.hostname = null;
+                    newHost.username = null;
+                    newHost.password = null;
+                },
+                function(){
+                    self.cautionMsg = 'Authentication Error!.';
+                    self.errorMsg = " The username and password is incorrect.";
+                    self.isVerifyingHost = false;
+                });
+            }
+
+            this.onAddHost = function(host) {
+                var hosts = {
+                    nodes: [
+                        {
+                            node_name: host.hostname,
+                            management_ip: host.ipaddress,
+                            ssh_username: host.username,
+                            ssh_password: host.password,
+                            ssh_key_fingerprint: host.fingerprint,
+                            ssh_port: 22
+                        }
+                    ]
+                };
+                UtilService.acceptHosts(hosts).then(function(result) {
+                    console.log(result);
+                    host.state = "ACCEPTING";
+                    host.task = result;
+                    var callback = function() {
+                        RequestService.get(result).then(function (request) {
+                            if (request.status === 'FAILED' || request.status === 'FAILURE') {
+                                $log.info('Failed to add host ' + host.hostname);
+                                host.state = "FAILED";
+                                host.task = undefined;
+                            }
+                            else if (request.status === 'SUCCESS'){
+                                $log.info('Added host ' + host.hostname);
+                                host.state = "ACCEPTED";
+                                host.task = undefined;
+                            }
+                            else {
+                                $log.info('Adding host ' + host.hostname);
+                                $timeout(callback, 5000);
+                            }
+                        });
+                    }
+                    $timeout(callback, 5000);
                 });
             }
 

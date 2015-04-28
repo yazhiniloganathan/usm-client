@@ -33,7 +33,9 @@
         var clusterStates = [
             { id:1, state:'Inactive'},
             { id:2, state:'Not Available'},
-            { id:3, state:'Active'}
+            { id:3, state:'Active'},
+            { id:4, state:'Creating'},
+            { id:5, state:'Failed'}
         ];
 
         return {
