@@ -42,7 +42,12 @@ define(['lodash'], function(_) {
                     }
                     return;
                 });
-            }
+            },
+            // **acceptHosts**
+            // **@returns** accept the salt-keys of the hosts.
+            acceptHosts: function(hosts) {
+                return this.restangular.all('utils/accept-hosts').post(hosts);
+            },
         });
         return new Service();
     };

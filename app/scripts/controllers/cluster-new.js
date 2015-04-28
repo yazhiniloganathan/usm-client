@@ -3,11 +3,10 @@
     'use strict';
     define(['lodash', 'helpers/cluster-helpers', 'helpers/modal-helpers'], function(_, ClusterHelpers, ModalHelpers) {
 
-        var ClusterNewController = function($scope, $log, $modal, $location, ClusterService, ServerService, UtilService, RequestTrackingService) {
+        var ClusterNewController = function($scope, $log, $modal, $location, $timeout, ClusterService, ServerService, UtilService, RequestTrackingService, RequestService) {
             this.step = 1;
             this.summaryHostsSortOrder = undefined;
             var self = this;
-
             this.sortHostsInSummary = function() {
                 this.summaryHostsSortOrder = this.summaryHostsSortOrder === '-hostname' ? 'hostname': '-hostname';
             };
@@ -33,12 +32,24 @@
 
             this.hosts = [];
 
+            ServerService.getDiscoveredHosts().then(function(freeHosts) {
+                _.each(freeHosts, function(freeHost) {
+                    var host = {
+                        hostname: freeHost.node_name,
+                        ipaddress: freeHost.management_ip,
+                        state: "UNACCEPTED",
+                        selected: false
+                    };
+                    self.hosts.push(host);
+                    self.updateFingerprint(host);
+                });
+            });
             ServerService.getFreeHosts().then(function(freeHosts) {
                 _.each(freeHosts, function(freeHost) {
                     var host = {
                         hostname: freeHost.node_name,
                         ipaddress: freeHost.management_ip,
-                        isNew: false,
+                        state: "ACCEPTED",
                         selected: false
                     };
                     self.hosts.push(host);
@@ -54,6 +65,15 @@
                     host.selected = self.selectAllHosts;
                 });
             }
+
+            this.toggleHostSelection = function(host) {
+                if(host.state !== "ACCEPTED") {
+                    host.selected = false;
+                }
+                else {
+                    host.selected = !host.selected;
+                }
+            };
 
             this.onSaveNewHost = function(newHost) {
                 self.isVerifyingHost = true;
@@ -100,6 +120,41 @@
                 });
             }
 
+            this.onAcceptHost = function(host) {
+                var hosts = {
+                    nodes: [
+                        {
+                            node_name: host.hostname,
+                            management_ip: host.ipaddress
+                        }
+                    ]
+                };
+                UtilService.acceptHosts(hosts).then(function(result) {
+                    console.log(result);
+                    host.state = "ACCEPTING";
+                    host.task = result;
+                    var callback = function() {
+                        RequestService.get(result).then(function (request) {
+                            if (request.status === 'FAILED' || request.status === 'FAILURE') {
+                                $log.info('Failed to accept host ' + host.hostname);
+                                host.state = "FAILED";
+                                host.task = undefined;
+                            }
+                            else if (request.status === 'SUCCESS'){
+                                $log.info('Accepted host ' + host.hostname);
+                                host.state = "ACCEPTED";
+                                host.task = undefined;
+                            }
+                            else {
+                                $log.info('Accepting host ' + host.hostname);
+                                $timeout(callback, 5000);
+                            }
+                        });
+                    }
+                    $timeout(callback, 5000);
+                });
+            };
+
             this.onRemoveHost = function(host) {
                 _.remove(this.hosts, function(currenthost) {
                     return currenthost.hostname === host.hostname;
@@ -132,14 +187,8 @@
                             management_ip: host.ipaddress,
                             cluster_ip: host.ipaddress,
                             public_ip: host.ipaddress,
-                            ssh_key_fingerprint: host.fingerprint,
-                            ssh_port: 22,
                             node_type: node_type
                         };
-                        if(host.isNew) {
-                            localhost.ssh_username = host.username;
-                            localhost.ssh_password = host.password;
-                        }
                         hosts.push(localhost);
                     }
                 });
@@ -169,6 +218,6 @@
                 });
             };
         };
-        return ['$scope', '$log', '$modal', '$location', 'ClusterService', 'ServerService', 'UtilService', 'RequestTrackingService', ClusterNewController];
+        return ['$scope', '$log', '$modal', '$location', '$timeout', 'ClusterService', 'ServerService', 'UtilService', 'RequestTrackingService', 'RequestService', ClusterNewController];
     });
 })();

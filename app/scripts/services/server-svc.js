@@ -38,8 +38,17 @@ define(['lodash'], function(_) {
                 });
             },
             // **getFreeHosts**
-            // **@returns** a promise with all servers discovered.
+            // **@returns** a promise with all servers which are free.
             getFreeHosts: function() {
+                return this.restangular.all('hosts').getList().then(function(servers) {
+                    return _.filter(servers, function(server) {
+                        return _.isNull(server.cluster);
+                    });
+                });
+            },
+            // **getDiscoveredHosts**
+            // **@returns** a promise with all servers discovered.
+            getDiscoveredHosts: function() {
                 return this.restangular.all('discovered-hosts').getList().then(function(servers) {
                     return servers;
                 });

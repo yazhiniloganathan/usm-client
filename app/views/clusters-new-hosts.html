@@ -57,8 +57,8 @@
     </div>
 
     <div class="available-hosts-list">
-      <div class="row host-row" ng-repeat="host in cluster.hosts" ng-click="host.selected=!host.selected">
-        <div class="col-md-1 host-col-middle">
+      <div class="row host-row" ng-repeat="host in cluster.hosts" ng-click="cluster.toggleHostSelection(host)">
+        <div class="col-md-1 host-col-middle host-col-select">
           <i ng-show="host.selected" class="fa fa-2x fa-check-square-o"></i>
         </div>
         <div class="col-md-6">
@@ -76,20 +76,22 @@
         <div class="col-md-2 host-col-middle">
           {{host.ipaddress}}
         </div>
-        <div class="col-md-1 host-col-middle verified-col">
-           <span class="fa fa-lg fa-check-circle-o verified-col-icon" ng-show="!host.isNew"></span>
+        <div class="col-md-2 host-col-middle verified-col">
+          <span class="fa fa-lg fa-check-circle-o verified-col-icon" ng-show="host.state === 'ACCEPTED'"></span>
+          <button class="btn btn-default" type="button" ng-show="host.state === 'UNACCEPTED' || host.state === 'ACCEPTING'" ng-click="cluster.onAcceptHost(host)" ng-disabled="host.state === 'ACCEPTING'">
+            <span class="fa fa-check" ng-show="host.state==='UNACCEPTED'">Accept</span>
+            <div ng-show="host.state==='ACCEPTING'">
+              <span class="fa fa-spinner fa-spin"></span>
+              Accepting
+            </div>
+          </button>
         </div>
         <div class="col-md-1 host-col-middle">
           <div class="host-is-mon" ng-show="cluster.clusterType.id === 2">
-            <a class="host-is-mon-link" href="" ng-click="host.isMon=!host.isMon">
+            <a class="host-is-mon-link" href="" ng-click="host.isMon=!host.isMon;$event.stopPropagation()">
               <span class="fa fa-desktop fa-lg" ng-class="host.isMon ? '': 'host-is-mon-icon'" data-placement="bottom" bs-tooltip="'Use this host as Ceph monitor'"></span>
             </a>
           </div>
-        </div>
-        <div class="col-md-1 host-col-middle">
-          <button class="btn btn-default" type="button" ng-disabled="!host.isNew" ng-click="cluster.onRemoveHost(host)">
-            <span class="pficon pficon-close"></span>
-          </button>
         </div>
       </div>
     </div>
