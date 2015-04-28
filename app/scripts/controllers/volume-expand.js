@@ -7,10 +7,10 @@
                 this.step = 1;
                 var self = this;
                 self.capacity = { 
-                    percentage: 0,
-                    used: 0,
-                    total: 0,
-                    unit: 0
+                    percentage: 80,
+                    used: 16,
+                    total: 20,
+                    unit: 'GB'
                 };
                 self.newcapacity = {};
                 this.volumeId = $routeParams.id;
@@ -94,7 +94,7 @@
                     VolumeService.expand(volume).then(function(result) {
                         console.log(result);
                         if(result.status === 202) {
-                            RequestTrackingService.add(result.data, 'Expanding volume \'' + volume.volume_name + '\'');
+                            RequestTrackingService.add(result.data, 'Expanding volume \'' + self.name + '\'');
                             var modal = ModalHelpers.SuccessfulRequest($modal, {
                                 title: 'Expand Volume Request is Submitted',
                                 container: '.usmClientApp'
@@ -117,18 +117,19 @@
                     var volume = results[0];
                     self.name = volume.volume_name;
                     self.copyCount = volume.replica_count;
-                    self.cluster = volume.cluster_name;
+                    self.cluster = volume.cluster;
+                    self.cluster_name = volume.cluster_name;
                     self.status = volume.status;
                     self.capacity = { 
-                        percentage: 75,
-                        used: 45,
-                        total: 60,
+                        percentage: 80,
+                        used: 16,
+                        total: 20,
                         unit: "GB"
                     };
                     self.newcapacity = { 
-                        percentage: 75,
-                        used: 45,
-                        total: 60,
+                        percentage: 80,
+                        used: 16,
+                        total: 20,
                         unit: "GB"
                     };
                     self.bricks = results[1];
