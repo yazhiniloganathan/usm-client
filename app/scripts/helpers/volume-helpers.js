@@ -83,6 +83,7 @@
                     else {
                         device.repStart = false;
                     }
+                    device.repSet = iter;
                     subVolSize = device.size > subVolSize ? device.size : subVolSize;
                     selectedDevices.push(device);
                 });

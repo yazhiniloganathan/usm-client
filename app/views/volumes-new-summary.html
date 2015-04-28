@@ -17,7 +17,7 @@
     </tr>
   </thead>
   <tbody>
-      <tr ng-repeat="device in volume.storageDevices">
+      <tr ng-repeat="device in volume.storageDevices" ng-class="{'volume-device-table-row-odd' : (device.repSet % 2) == 0}">
         <td>{{device.hostname}} : {{device.storage_device_name}}</td>
         <td>{{device.size}} GB</td>
         <td ng-if="device.repStart" rowspan="{{volume.copyCount}}">Replicated</td>

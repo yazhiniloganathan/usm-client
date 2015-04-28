@@ -117,7 +117,7 @@
                     var volume = results[0];
                     self.name = volume.volume_name;
                     self.copyCount = volume.replica_count;
-                    self.cluster = volume.cluster;
+                    self.cluster = volume.cluster_name;
                     self.status = volume.status;
                     self.capacity = { 
                         percentage: 75,
