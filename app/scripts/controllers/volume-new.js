@@ -17,7 +17,8 @@
             this.copyCount = VolumeHelpers.getRecomenedCopyCount();
             this.targetSizeUnits = VolumeHelpers.getTargetSizeUnits();
             this.targetSizeUnit = this.targetSizeUnits[0];
-
+            this.tierList = VolumeHelpers.getTierList();
+            this.tier = this.tierList[0];
             this.storageDevices = [];
             this.actualSize = 0;
 

@@ -19,6 +19,10 @@
         var volumeCopiesList = [2, 3, 4];
         var copyCountRecomended = 3;
 
+        var tierList = [
+            { id:1, type:'Default'}
+        ];
+
         var targetSizeUnits = [
             { id:1, unit: 'GB' },
             { id:2, unit: 'TB' }
@@ -123,6 +127,9 @@
             },
             getRecomenedCopyCount: function() {
                 return copyCountRecomended;
+            },
+            getTierList: function() {
+                return tierList;
             },
             getTargetSizeUnits: function() {
                 return targetSizeUnits;
