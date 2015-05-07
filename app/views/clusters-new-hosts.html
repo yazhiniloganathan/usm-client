@@ -99,15 +99,16 @@
   </div>
 
   <div class="col-md-4">
-    <h3>Selected Hosts</h3>
+    <h3>Storage Capacity</h3>
     <span class="text-muted">
-       Select at least {{cluster.deploymentType.nodeCount}} hosts
+       Available storage in selected hosts
     </span>
-    <ul class="list-unstyled selected-hosts-list">
-      <li ng-repeat="host in cluster.filtered = (cluster.hosts | filter: { selected: true })">
-        {{host.hostname}}
-        <a class="pficon pficon-close pull-right" ng-click="host.selected=false"></a>
-      </li>
-    </ul>
+    <dl class="dl-horizontal">
+      <dt>No.of Disks</dt>
+      <dd>{{cluster.getDisks().length}}</dd>
+
+      <dt>Total size</dt>
+      <dd> {{cluster.getDisksSize()}} GB</dd>
+    </dl>
   </div>
 </div>
