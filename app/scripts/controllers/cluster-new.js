@@ -303,7 +303,7 @@
                                 }
                             });
                         };
-                        if(this.clusterType.type === 'Ceph') {
+                        if(self.clusterType.type === 'Ceph') {
                             $timeout(callback, 5000);
                         }
                     }
