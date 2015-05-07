@@ -1,7 +1,7 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'angular', 'RouteConfig', 'ApiModule', 'components/requests/requestsModule', 'controllers/menu', 'controllers/dashboard', 'controllers/first', 'controllers/cluster', 'controllers/cluster-new', 'controllers/host', 'controllers/volume', 'controllers/volume-new', 'controllers/volume-expand', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular', 'angular-growl', 'ng-autofocus'], function(_, angular, RouteConfig, APIModule, RequestModule, MenuController, DashboardController, FirstTimeController, ClusterController, ClusterNewController, HostController, VolumeController, VolumeNewController, VolumeExpandController, MenuService, ConfigurationService, ErrorService) {
+    define(['lodash', 'angular', 'RouteConfig', 'ApiModule', 'components/requests/requestsModule', 'controllers/menu', 'controllers/dashboard', 'controllers/first', 'controllers/cluster', 'controllers/cluster-new', 'controllers/host', 'controllers/volume', 'controllers/volume-new', 'controllers/volume-expand', 'controllers/pool', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular', 'angular-growl', 'ng-autofocus'], function(_, angular, RouteConfig, APIModule, RequestModule, MenuController, DashboardController, FirstTimeController, ClusterController, ClusterNewController, HostController, VolumeController, VolumeNewController, VolumeExpandController, PoolController, MenuService, ConfigurationService, ErrorService) {
 
         var app = angular.module('usmClientApp', [
                'ngAnimate',
@@ -28,6 +28,7 @@
             .controller('VolumeController', VolumeController)
             .controller('VolumeNewController', VolumeNewController)
             .controller('VolumeExpandController', VolumeExpandController)
+            .controller('PoolController', PoolController)
         // Services are where a module can store state. They are loaded
         // once at start up and because they're shared module wide, they can
         // be used to maintain state between controllers.

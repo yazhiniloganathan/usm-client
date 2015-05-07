@@ -47,6 +47,11 @@
                 menuId: 'storage',
                 controller: 'VolumeExpandController',
                 controllerAs: 'volume'
+            }).when('/pools', {
+                templateUrl: 'views/pools.html',
+                menuId: 'storage',
+                controller: 'PoolController',
+                controllerAs: 'pools'
             }).otherwise({
                 redirectTo: '/'
             });
