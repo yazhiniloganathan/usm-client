@@ -54,6 +54,20 @@
     }
 }
 
+.selected-hosts-storage {
+    .box {
+        font-size: 20px;
+        margin-top: 20px;
+        height: 90px;
+        text-align: center;
+        color: white;
+        background-color: #6a7489;
+    }
+    .content {
+        padding-top:25px;
+    }
+}
+
 .create-cluster-progress {
     margin-bottom: 0px;
     font-weight: bold;
