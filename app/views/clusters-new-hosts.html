@@ -43,16 +43,16 @@
       </div>
       <div class="col-md-3">
         <div class="pull-right">
-          <button class="btn btn-primary" ng-disabled="cluster.isVerifyingHost || !(newhost.hostname && newhost.username && newhost.password) || cluster.cautionMsg === 'Error!.'" ng-click="cluster.onSaveNewHost(newhost)">
-            <i class="fa fa-spinner fa-spin" ng-show="cluster.isVerifyingHost"></i>
+          <button class="btn btn-primary" ng-disabled="cluster.newHost.isVerifyingHost || !(newhost.hostname && newhost.username && newhost.password) || cluster.newHost.cautionMsg === 'Error!.'" ng-click="cluster.onAddNewHost(newhost)">
+            <i class="fa fa-spinner fa-spin" ng-show="cluster.newHost.isVerifyingHost"></i>
             Ok
           </button>
           <button class="btn btn-default" ng-click="isAddRow = false;">Cancel</button>
         </div>
       </div>
-      <div ng-show="cluster.errorMsg.length>0" class="col-md-12">
-       <label ng-bind="cluster.cautionMsg"></label>
-       <span ng-bind="cluster.errorMsg"></span>
+      <div ng-show="cluster.newHost.errorMsg.length>0" class="col-md-12">
+       <label ng-bind="cluster.newHost.cautionMsg"></label>
+       <span ng-bind="cluster.newHost.errorMsg"></span>
       </div>
     </div>
 

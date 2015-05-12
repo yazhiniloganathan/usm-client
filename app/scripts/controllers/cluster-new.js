@@ -30,6 +30,7 @@
                 this.deploymentType = this.deploymentTypes[0];
             };
 
+            this.newHost = {};
             this.hosts = [];
             this.osds = [];
 
@@ -85,27 +86,27 @@
             };
 
             this.updateFingerprint = function(host) {
-                self.errorMsg = "";
-                self.cautionMsg = "";
+                self.newHost.errorMsg = "";
+                self.newHost.cautionMsg = "";
                 UtilService.getIpAddress(host.hostname)
                 .then(function(ipaddress){
                     host.ipaddress = ipaddress;
-                    self.errorMsg = "";
-                    self.cautionMsg = "";
+                    self.newHost.errorMsg = "";
+                    self.newHost.cautionMsg = "";
                     return UtilService.getSshFingerprint(host.ipaddress);
                 }, function(){
-                    self.cautionMsg = "Error!.";
-                    self.errorMsg = " Could not resolve the hostname";
+                    self.newHost.cautionMsg = "Error!.";
+                    self.newHost.errorMsg = " Could not resolve the hostname";
                 })
                 .then(function(fingerprint) {
                     host.fingerprint = fingerprint;
                 });
             }
 
-            this.onSaveNewHost = function(newHost) {
-                self.isVerifyingHost = true;
-                self.errorMsg = "";
-                self.cautionMsg = "";
+            this.onAddNewHost = function(newHost) {
+                self.newHost.isVerifyingHost = true;
+                self.newHost.errorMsg = "";
+                self.newHost.cautionMsg = "";
                 var hostObject = {
                  "host": newHost.ipaddress,
                  "port": 22,
@@ -124,93 +125,27 @@
                         fingerprint: newHost.fingerprint
                     };
                     self.hosts.unshift(host);
-                    self.errorMsg = "";
-                    self.cautionMsg = "";
-                    self.isVerifyingHost = false;
-                    self.onAddHost(host);
+                    self.newHost.errorMsg = "";
+                    self.newHost.cautionMsg = "";
+                    self.newHost.isVerifyingHost = false;
+                    self.postAddNewHost(host);
                     newHost.hostname = null;
                     newHost.username = null;
                     newHost.password = null;
                 },
                 function(){
-                    self.cautionMsg = 'Authentication Error!.';
-                    self.errorMsg = " The username and password is incorrect.";
-                    self.isVerifyingHost = false;
+                    self.newHost.cautionMsg = 'Authentication Error!.';
+                    self.newHost.errorMsg = " The username and password is incorrect.";
+                    self.newHost.isVerifyingHost = false;
                 });
             }
 
-            this.onAddHost = function(host) {
-                var hosts = {
-                    nodes: [
-                        {
-                            node_name: host.hostname,
-                            management_ip: host.ipaddress,
-                            ssh_username: host.username,
-                            ssh_password: host.password,
-                            ssh_key_fingerprint: host.fingerprint,
-                            ssh_port: 22
-                        }
-                    ]
-                };
-                UtilService.acceptHosts(hosts).then(function(result) {
-                    console.log(result);
-                    host.state = "ACCEPTING";
-                    host.task = result;
-                    var callback = function() {
-                        RequestService.get(result).then(function (request) {
-                            if (request.status === 'FAILED' || request.status === 'FAILURE') {
-                                $log.info('Failed to add host ' + host.hostname);
-                                host.state = "FAILED";
-                                host.task = undefined;
-                            }
-                            else if (request.status === 'SUCCESS'){
-                                $log.info('Added host ' + host.hostname);
-                                host.state = "ACCEPTED";
-                                host.task = undefined;
-                            }
-                            else {
-                                $log.info('Adding host ' + host.hostname);
-                                $timeout(callback, 5000);
-                            }
-                        });
-                    }
-                    $timeout(callback, 5000);
-                });
+            this.postAddNewHost = function(host) {
+                ClusterHelpers.acceptNewHost(host, UtilService, RequestService, $log, $timeout);
             }
 
             this.onAcceptHost = function(host) {
-                var hosts = {
-                    nodes: [
-                        {
-                            node_name: host.hostname,
-                            management_ip: host.ipaddress
-                        }
-                    ]
-                };
-                UtilService.acceptHosts(hosts).then(function(result) {
-                    console.log(result);
-                    host.state = "ACCEPTING";
-                    host.task = result;
-                    var callback = function() {
-                        RequestService.get(result).then(function (request) {
-                            if (request.status === 'FAILED' || request.status === 'FAILURE') {
-                                $log.info('Failed to accept host ' + host.hostname);
-                                host.state = "FAILED";
-                                host.task = undefined;
-                            }
-                            else if (request.status === 'SUCCESS'){
-                                $log.info('Accepted host ' + host.hostname);
-                                host.state = "ACCEPTED";
-                                host.task = undefined;
-                            }
-                            else {
-                                $log.info('Accepting host ' + host.hostname);
-                                $timeout(callback, 5000);
-                            }
-                        });
-                    }
-                    $timeout(callback, 5000);
-                });
+                ClusterHelpers.acceptHost(host, UtilService, RequestService, $log, $timeout);
             };
 
             this.onRemoveHost = function(host) {
@@ -222,7 +157,9 @@
             this.getDisks = function() {
                 var disks = [];
                 _.each(this.hosts, function(host) {
-                    Array.prototype.push.apply(disks, host.disks);
+                    if(host.selected) {
+                        Array.prototype.push.apply(disks, host.disks);
+                    }
                 })
                 return disks;
             }
