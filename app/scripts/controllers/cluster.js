@@ -49,6 +49,17 @@
                 $location.path('/clusters/new');
             };
 
+            $scope.expand = function() {
+                var selectedClusters = _.filter($scope.clusters, function(cluster){
+                    return cluster.selected;
+                });
+
+                if(selectedClusters.length>0) {
+                    var selectedCluster = _.first(selectedClusters);
+                    $location.path('/clusters/expand/'+selectedCluster.cluster_id);
+                }
+            };
+
             $scope.remove = function() {
                 _.each($scope.clusters, function(cluster) {
                     if(cluster.selected) {

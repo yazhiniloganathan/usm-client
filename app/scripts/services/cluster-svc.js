@@ -90,9 +90,9 @@ define(['lodash'], function(_) {
             },
             // **get**
             // **@returns** a promise with the cluster metadata for the specific
-            // cluster based on it's FSID.
+            // cluster based on it's id.
             get: function(id) {
-                return this.cluster(id).get().then(function(cluster) {
+                return this.restangular.one('clusters', id).get().then(function(cluster) {
                     return cluster;
                 });
             },

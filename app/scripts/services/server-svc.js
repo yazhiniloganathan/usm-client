@@ -60,6 +60,11 @@ define(['lodash'], function(_) {
                     return server;
                 });
             },
+            // **add**
+            // **@returns** a promise with the request id for the operation.
+            add: function(host) {
+                return this.restangularFull.all('hosts').post(host);
+            },
             // **remove**
             // **@param** id - id of server you wish to remove.
             // **@returns** a promise with the request id for the operation.

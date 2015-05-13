@@ -27,6 +27,11 @@
                 menuId: 'cluster',
                 controller: 'ClusterNewController',
                 controllerAs: 'cluster'
+            }).when('/clusters/expand/:id', {
+                templateUrl: 'views/clusters-expand.html',
+                menuId: 'cluster',
+                controller: 'ClusterExpandController',
+                controllerAs: 'cluster'
             }).when('/hosts', {
                 templateUrl: 'views/hosts.html',
                 menuId: 'hosts',
