@@ -1,7 +1,8 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'angular', 'RouteConfig', 'ApiModule', 'components/requests/requestsModule', 'controllers/menu', 'controllers/dashboard', 'controllers/first', 'controllers/cluster', 'controllers/cluster-new', 'controllers/cluster-expand', 'controllers/host', 'controllers/volume', 'controllers/volume-new', 'controllers/volume-expand', 'controllers/pool', 'controllers/pool-new', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular', 'angular-growl', 'ng-autofocus'], function(_, angular, RouteConfig, APIModule, RequestModule, MenuController, DashboardController, FirstTimeController, ClusterController, ClusterNewController, ClusterExpandController, HostController, VolumeController, VolumeNewController, VolumeExpandController, PoolController, PoolNewController, MenuService, ConfigurationService, ErrorService) {
+
+    define(['lodash', 'angular', 'RouteConfig', 'ApiModule', 'components/requests/requestsModule', 'controllers/menu', 'controllers/login', 'controllers/dashboard', 'controllers/first', 'controllers/cluster', 'controllers/cluster-new', 'controllers/cluster-expand', 'controllers/host', 'controllers/volume', 'controllers/volume-new', 'controllers/volume-expand', 'controllers/pool', 'controllers/pool-new', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular', 'angular-growl', 'ng-autofocus'], function(_, angular, RouteConfig, APIModule, RequestModule, MenuController, LoginController, DashboardController, FirstTimeController, ClusterController, ClusterNewController,ClusterExpandController, HostController, VolumeController, VolumeNewController, VolumeExpandController, PoolController, PoolNewController, MenuService, ConfigurationService, ErrorService) {
 
         var app = angular.module('usmClientApp', [
                'ngAnimate',
@@ -20,6 +21,7 @@
         // loaded. Treat them as if they are loaded once on page
         // initialization and then not used again.       
             .controller('MenuController', MenuController)
+            .controller('LoginController', LoginController)
             .controller('DashboardController', DashboardController)
             .controller('FirstTimeController', FirstTimeController)
             .controller('ClusterController', ClusterController)
@@ -39,7 +41,16 @@
             .service('ErrorService', ErrorService)
         // Run blocks are run once at module startup.
         // This is an ideal place to exec one time tasks.
-            .run(function(){})
+            .run( function($rootScope, $location) {
+               $rootScope.$watch(function() {
+                  return $location.path();
+                },
+                function(a){
+                  console.log('url has changed: ' + a);
+                  $rootScope.currentURI = a;
+                  // show loading div, etc...
+                });
+            })
         // Service Providers may be individually configured by modules.
             .config(['$logProvider',
                 function($logProvider) {

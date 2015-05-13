@@ -20,7 +20,11 @@ define(['lodash'], function(_) {
             this.restangularFull = restangularFull;
         };
         Service.prototype = _.extend(Service.prototype, {
-            
+             // **getVerify**
+            // **@returns** a promise with user varification.
+            getVerifyUser: function(userObject) {
+                return this.restangular.all('auth/login').post(userObject);
+            },
             // **getVerify**
             // **@returns** a promise with host varification.
             getVerifyHost: function(hostObject) {

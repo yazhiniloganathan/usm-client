@@ -10,7 +10,7 @@
             this.menus = [{
                     label: 'Dashboard',
                     id: 'dashboard',
-                    href: '/',
+                    href: '/dashboard',
                     hasSubMenus: false,
                     active: true
                 }, {

@@ -10,6 +10,10 @@
 
         var RouteConfig = function($routeProvider) {
             $routeProvider.when('/', {
+                templateUrl: 'views/login.html',
+                menuId: 'login',
+                controller: 'LoginController',
+            }).when('/dashboard', {
                 templateUrl: 'views/dashboard.html',
                 menuId: 'dashboard',
                 controller: 'DashboardController',
