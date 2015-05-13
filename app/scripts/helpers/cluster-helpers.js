@@ -112,6 +112,39 @@
             });
         };
 
+        function addNewHost(cluster, UtilService) {
+            var newHost = cluster.newHost;
+            newHost.isVerifyingHost = true;
+            newHost.errorMsg = "";
+            newHost.cautionMsg = "";
+            var hostObject = {
+             "host": newHost.ipaddress,
+             "port": 22,
+             "fingerprint": newHost.fingerprint,
+             "username": newHost.username,
+             "password": newHost.password
+            }
+            UtilService.getVerifyHost(hostObject)
+            .then(function(){
+                var host = {
+                    isMon:false,
+                    hostname: newHost.hostname,
+                    username: newHost.username,
+                    password: newHost.password,
+                    ipaddress: newHost.ipaddress,
+                    fingerprint: newHost.fingerprint
+                };
+                cluster.hosts.unshift(host);
+                cluster.postAddNewHost(host);
+                cluster.newHost = {};
+            },
+            function(){
+                cluster.newHost.cautionMsg = 'Authentication Error!.';
+                cluster.newHost.errorMsg = " The username and password is incorrect.";
+                cluster.newHost.isVerifyingHost = false;
+            });
+        };
+
         return {
             getClusterTypes: function() {
                 return clusterTypes;
@@ -135,7 +168,8 @@
                 });
             },
             acceptHost: acceptHost,
-            acceptNewHost: acceptNewHost
+            acceptNewHost: acceptNewHost,
+            addNewHost: addNewHost
         };
     });
 })();

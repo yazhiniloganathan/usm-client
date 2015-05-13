@@ -82,7 +82,6 @@
                 else {
                     host.disks = [];
                 }
-
             };
 
             this.updateFingerprint = function(host) {
@@ -103,41 +102,8 @@
                 });
             }
 
-            this.onAddNewHost = function(newHost) {
-                self.newHost.isVerifyingHost = true;
-                self.newHost.errorMsg = "";
-                self.newHost.cautionMsg = "";
-                var hostObject = {
-                 "host": newHost.ipaddress,
-                 "port": 22,
-                 "fingerprint": newHost.fingerprint,
-                 "username": newHost.username,
-                 "password": newHost.password
-                }
-                UtilService.getVerifyHost(hostObject)
-                .then(function(){
-                    var host = {
-                        isMon:false,
-                        hostname: newHost.hostname,
-                        username: newHost.username,
-                        password: newHost.password,
-                        ipaddress: newHost.ipaddress,
-                        fingerprint: newHost.fingerprint
-                    };
-                    self.hosts.unshift(host);
-                    self.newHost.errorMsg = "";
-                    self.newHost.cautionMsg = "";
-                    self.newHost.isVerifyingHost = false;
-                    self.postAddNewHost(host);
-                    newHost.hostname = null;
-                    newHost.username = null;
-                    newHost.password = null;
-                },
-                function(){
-                    self.newHost.cautionMsg = 'Authentication Error!.';
-                    self.newHost.errorMsg = " The username and password is incorrect.";
-                    self.newHost.isVerifyingHost = false;
-                });
+            this.onAddNewHost = function() {
+                ClusterHelpers.addNewHost(self, UtilService);
             }
 
             this.postAddNewHost = function(host) {
