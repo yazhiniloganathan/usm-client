@@ -1,0 +1,18 @@
+<h3 class="h3-inline">Pools</h3>
+<button class="btn btn-primary pull-right" style="margin: 10px;">Add</button>
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th> Pool Name </th>
+      <th> No.of Copies (Size)</th>
+      <th> Placement Groups</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr ng-repeat="pool in cluster.pools">
+        <td>{{pool.name}}</td>
+        <td>{{pool.copyCount}}</td>
+        <td>{{host.pgCount}}</td>
+      </tr>
+  </tbody>
+</table>

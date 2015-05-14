@@ -33,6 +33,8 @@
             this.newHost = {};
             this.hosts = [];
             this.osds = [];
+            this.volumes = [];
+            this.pools = [];
 
             ServerService.getDiscoveredHosts().then(function(freeHosts) {
                 _.each(freeHosts, function(freeHost) {
