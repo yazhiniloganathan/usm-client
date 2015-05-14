@@ -17,6 +17,12 @@
                     { id:1, type:'Demo (2 hosts)', nodeCount:2 },
                     { id:2, type:'Minimum (3 hosts)', nodeCount:3 },
                     { id:3, type:'Standard (6 hosts)', nodeCount:6 }
+                ],
+                workloads: [
+                    { id:0, type: 'Generic' },
+                    { id:1, type: 'Hadoop' },
+                    { id:2, type: 'Virtualization' },
+                    { id:3, type: 'OpenStack(Glance)' }
                 ]
             },
             {
@@ -26,6 +32,11 @@
                     { id:1, type:'Demo (2 hosts)', nodeCount:2 },
                     { id:2, type:'Minimum (3 hosts)', nodeCount:3 },
                     { id:3, type:'Standard (10 hosts)', nodeCount:10 }
+                ],
+                workloads: [
+                    { id:0, type: 'Generic' },
+                    { id:1, type: 'OpenStack (with Swift)' },
+                    { id:2, type: 'OpenStack (without Swift)' }
                 ]
             }
         ];

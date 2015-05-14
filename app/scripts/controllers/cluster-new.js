@@ -17,9 +17,7 @@
             this.clusterTypes = ClusterHelpers.getClusterTypes();
             this.clusterType = this.clusterTypes[0];
 
-            this.workloads = [
-                { id:0, type: 'Generic' }
-            ];
+            this.workloads = this.clusterType.workloads;
             this.workload = this.workloads[0];
 
             this.deploymentTypes = this.clusterType.deploymentTypes;
@@ -28,6 +26,8 @@
             this.onClusterTypeChanged = function() {
                 this.deploymentTypes = this.clusterType.deploymentTypes;
                 this.deploymentType = this.deploymentTypes[0];
+                this.workloads = this.clusterType.workloads;
+                this.workload = this.workloads[0];
             };
 
             this.newHost = {};
