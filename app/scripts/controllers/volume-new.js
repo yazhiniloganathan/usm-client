@@ -8,11 +8,15 @@
             var self = this;
 
             ClusterService.getList().then(function(clusters){
-                self.clusters = clusters;
-                if(clusters.length > 0) {
+                self.clusters = _.filter(clusters, function(cluster) {
+                    return cluster.cluster_type == 1;
+                });
+
+                if(self.clusters.length > 0) {
                     self.cluster = self.clusters[0];
                 }
             });
+
             this.copyCountList = VolumeHelpers.getCopiesList();
             this.copyCount = VolumeHelpers.getRecomenedCopyCount();
             this.targetSizeUnits = VolumeHelpers.getTargetSizeUnits();
