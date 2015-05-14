@@ -38,7 +38,7 @@
             { id:5, state:'Failed'}
         ];
 
-        function acceptHost(host, UtilService, RequestService, $log, $timeout) {
+        function acceptHost(cluster, host, UtilService, RequestService, $log, $timeout) {
             var hosts = {
                 nodes: [
                     {
@@ -62,6 +62,7 @@
                             $log.info('Accepted host ' + host.hostname);
                             host.state = "ACCEPTED";
                             host.task = undefined;
+                            cluster.postAcceptHost(host);
                         }
                         else {
                             $log.info('Accepting host ' + host.hostname);
@@ -73,7 +74,7 @@
             });
         };
 
-        function acceptNewHost(host, UtilService, RequestService, $log, $timeout) {
+        function acceptNewHost(cluster, host, UtilService, RequestService, $log, $timeout) {
             var hosts = {
                 nodes: [
                     {
@@ -101,6 +102,7 @@
                             $log.info('Added host ' + host.hostname);
                             host.state = "ACCEPTED";
                             host.task = undefined;
+                            cluster.postAcceptHost(host);
                         }
                         else {
                             $log.info('Adding host ' + host.hostname);

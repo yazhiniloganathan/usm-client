@@ -60,6 +60,15 @@ define(['lodash'], function(_) {
                     return server;
                 });
             },
+            // **getByHostname**
+            // **@returns** a promise with this specific server's metadata.
+            getByHostname: function(hostname) {
+                return this.getList().then(function(servers) {
+                    return _.find(servers, function(server) {
+                        return server.node_name === hostname;
+                    });
+                });
+            },
             // **add**
             // **@returns** a promise with the request id for the operation.
             add: function(host) {

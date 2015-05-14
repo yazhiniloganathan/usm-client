@@ -60,27 +60,20 @@
                 });
             });
 
-            this.bulkSelectHosts = function() {
-                _.each(this.hosts, function(host){
-                    host.selected = true;
+            this.selectAllHosts = function() {
+                _.each(self.hosts, function(host){
+                    self.selectHost(host, true);
                 });
             }
 
-            this.toggleHostSelection = function(host) {
-                if(host.state !== "ACCEPTED") {
-                    host.selected = false;
-                }
-                else {
-                    host.selected = !host.selected;
-                }
-
-                if(host.selected) {
-                    ServerService.getStorageDevicesFree(host.id).then(function(disks) {
-                        host.disks = disks;
-                    });
-                }
-                else {
-                    host.disks = [];
+            this.selectHost = function(host, selection) {
+                if(host.state === "ACCEPTED") {
+                    host.selected = selection;
+                    if(host.selected) {
+                        ServerService.getStorageDevicesFree(host.id).then(function(disks) {
+                            host.disks = disks;
+                        });
+                    }
                 }
             };
 
@@ -102,19 +95,39 @@
                 });
             }
 
-            this.onAddNewHost = function() {
+            this.addNewHost = function() {
                 ClusterHelpers.addNewHost(self, UtilService);
             }
 
             this.postAddNewHost = function(host) {
-                ClusterHelpers.acceptNewHost(host, UtilService, RequestService, $log, $timeout);
+                ClusterHelpers.acceptNewHost(self, host, UtilService, RequestService, $log, $timeout);
             }
 
-            this.onAcceptHost = function(host) {
-                ClusterHelpers.acceptHost(host, UtilService, RequestService, $log, $timeout);
+            this.acceptAllHosts = function() {
+                _.each(self.hosts, function(host) {
+                    if(host.state === "UNACCEPTED") {
+                        self.acceptHost(host);
+                    }
+                });
             };
 
-            this.onRemoveHost = function(host) {
+            this.acceptHost = function(host) {
+                ClusterHelpers.acceptHost(self, host, UtilService, RequestService, $log, $timeout);
+            };
+
+            this.postAcceptHost = function(host) {
+                if(host.id) {
+                    self.selectHost(host, true);
+                }
+                else {
+                    ServerService.getByHostname(host.hostname).then(function(hostFound) {
+                        host.id = hostFound.node_id;
+                        self.selectHost(host, true);
+                    });
+                }
+            }
+
+            this.removeHost = function(host) {
                 _.remove(this.hosts, function(currenthost) {
                     return currenthost.hostname === host.hostname;
                 });
