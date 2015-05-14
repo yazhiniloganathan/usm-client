@@ -1,0 +1,29 @@
+<ul class="dropdown-menu progress-dropdown">
+  <li class="header"><i class="fa fa-desktop"></i> Discovered Hosts </li>
+  <li>
+    <div class="content">
+      <ul class="list-unstyled">
+        <li class="task-item" ng-repeat="discoveredHost in discoveredHosts">
+          <div ng-bind="discoveredHost.node_name">
+          </div>
+        </li>
+      </ul>
+    </div>
+  </li>
+  <li class="dropdown-footer">
+    <div class="btn-group btn-group-justified">
+      <div class="btn-group">
+          <a href="" class="btn btn-sm btn-primary" ng-click="reloadDiscoveredHosts()">
+            <i class="fa fa-refresh"></i>
+            Refresh
+          </a>
+      </div>
+      <div class="btn-group">
+          <a href="#" class="btn btn-sm btn-success">
+            See All
+            <i class="fa fa-arrow-right"></i>
+          </a>
+      </div>
+    </div>
+  </li>
+</ul>
