@@ -43,12 +43,6 @@
                         }
                     ],
                     active: false
-                }, {
-                    label: 'Admin',
-                    id: 'admin',
-                    href: '/admin',
-                    hasSubMenus: false,
-                    active: false
                 }
             ];
         };
