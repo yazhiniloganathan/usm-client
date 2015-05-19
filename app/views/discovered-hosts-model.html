@@ -1,0 +1,35 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title"> Discovered Hosts </h4>
+            </div>
+            <div class="modal-body">
+                <div class="content" ng-controller="RequestsController" ng-init="getDiscoveredHosts()">
+                   <div class="row">
+                    <div class="col-md-offset-6 col-md-6">
+                      <button class="pull-right" ng-if="discoveredHosts.length > 1" ng-click="acceptAllHosts();">Accept All</button>
+                    </div>
+                   </div>
+                   <div class="available-hosts-list" ng-class="discoveredHosts.length > 5 ? 'div-with-scroll': ''">
+                    <div class="row host-row" ng-repeat="discoveredHost in discoveredHosts">
+                      <div class="col-md-6" ng-bind="discoveredHost.hostname">
+                      </div>
+                      <div class="col-md-6 host-col-middle verified-col">
+                         <span class="fa fa-lg fa-check-circle-o verified-col-icon" ng-show="discoveredHost.state === 'ACCEPTED'"></span>
+                         <button class="btn btn-default adjust_button" type="button" ng-show="discoveredHost.state === 'UNACCEPTED' || discoveredHost.state === 'ACCEPTING'" ng-click="acceptHost(discoveredHost)" ng-disabled="discoveredHost.state === 'ACCEPTING'">
+                            <span class="fa fa-check" ng-show="discoveredHost.state==='UNACCEPTED'">Accept</span>
+                            <div ng-show="discoveredHost.state==='ACCEPTING'">
+                              <span class="fa fa-spinner fa-spin"></span>
+                              Accepting
+                            </div>
+                         </button>
+                      </div>
+                    </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

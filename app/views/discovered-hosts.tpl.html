@@ -4,7 +4,7 @@
     <div class="content">
       <ul class="list-unstyled">
         <li class="task-item" ng-repeat="discoveredHost in discoveredHosts">
-          <div ng-bind="discoveredHost.node_name">
+          <div ng-bind="discoveredHost.hostname">
           </div>
         </li>
       </ul>
@@ -13,16 +13,16 @@
   <li class="dropdown-footer">
     <div class="btn-group btn-group-justified">
       <div class="btn-group">
-          <a href="" class="btn btn-sm btn-primary" ng-click="reloadDiscoveredHosts()">
+          <a href="" class="btn btn-sm btn-primary" ng-click="getDiscoveredHosts()">
             <i class="fa fa-refresh"></i>
             Refresh
           </a>
       </div>
       <div class="btn-group">
-          <a href="#" class="btn btn-sm btn-success">
-            See All
-            <i class="fa fa-arrow-right"></i>
-          </a>
+         <button class="btn btn-sm btn-success" ng-click="openDiscoveredHostsModel();">
+          See All
+          <i class="fa fa-arrow-right"></i>
+         </button>
       </div>
     </div>
   </li>

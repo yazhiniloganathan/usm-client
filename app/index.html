@@ -41,9 +41,9 @@
       <div class="collapse navbar-collapse navbar-collapse-1">
         <ul class="nav navbar-nav navbar-utility" ng-controller="RequestsController">
           <li>
-            <a href="" data-template="views/discovered-hosts.tpl.html" data-animation="am-fade-and-slide-top" bs-dropdown="">
+            <a href="" ng-click="getDiscoveredHosts();" data-template="views/discovered-hosts.tpl.html" data-animation="am-fade-and-slide-top" bs-dropdown="">
               <i class="fa fa-desktop"></i>
-              <span class="label label-info task-icon-count" ng-if="discoveredHosts.length>0" ng-bind="discoveredHosts.length"></span>
+              <span class="label label-info task-icon-count" ng-if="discoveredHostsLength>0" ng-bind="discoveredHostsLength"></span>
               <div growl></div>
             </a>
           </li>
@@ -74,6 +74,9 @@
         </ul>
       </div>
     </nav>
+
+    <button id="openDiscoveredHosts" style="display:none;" data-animation="am-fade-and-slide-top" data-template="views/discovered-hosts-model.html" bs-modal="modal">
+    </button>
 
     <!-- Main container-->
     <div class="container-fluid" ng-view></div>
