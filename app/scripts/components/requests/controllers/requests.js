@@ -2,7 +2,7 @@
 (function() {
     'use strict';
     define(['lodash'], function(_) {
-        var RequestsController = function($scope, $interval, RequestTrackingService, ServerService) {
+        var RequestsController = function($scope, $interval, UserService, RequestTrackingService, ServerService) {
             $scope.tasks = [];
             $scope.discoveredHosts = [];
             $scope.reloadTasks = function() {
@@ -15,9 +15,14 @@
                    $scope.discoveredHosts = freeHosts;
                 });
             }
+
+            $scope.logoutUser = function()   {
+                var test = UserService.logout();
+            }
+
             $interval($scope.reloadTasks, 5000);
             $interval($scope.reloadDiscoveredHosts, 5000);
         };
-        return ['$scope', '$interval', 'RequestTrackingService', 'ServerService', RequestsController];
+        return ['$scope', '$interval', 'UserService', 'RequestTrackingService', 'ServerService', RequestsController];
     });
 })();
