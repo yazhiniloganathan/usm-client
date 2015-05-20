@@ -96,6 +96,16 @@ define(['lodash'], function(_) {
                     return cluster;
                 });
             },
+            // **getByName**
+            // **@returns** a promise with the cluster metadata for the specific
+            // cluster based on it's id.
+            getByName: function(name) {
+                return this.getList().then(function(clusters) {
+                    return _.find(clusters, function(cluster) {
+                        return cluster.cluster_name === name;
+                    });
+                });
+            },
             // **cluster**
             // A base function that defines the root of all cluster specific
             // API requests.  It's designed to be called by other services.

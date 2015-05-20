@@ -67,6 +67,20 @@
     }
 }
 
+.cluster-volumes-panel {
+    &:after {
+        display: block;
+        content: "";
+        background: #ccc;
+        position: relative;
+        height: 2px;
+    }
+}
+
+.table-volumes {
+    margin-top: 5px;
+}
+
 .create-cluster-progress {
     margin-bottom: 0px;
     font-weight: bold;

@@ -1,9 +1,9 @@
 /* global define */
 (function() {
     'use strict';
-    define(['lodash', 'helpers/cluster-helpers', 'helpers/modal-helpers'], function(_, ClusterHelpers, ModalHelpers) {
+    define(['lodash', 'helpers/cluster-helpers', 'helpers/volume-helpers', 'helpers/modal-helpers'], function(_, ClusterHelpers, VolumeHelpers, ModalHelpers) {
 
-        var ClusterNewController = function($scope, $log, $modal, $location, $timeout, ClusterService, ServerService, OSDService, UtilService, RequestTrackingService, RequestService) {
+        var ClusterNewController = function($scope, $q, $log, $modal, $location, $timeout, ClusterService, ServerService, VolumeService, OSDService, UtilService, RequestTrackingService, RequestService) {
             this.step = 1;
             this.summaryHostsSortOrder = undefined;
             var self = this;
@@ -32,8 +32,14 @@
 
             this.newHost = {};
             this.hosts = [];
+            this.disks = [];
             this.osds = [];
             this.volumes = [];
+            this.newVolume = {};
+            this.newVolume.copyCountList = VolumeHelpers.getCopiesList();
+            this.newVolume.copyCount = VolumeHelpers.getRecomenedCopyCount();
+            this.newVolume.sizeUnits = VolumeHelpers.getTargetSizeUnits();
+            this.newVolume.sizeUnit = this.newVolume.sizeUnits[0];
             this.pools = [];
 
             ServerService.getDiscoveredHosts().then(function(freeHosts) {
@@ -74,8 +80,10 @@
                     if(host.selected) {
                         ServerService.getStorageDevicesFree(host.id).then(function(disks) {
                             host.disks = disks;
+                            self.countDisks();
                         });
                     }
+                    self.countDisks();
                 }
             };
 
@@ -135,23 +143,50 @@
                 });
             }
 
-            this.getDisks = function() {
+            this.countDisks = function() {
                 var disks = [];
-                _.each(this.hosts, function(host) {
+                _.each(self.hosts, function(host) {
                     if(host.selected) {
                         Array.prototype.push.apply(disks, host.disks);
                     }
-                })
-                return disks;
+                });
+                self.disks = disks;
+            }
+
+            this.getDisks = function() {
+                return self.disks;
             }
 
             this.getDisksSize = function() {
-                var disks = this.getDisks();
                 var size = 0;
-                return _.reduce(disks, function(size, disk) {
+                return _.reduce(self.disks, function(size, disk) {
                     return disk.size + size;
                 }, 0);
             }
+
+            this.addNewVolume = function(newVolume) {
+                var freeDisks = _.filter(this.disks, function(disk) {
+                    return !disk.used;
+                });
+                var devicesMap = _.groupBy(freeDisks, function(disk) {
+                    return disk.node;
+                });
+                var devicesList = _.map(devicesMap, function(disks) {
+                    return disks;
+                });
+                var selectedDisks = VolumeHelpers.getStorageDervicesForVolumeBasic(newVolume.size, newVolume.copyCount, devicesList);
+                _.each(selectedDisks, function(selectedDisk) {
+                    selectedDisk.used = true;
+                });
+                newVolume.disks = selectedDisks;
+
+                this.volumes.push(newVolume);
+                this.newVolume = {};
+                this.newVolume.copyCountList = VolumeHelpers.getCopiesList();
+                this.newVolume.copyCount = VolumeHelpers.getRecomenedCopyCount();
+                this.newVolume.sizeUnits = VolumeHelpers.getTargetSizeUnits();
+                this.newVolume.sizeUnit = this.newVolume.sizeUnits[0];
+            };
 
             this.moveStep = function(nextStep) {
                 this.step = (this.step === 1 && this.clusterName === undefined) ? this.step : this.step + nextStep;
@@ -187,6 +222,8 @@
 
                 var disks = this.getDisks();
 
+                var volumes = this.volumes;
+
                 var cluster = {
                     cluster_name: this.clusterName,
                     cluster_type: this.clusterType.id,
@@ -213,7 +250,10 @@
                                 }
                                 else if (request.status === 'SUCCESS'){
                                     $log.info('Cluster \'' + self.clusterName + '\' is created successfully');
-                                    self.postClusterCreate(cluster, disks);
+                                    ClusterService.getByName(self.clusterName).then(function(result){
+                                        cluster.cluster_id = result.cluster_id;
+                                        self.postClusterCreate(cluster, disks, volumes);
+                                    });
                                 }
                                 else {
                                     $log.info('Waiting for cluster \'' + self.clusterName + '\' to be ready');
@@ -221,9 +261,7 @@
                                 }
                             });
                         };
-                        if(self.clusterType.type === 'Ceph') {
-                            $timeout(callback, 5000);
-                        }
+                        $timeout(callback, 5000);
                     }
                     else {
                         $log.error('Unexpected response from Clusters.create', result);
@@ -231,8 +269,49 @@
                 });
             };
 
-            this.postClusterCreate = function(cluster, disks) {
+            this.postClusterCreate = function(cluster, disks, volumes) {
                 $log.info('Post Cluster Create');
+                if(self.clusterType.type === 'Gluster') {
+                    self.postGlusterClusterCreate(cluster, volumes);
+                }
+                else {
+                    self.postCephClusterCreate(cluster, disks);
+                }
+            };
+
+            this.postGlusterClusterCreate = function(cluster, volumes) {
+                var requests = [];
+
+                _.each(volumes, function(volume) {
+                    var localVolume = {
+                        cluster: cluster.cluster_id,
+                        volume_name: volume.name,
+                        volume_type: 2,
+                        replica_count: volume.copyCount,
+                        bricks: []
+                    };
+                    _.each(volume.disks, function(device) {
+                        var brick = {
+                            node: device.node,
+                            storage_device: device.storage_device_id
+                        }
+                        localVolume.bricks.push(brick);
+                    });
+                    requests.push(VolumeService.create(localVolume));
+                });
+
+                $q.all(requests).then(function(results) {
+                    var index = 0;
+                    while(index < results.length) {
+                        if(results[index].status === 202) {
+                            RequestTrackingService.add(results[index].data, 'Creating volume \'' + volumes[index].name);
+                        }
+                        index++;
+                    }
+                });
+            }
+
+            this.postCephClusterCreate = function(cluster, disks) {
                 var osdList = [];
                 _.each(disks, function(disk) {
                     var osd = {
@@ -249,6 +328,6 @@
                 });
             };
         };
-        return ['$scope', '$log', '$modal', '$location', '$timeout', 'ClusterService', 'ServerService', 'OSDService', 'UtilService', 'RequestTrackingService', 'RequestService', ClusterNewController];
+        return ['$scope', '$q', '$log', '$modal', '$location', '$timeout', 'ClusterService', 'ServerService', 'VolumeService', 'OSDService', 'UtilService', 'RequestTrackingService', 'RequestService', ClusterNewController];
     });
 })();
