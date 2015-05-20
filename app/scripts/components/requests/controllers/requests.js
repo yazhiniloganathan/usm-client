@@ -17,7 +17,7 @@
             }
 
             $scope.logoutUser = function()   {
-                var test = UserService.logout();
+               UserService.logout();
             }
 
             $interval($scope.reloadTasks, 5000);
