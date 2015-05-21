@@ -15,6 +15,7 @@
 
             this.newHost = {};
             this.hosts = [];
+            this.disks = [];
             this.osds = [];
 
             ServerService.getDiscoveredHosts().then(function(freeHosts) {
@@ -55,8 +56,10 @@
                     if(host.selected) {
                         ServerService.getStorageDevicesFree(host.id).then(function(disks) {
                             host.disks = disks;
+                            self.countDisks();
                         });
                     }
+                    self.countDisks();
                 }
             };
 
@@ -116,20 +119,23 @@
                 });
             }
 
-            this.getDisks = function() {
+            this.countDisks = function() {
                 var disks = [];
-                _.each(this.hosts, function(host) {
+                _.each(self.hosts, function(host) {
                     if(host.selected) {
                         Array.prototype.push.apply(disks, host.disks);
                     }
-                })
-                return disks;
+                });
+                self.disks = disks;
+            }
+
+            this.getDisks = function() {
+                return self.disks;
             }
 
             this.getDisksSize = function() {
-                var disks = this.getDisks();
                 var size = 0;
-                return _.reduce(disks, function(size, disk) {
+                return _.reduce(self.disks, function(size, disk) {
                     return disk.size + size;
                 }, 0);
             }
@@ -145,6 +151,7 @@
             this.submit = function() {
                 var hostPromises = [];
                 var selectedHosts = [];
+                var hostDisks = [];
                 _.forEach(this.hosts, function(host){
                     if(host.selected) {
                         var node_type = self.cluster.cluster_type === 1 ? 4 : 2;
@@ -157,6 +164,7 @@
                             node_type: node_type
                         };
                         selectedHosts.push(host);
+                        hostDisks.push(host.disks);
                         hostPromises.push(ServerService.add(localhost));
                     }
                 });
@@ -174,11 +182,66 @@
                     var index = 0;
                     while(index < tasks.length) {
                         if(tasks[index].status === 202) {
-                            RequestTrackingService.add(tasks[index].data, 'Adding host \'' + selectedHosts[index].hostname + '\' to cluster');                        
+                            var host = selectedHosts[index];
+                            var disks = hostDisks[index];
+                            var result = tasks[index];
+                            RequestTrackingService.add(result.data, 'Adding host \'' + host.hostname + '\' to cluster');
+
+                            var callback = function() {
+                                $log.info('Cluster expand callback '+ result.data);
+                                RequestService.get(result.data).then(function (request) {
+                                    if (request.status === 'FAILED' || request.status === 'FAILURE') {
+                                        $log.info('Adding host \'' + host.hostname + '\' is failed');
+                                    }
+                                    else if (request.status === 'SUCCESS'){
+                                        $log.info('Host \'' + host.hostname + '\' is added successfully');
+                                        self.postAddHost(self.cluster, host, disks);
+                                    }
+                                    else {
+                                        $log.info('Waiting for host \'' + host.hostname + '\' to be added');
+                                        $timeout(callback, 5000);
+                                    }
+                                });
+                            };
+                            $timeout(callback, 5000);
                         }
                         index++;
                     }
                 });
+            };
+
+            this.postAddHost = function(cluster, host, disks) {
+                $log.info("Post Add host");
+                if(cluster.cluster_type === 2) {
+                    self.postAddCephHost(cluster, host, disks);
+                }
+            };
+
+            this.postAddCephHost = function(cluster, host, disks) {
+                var osdList = [];
+                _.each(disks, function(disk) {
+                    if(!disk.inuse) {
+                        var osd = {
+                            node: disk.node,
+                            storage_device: disk.storage_device_id
+                        };
+                        osdList.push(osd);
+                    }
+                });
+                if(osdList.length > 0) {
+                    var osds = {
+                        osds: osdList
+                    };
+                    $log.info(osdList.length + " OSDs needs to be added to " + cluster.cluster_name);
+                    OSDService.create(osds).then(function(result) {
+                        if(result.status === 202) {
+                            RequestTrackingService.add(result.data, 'Adding OSDs to cluster \'' + cluster.cluster_name + '\'');
+                        }
+                        else {
+                            $log.error('Unexpected response from OSD.create', result);
+                        }
+                    });
+                }
             };
         };
         return ['$scope', '$q', '$log', '$location', '$routeParams', '$modal', '$timeout', 'ClusterService', 'ServerService', 'OSDService', 'UtilService', 'RequestTrackingService', 'RequestService', ClusterExpandController];

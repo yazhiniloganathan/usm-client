@@ -369,14 +369,16 @@
                         pg_num: parseInt(pool.pgNum)
                     });
                 });
-                PoolService.create(poolsRequest).then(function(result) {
-                    if(result.status === 202) {
-                        RequestTrackingService.add(result.data, 'Creating pools in cluster \'' + cluster.cluster_name + '\'');
-                    }
-                    else {
-                        $log.error('Unexpected response from Pools.create', result);
-                    }
-                });
+                if(poolsRequest.pools.length > 0) {
+                    PoolService.create(poolsRequest).then(function(result) {
+                        if(result.status === 202) {
+                            RequestTrackingService.add(result.data, 'Creating pools in cluster \'' + cluster.cluster_name + '\'');
+                        }
+                        else {
+                            $log.error('Unexpected response from Pools.create', result);
+                        }
+                    });
+                }
             };
         };
         return ['$scope', '$q', '$log', '$modal', '$location', '$timeout', 'ClusterService', 'ServerService', 'VolumeService', 'OSDService', 'PoolService', 'UtilService', 'RequestTrackingService', 'RequestService', ClusterNewController];
