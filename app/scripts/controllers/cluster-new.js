@@ -3,7 +3,7 @@
     'use strict';
     define(['lodash', 'helpers/cluster-helpers', 'helpers/volume-helpers', 'helpers/modal-helpers'], function(_, ClusterHelpers, VolumeHelpers, ModalHelpers) {
 
-        var ClusterNewController = function($scope, $q, $log, $modal, $location, $timeout, ClusterService, ServerService, VolumeService, OSDService, UtilService, RequestTrackingService, RequestService) {
+        var ClusterNewController = function($scope, $q, $log, $modal, $location, $timeout, ClusterService, ServerService, VolumeService, OSDService, PoolService, UtilService, RequestTrackingService, RequestService) {
             this.step = 1;
             this.summaryHostsSortOrder = undefined;
             var self = this;
@@ -41,6 +41,9 @@
             this.newVolume.sizeUnits = VolumeHelpers.getTargetSizeUnits();
             this.newVolume.sizeUnit = this.newVolume.sizeUnits[0];
             this.pools = [];
+            this.newPool = {};
+            this.newPool.copyCountList = VolumeHelpers.getCopiesList();
+            this.newPool.copyCount = VolumeHelpers.getRecomenedCopyCount();
 
             ServerService.getDiscoveredHosts().then(function(freeHosts) {
                 _.each(freeHosts, function(freeHost) {
@@ -188,6 +191,13 @@
                 this.newVolume.sizeUnit = this.newVolume.sizeUnits[0];
             };
 
+            this.addNewPool = function(newPool) {
+                this.pools.push(newPool);
+                this.newPool = {};
+                this.newPool.copyCountList = VolumeHelpers.getCopiesList();
+                this.newPool.copyCount = VolumeHelpers.getRecomenedCopyCount();
+            };
+
             this.moveStep = function(nextStep) {
                 this.step = (this.step === 1 && this.clusterName === undefined) ? this.step : this.step + nextStep;
             };
@@ -224,6 +234,8 @@
 
                 var volumes = this.volumes;
 
+                var pools = this.pools;
+
                 var cluster = {
                     cluster_name: this.clusterName,
                     cluster_type: this.clusterType.id,
@@ -252,7 +264,7 @@
                                     $log.info('Cluster \'' + self.clusterName + '\' is created successfully');
                                     ClusterService.getByName(self.clusterName).then(function(result){
                                         cluster.cluster_id = result.cluster_id;
-                                        self.postClusterCreate(cluster, disks, volumes);
+                                        self.postClusterCreate(cluster, disks, volumes, pools);
                                     });
                                 }
                                 else {
@@ -269,13 +281,13 @@
                 });
             };
 
-            this.postClusterCreate = function(cluster, disks, volumes) {
+            this.postClusterCreate = function(cluster, disks, volumes, pools) {
                 $log.info('Post Cluster Create');
                 if(self.clusterType.type === 'Gluster') {
                     self.postGlusterClusterCreate(cluster, volumes);
                 }
                 else {
-                    self.postCephClusterCreate(cluster, disks);
+                    self.postCephClusterCreate(cluster, disks, pools);
                 }
             };
 
@@ -311,7 +323,7 @@
                 });
             }
 
-            this.postCephClusterCreate = function(cluster, disks) {
+            this.postCephClusterCreate = function(cluster, disks, pools) {
                 var osdList = [];
                 _.each(disks, function(disk) {
                     var osd = {
@@ -325,9 +337,48 @@
                 };
                 OSDService.create(osds).then(function(result) {
                     RequestTrackingService.add(result.data, 'Adding OSDs to cluster \'' + cluster.cluster_name + '\'');
+                    var callback = function() {
+                        $log.info('Adding OSDs callback '+ result.data);
+                        RequestService.get(result.data).then(function (request) {
+                            if (request.status === 'FAILED' || request.status === 'FAILURE') {
+                                $log.info('Adding OSDs to cluster \'' + self.clusterName + '\' is failed');
+                            }
+                            else if (request.status === 'SUCCESS'){
+                                $log.info('Adding OSDs to cluster \'' + self.clusterName + '\' is completed successfully');
+                                self.createCephPools(cluster, disks, pools);
+                            }
+                            else {
+                                $log.info('Waiting for OSDs to be added to cluster \'' + self.clusterName + '\'');
+                                $timeout(callback, 5000);
+                            }
+                        });
+                    };
+                    $timeout(callback, 5000);
+                });
+            };
+
+            this.createCephPools = function(cluster, disks, pools) {
+                $log.info('Post OSD Create');
+                var poolsRequest = {
+                    cluster: cluster.cluster_id,
+                    pools: []
+                };
+                _.each(pools, function(pool) {
+                    poolsRequest.pools.push({
+                        pool_name: pool.name,
+                        pg_num: parseInt(pool.pgNum)
+                    });
+                });
+                PoolService.create(poolsRequest).then(function(result) {
+                    if(result.status === 202) {
+                        RequestTrackingService.add(result.data, 'Creating pools in cluster \'' + cluster.cluster_name + '\'');
+                    }
+                    else {
+                        $log.error('Unexpected response from Pools.create', result);
+                    }
                 });
             };
         };
-        return ['$scope', '$q', '$log', '$modal', '$location', '$timeout', 'ClusterService', 'ServerService', 'VolumeService', 'OSDService', 'UtilService', 'RequestTrackingService', 'RequestService', ClusterNewController];
+        return ['$scope', '$q', '$log', '$modal', '$location', '$timeout', 'ClusterService', 'ServerService', 'VolumeService', 'OSDService', 'PoolService', 'UtilService', 'RequestTrackingService', 'RequestService', ClusterNewController];
     });
 })();
