@@ -41,17 +41,17 @@
     </tr>
   </thead>
   <tbody>
-      <tr ng-repeat="volume in cluster.volumes">
-        <td>{{volume.name}}</td>
-        <td>{{volume.copyCount}}</td>
-        <td>{{volume.size}} {{volume.sizeUnit.unit}}</td>
-        <td>
-          <ul class="list-unstyled">
-            <li ng-repeat="disk in volume.disks">
-              {{disk.node}} : {{disk.device_path}}
-            </li>
-          </ul>
-        </td>
-      </tr>
+    <tr ng-repeat="volume in cluster.volumes">
+      <td>{{volume.name}}</td>
+      <td>{{volume.copyCount}}</td>
+      <td>{{volume.size}} {{volume.sizeUnit.unit}}</td>
+      <td>
+        <ul class="list-unstyled">
+          <li ng-repeat="disk in volume.disks">
+            {{disk.node}} : {{disk.device_path}}
+          </li>
+        </ul>
+      </td>
+    </tr>
   </tbody>
 </table>
