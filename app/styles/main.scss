@@ -165,3 +165,35 @@
         margin-bottom: 5px;
     }
 }
+
+.admin-dropdown {
+    width:250px;
+    right: 20px;
+    left: auto !important;
+
+    .header {
+        padding: 10px;
+        border-bottom: 1px solid #BCA4A4;
+    }
+
+    .content {
+        height: 400px;
+    }
+
+    .task-item {
+        border-bottom: 1px solid #BCA4A4;
+        padding: 4px;
+    }
+
+    .task-progress {
+        margin-bottom: 5px;
+    }
+}
+
+.pic-height {
+    line-height:175px;
+}
+
+.pic-align  {
+    text-align: center;
+}
