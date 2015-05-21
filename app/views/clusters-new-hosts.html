@@ -10,7 +10,7 @@
           <div class="form-group has-clear">
             <div class="search-pf-input-group">
               <label for="search1" class="sr-only">Search</label>
-              <input id="search1" type="search" class="form-control" placeholder="Search"></input>
+              <input id="search1" ng-model="searchText" type="search" class="form-control" placeholder="Search"></input>
               <button type="button" class="clear" aria-hidden="true" style="display: none;"><span class="pficon pficon-close"></span></button>
             </div>
           </div>
@@ -62,7 +62,7 @@
     </div>
 
     <div class="available-hosts-list">
-      <div class="row host-row" ng-repeat="host in cluster.hosts" ng-click="cluster.selectHost(host, !host.selected)">
+      <div class="row host-row" ng-repeat="host in cluster.hosts | filter:searchText" ng-click="cluster.selectHost(host, !host.selected)">
         <div class="col-md-1 host-col-middle host-col-select">
           <i ng-show="host.selected" class="fa fa-2x fa-check-square-o"></i>
         </div>
