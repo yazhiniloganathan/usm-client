@@ -11,7 +11,7 @@ define(['lodash'], function(_) {
                 html: true,
                 backdrop: 'static'
             });
-
+            
             if($location.path() === '/'){
                 modal.$promise.then(modal.hide);
             }

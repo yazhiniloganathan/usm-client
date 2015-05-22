@@ -20,7 +20,9 @@ define(['lodash'], function(_) {
                 return this.get('me');
             },
             logout: function() {
-                return this.restv1.one('auth').one('logout').get();
+                return this.restv1.one('auth').one('logout').get().then(function(logout)  {
+                    document.location = '';
+                });
             }
         });
         return new Service();
