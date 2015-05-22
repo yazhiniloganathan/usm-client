@@ -1,0 +1,93 @@
+@import 'compass/css3/box-shadow';
+
+.dashboard {
+    background-color: #F5F5F5;
+}
+
+.dashboard-card {
+    background-color: #FFF;
+    margin-top: 10px;
+    @include box-shadow(2px 2px 2px #C5C5C5);
+    font-size: 16px;
+
+    .title {
+        display: block;
+    }
+
+    .content {
+        margin-top: 5px;
+    }
+
+    .ok {
+        color: green;
+    }
+
+    .warning {
+        color: orange;
+    }
+
+    .error {
+        color: red;
+    }
+}
+
+.dashboard-card-single {
+    padding: 10px;
+}
+
+.dashboard-card-multiple {
+
+    .col-left {
+        padding-right: 0px;
+        border-right: 1px solid #C5C5C5;
+    }
+
+    .col-right {
+        padding-left: 0px;
+    }
+}
+
+.dashboard-card-status {
+    min-height: 80px;
+    text-align: center;
+}
+
+.dashboard-card-capacity {
+    min-height: 450px;
+}
+
+.dashboard-card-tops {
+    min-height: 210px;
+
+    .footer {
+        height: 35px;
+        padding: 5px 10px;
+        border-top: 1px solid #E0E0E0;
+        background-color: #F8F8F8;
+        font-size: 12px;
+    }
+
+    .table-content {
+        font-size: 12px;
+        margin-top: 10px;
+
+        td {
+            &:nth-child(1) {
+                font-weight: 700;
+            }
+
+            &:nth-child(2) {
+                text-align: right;
+            }
+        }
+    }
+
+    .body {
+        height: 185px;
+        padding: 10px;
+    }
+}
+
+.dashboard-card-pools {
+    min-height: 220px;
+}

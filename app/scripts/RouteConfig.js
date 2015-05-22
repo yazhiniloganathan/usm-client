@@ -17,6 +17,7 @@
                 templateUrl: 'views/dashboard.html',
                 menuId: 'dashboard',
                 controller: 'DashboardController',
+                controllerAs: 'dash'
             }).when('/first', {
                 templateUrl: 'views/first.html',
                 menuId: '',
