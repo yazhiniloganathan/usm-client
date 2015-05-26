@@ -184,9 +184,45 @@
         margin-bottom: 5px;
     }
 }
+.alert-dropdown {
+    width:250px;
+    right: 20px;
+    left: auto !important;
+
+    .header {
+        padding: 10px;
+        border-bottom: 1px solid #BCA4A4;
+    }
+
+    .content {
+        height: 300px;
+    }
+
+    .task-item {
+        border-bottom: 1px solid #BCA4A4;
+        padding: 4px;
+    }
+
+    .task-progress {
+        margin-bottom: 5px;
+    }
+}
 
 .pic-height {
     line-height:175px;
+}
+.position {
+    position:relative;
+}
+.red {
+    color:red;
+}
+.bell-text { 
+    top:5px;
+    left:2px;
+    position:absolute;
+    font-size:8px;
+    font-weight:bold;
 }
 
 .pic-align  {

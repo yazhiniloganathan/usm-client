@@ -34,6 +34,10 @@
                    });
                 });
             }
+            $scope.getAlert=function() {
+                 $scope.alerts=["Notification1","Notification2","Notification3","Notification4"];
+                 return alerts;
+            }
 
             $scope.acceptHost = function(host) {
                 var hosts = {
