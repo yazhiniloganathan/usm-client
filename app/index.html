@@ -41,6 +41,13 @@
       <div class="collapse navbar-collapse navbar-collapse-1">
         <ul class="nav navbar-nav navbar-utility" ng-controller="RequestsController">
           <li>
+            <a href="" ng-click="getAlert();"data-template="views/alert-dropdown.tpl.html" data-animation="am-fade-and-slide-top" bs-dropdown="" >
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-color task-icon-count" ng-if="alerts.length>0" ng-bind="alerts.length"></span>
+              <div growl></div>
+            </a>
+          </li>
+          <li>
             <a href="" ng-click="getDiscoveredHosts();" data-template="views/discovered-hosts.tpl.html" data-animation="am-fade-and-slide-top" bs-dropdown="">
               <i class="fa fa-desktop"></i>
               <span class="label label-info task-icon-count" ng-if="discoveredHostsLength>0" ng-bind="discoveredHostsLength"></span>

@@ -4,7 +4,9 @@
     define(['lodash'], function(_) {
         var RequestsController = function($scope, $interval, UserService, RequestTrackingService, ServerService, UtilService, RequestService, $log, $timeout) {
             $scope.tasks = [];
+            $scope.alerts=[];
             $scope.discoveredHostsLength = 0;
+            $scope.alertLength=0;
             $scope.reloadTasks = function() {
                 RequestTrackingService.getTrackedRequests().then(function(tasks) {
                     $scope.tasks = tasks;
@@ -13,6 +15,11 @@
             $scope.reloadDiscoveredHostsLength = function() {
                 ServerService.getDiscoveredHosts().then(function(freeHosts) {
                   $scope.discoveredHostsLength = freeHosts.length;
+                });
+            }
+            $scope.reloadAlertLength=function() {
+                ServerService.getAlert().then(function() {
+                    $scope.alertLength=alerts.length;
                 });
             }
 
@@ -33,6 +40,10 @@
                     $scope.discoveredHosts.push(host);
                    });
                 });
+            }
+            $scope.getAlert=function() {
+                 $scope.alerts=["Notification1","Notification2","Notification3","Notification4"];
+                 return alerts;
             }
 
             $scope.acceptHost = function(host) {
@@ -84,6 +95,7 @@
 
             $interval($scope.reloadTasks, 5000);
             $interval($scope.reloadDiscoveredHostsLength, 5000);
+            $interval($scope.reloadAlertLength,5000)
         };
 
         return ['$scope', '$interval', 'UserService', 'RequestTrackingService', 'ServerService', 'UtilService', 'RequestService', '$log', '$timeout', RequestsController];
