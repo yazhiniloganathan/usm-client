@@ -20,6 +20,7 @@
     "patternfly": "1.1.1",
     "angular-patternfly": "~0.0.4",
     "angular-growl-v2": "~0.7.3",
+    "c3-angular": "~0.4.0",
     "ng-autofocus": "hiebj/ng-autofocus"
   },
   "devDependencies": {

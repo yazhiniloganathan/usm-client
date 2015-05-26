@@ -7,6 +7,7 @@
 .dashboard-card {
     background-color: #FFF;
     margin-top: 10px;
+    border-radius: 5px;
     @include box-shadow(2px 2px 2px #C5C5C5);
     font-size: 16px;
 
@@ -54,10 +55,41 @@
 
 .dashboard-card-capacity {
     min-height: 450px;
+
+    .free-space {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 11px;
+    }
+
+    .free-space-value {
+        font-size: 20px;
+        display: block;
+    }
+
+    .c3-chart-arcs-title {
+        font-size: 20px;
+    }
+
+    .usage-trending {
+        min-height: 80px;
+        border-top: 1px solid #E0E0E0;
+        font-size: 11px;
+    }
+
+    .usage-trending-content {
+        min-height: 60px;
+        display: block;
+    }
+
+    .usage-trending-footer {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
 
 .dashboard-card-tops {
-    min-height: 210px;
+    min-height: 230px;
 
     .footer {
         height: 35px;
@@ -83,11 +115,80 @@
     }
 
     .body {
-        height: 185px;
+        height: 195px;
         padding: 10px;
     }
 }
 
 .dashboard-card-pools {
     min-height: 220px;
+
+    .legends {
+        padding-top: 20px;
+    }
+
+    .legend {
+        font-size: 11px;
+        display: block;
+        padding-bottom: 10px;
+    }
+
+    .legend-square {
+        padding-right: 10px;
+    }
+
+    .legend-l0 {
+        color: red;
+    }
+
+    .legend-l1 {
+        color: #EC7A08;
+    }
+
+    .legend-l2 {
+        color: #F9D67A;
+    }
+
+    .legend-l3 {
+        color: #E1F4FF;
+    }
+
+    .heat-map-title {
+        display: block;
+        font-size: 13px;
+        font-weight: bold;
+        padding-bottom: 5px;
+    }
+
+    .heat-map {
+        height: 160px;
+        width: 160px;
+    }
+
+    .heat-l0 {
+        background-color: red;
+    }
+
+    .heat-l1 {
+        background-color: #EC7A08;
+    }
+
+    .heat-l2 {
+        background-color: #F9D67A;
+    }
+
+    .heat-l3 {
+        background-color: #E1F4FF;
+    }
+
+    .square {
+        float:left;
+        position: relative;
+        width: 18.5%;
+        padding-bottom : 18.5%;
+        margin:0.7%;
+        background-position:center center;
+        background-repeat:no-repeat;
+        background-size:cover;
+    }
 }

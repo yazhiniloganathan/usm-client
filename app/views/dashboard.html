@@ -1,11 +1,5 @@
 <div class="row dashboard">
-  <div class="col-sm-10 col-md-10">
-    <!-- <div class="page-header page-header-bleed-right">
-      <div class="actions pull-right">
-        <a href="#"><span class="pficon pficon-refresh"></span> Refresh Results</a>
-      </div>
-      <h1>Application Dashboard</h1>
-    </div> -->
+  <div class="col-sm-12 col-md-12">
 
     <!-- Start Dashboard status card-->
     <div class="row">
@@ -61,6 +55,56 @@
         <div class="dashboard-card  dashboard-card-single dashboard-card-capacity">
           <div class="title">
             Capacity Utilization
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary btn-xs">By Type</button>
+                <button type="button" class="btn btn-default btn-xs">By Tier</button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="free-space">
+                <span class="free-space-value">
+                  {{dash.totalFreeSize.size}} {{dash.totalFreeSize.unit}}
+                </span>
+                Available
+              </div>
+            </div>
+            <div class="col-md-9">
+              <c3chart bindto-id="cluster-donut" chart-columns="dash.cluster.types" chart-data="dash.cluster.usages">
+                <chart-donut title="{{dash.totalUsedSize.percentage}}% Used" width="50"> </chart-donut>
+                <chart-legend show-legend="true" legend-position="right"> </chart-legend>
+                <chart-events on-click-data="dash.selectClusterUsage(data)"> </chart-events>
+                <chart-size chart-height="300"></chart-size>
+              </c3chart>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="usage-trending">
+                <div class="usage-trending-content">
+                  <c3chart bindto-id="cluster-trend" chart-columns="dash.cluster.trends.cols" chart-data="dash.cluster.trends.values">
+                    <chart-axis>
+                      <chart-axis-x show="false"> </chart-axis-x>
+                      <chart-axis-y show="false"> </chart-axis-y>
+                    </chart-axis>
+                    <chart-points show-point="false"></chart-points>
+                    <chart-legend show-legend="false"></chart-legend>
+                    <chart-size chart-height="80"></chart-size>
+                    <chart-tooltip show-tooltip="false"></chart-tooltip>
+                  </c3chart>
+                </div>
+                <div class="usage-trending-footer">
+                  <span>Last 30 days - Total Used</span>
+                  <span class="pull-right">
+                    {{dash.totalUsedSize.size}} {{dash.totalUsedSize.unit}}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -170,17 +214,49 @@
           <div class="title">
             Pools and Volumes Utilization
           </div>
+          <div class="row">
+            <div class="col-md-1 legends">
+              <div class="legend">
+                <span class="fa fa-stop legend-square legend-l0"></span>
+                &gt; 90 %
+              </div>
+              <div class="legend">
+                <span class="fa fa-stop legend-square legend-l1"></span>
+                80-90 %
+              </div>
+              <div class="legend">
+                <span class="fa fa-stop legend-square legend-l2"></span>
+                70-80 %
+              </div>
+              <div class="legend">
+                <span class="fa fa-stop legend-square legend-l3"></span>
+                &lt; 70 %
+              </div>
+            </div>
+            <div class="col-md-11">
+              <div class="row">
+                <div class="col-md-2" ng-repeat="cluster in dash.clusterList">
+                  <div class="heat-map-title">
+                    {{cluster.name}}
+                  </div>
+                  <div class="heat-map">
+                    <div class="square heat-l0" ng-class="dash.getHeatLevel(pool.usage)" ng-repeat="pool in cluster.pools"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col-sm-2 col-md-2 sidebar-pf sidebar-pf-right" style="min-height:780px">
+  <!-- <div class="col-sm-2 col-md-2 sidebar-pf sidebar-pf-right" style="min-height:780px">
     <div class="sidebar-header sidebar-header-bleed-left sidebar-header-bleed-right">
       <div class="actions pull-right">
         <span class="label label-default">20</span>
       </div>
       <h2 class="h3">Events</h2>
     </div>
-  </div>
+  </div> -->
 </div>

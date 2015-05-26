@@ -82,8 +82,8 @@
                 });
             };
 
-            $interval($scope.reloadTasks, 5000);
-            $interval($scope.reloadDiscoveredHostsLength, 5000);
+            //$interval($scope.reloadTasks, 5000);
+            //$interval($scope.reloadDiscoveredHostsLength, 5000);
         };
 
         return ['$scope', '$interval', 'UserService', 'RequestTrackingService', 'ServerService', 'UtilService', 'RequestService', '$log', '$timeout', RequestsController];
