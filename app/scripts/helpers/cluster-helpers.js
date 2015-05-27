@@ -14,24 +14,25 @@
                 id:1,
                 type:'Gluster',
                 deploymentTypes: [
-                    { id:1, type:'Demo (2 hosts)', nodeCount:2 },
-                    { id:2, type:'Minimum (3 hosts)', nodeCount:3 },
-                    { id:3, type:'Standard (6 hosts)', nodeCount:6 }
+                    { id:1, type:'Demo (2 nodes)', nodeCount:2 },
+                    { id:2, type:'Minimum (3 nodes)', nodeCount:3 },
+                    { id:3, type:'Standard (6 nodes)', nodeCount:6 },
+                    { id:4, type:'Big (more than 6 nodes)',nodeCount:6}
                 ],
                 workloads: [
                     { id:0, type: 'Generic' },
                     { id:1, type: 'Hadoop' },
                     { id:2, type: 'Virtualization' },
-                    { id:3, type: 'OpenStack(Glance)' }
+                    { id:3, type: 'OpenStack (Glance)' }
                 ]
             },
-            {
+            { 
                 id:2,
                 type:'Ceph',
                 deploymentTypes: [
-                    { id:1, type:'Demo (2 hosts)', nodeCount:2 },
-                    { id:2, type:'Minimum (3 hosts)', nodeCount:3 },
-                    { id:3, type:'Standard (10 hosts)', nodeCount:10 }
+                    { id:1, type:'Demo (2 nodes)', nodeCount:2 },
+                    { id:2, type:'Minimum (3 nodes)', nodeCount:3 },
+                    { id:3, type:'Standard (10 nodes)', nodeCount:10 }
                 ],
                 workloads: [
                     { id:0, type: 'Generic' },
