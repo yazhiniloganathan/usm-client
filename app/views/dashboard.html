@@ -6,44 +6,92 @@
       <div class="col-md-3">
         <div class="dashboard-card dashboard-card-single dashboard-card-status">
           <div class="title">
-            <i class="fa fa-sitemap"></i>
-            Clusters
+            <i class="fa fa-sitemap icon"></i>
+            {{dash.clusters.length}} Clusters
           </div>
           <div class="content">
-            <i class="fa fa-check-circle-o ok"> </i>
+            <ul class="list-inline">
+              <li ng-if="dash.clustersWarning.length === 0 && dash.clustersCritical.length === 0">
+                <i class="fa fa-check-circle-o ok"></i>
+              </li>
+              <li ng-if="dash.clustersWarning.length > 0">
+                <i class="fa  fa-exclamation-triangle icon warning"></i>
+                {{dash.clustersWarning.length}}
+              </li>
+              <li ng-if="dash.clustersCritical.length > 0">
+                <i class="fa fa-times-circle-o icon critical"></i>
+                {{dash.clustersCritical.length}}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="dashboard-card dashboard-card-single dashboard-card-status">
           <div class="title">
-            <i class="fa fa-server"></i>
-            Hosts
+            <i class="fa fa-server icon"></i>
+            {{dash.hosts.length}} Hosts
           </div>
           <div class="content">
-            <i class="fa fa-check-circle-o ok"> </i>
+            <ul class="list-inline">
+              <li ng-if="dash.hostsWarning.length === 0 && dash.hostsCritical.length === 0">
+                <i class="fa fa-check-circle-o ok"></i>
+              </li>
+              <li ng-if="dash.hostsWarning.length > 0">
+                <i class="fa  fa-exclamation-triangle icon warning"></i>
+                {{dash.hostsWarning.length}}
+              </li>
+              <li ng-if="dash.hostsCritical.length > 0">
+                <i class="fa fa-times-circle-o icon critical"></i>
+                {{dash.hostsCritical.length}}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="dashboard-card dashboard-card-single dashboard-card-status">
           <div class="title">
-            <i class="fa fa-database"></i>
-            Volumes &amp; Pools
+            <i class="fa fa-database icon"></i>
+            {{dash.volumes.length+dash.pools.length}} Volumes &amp; Pools
           </div>
           <div class="content">
-            <i class="fa fa-check-circle-o ok"> </i>
+             <ul class="list-inline">
+              <li ng-if="dash.volumesWarning.length === 0 && dash.volumesCritical.length === 0 && dash.poolsWarning.length === 0 && dash.poolsCritical.length === 0">
+                <i class="fa fa-check-circle-o ok"></i>
+              </li>
+              <li ng-if="dash.volumesWarning.length > 0 || dash.poolsWarning.length > 0">
+                <i class="fa  fa-exclamation-triangle icon warning"></i>
+                {{dash.volumesWarning.length+dash.poolsWarning.length}}
+              </li>
+              <li ng-if="dash.volumesCritical.length > 0 || dash.poolsCritical.length > 0">
+                <i class="fa fa-times-circle-o icon critical"></i>
+                {{dash.volumesCritical.length+dash.poolsCritical.length}}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="dashboard-card  dashboard-card-single dashboard-card-status">
           <div class="title">
-            <i class="fa fa-cog"></i>
-            Services
+            <i class="fa fa-cog icon"></i>
+            {{dash.services.length}} Services
           </div>
           <div class="content">
-            <i class="fa fa-check-circle-o ok"> </i>
+             <ul class="list-inline">
+              <li ng-if="dash.servicesWarning.length === 0 && dash.servicesCritical.length === 0">
+                <i class="fa fa-check-circle-o ok"></i>
+              </li>
+              <li ng-if="dash.servicesWarning.length > 0">
+                <i class="fa  fa-exclamation-triangle icon warning"></i>
+                {{dash.servicesWarning.length}}
+              </li>
+              <li ng-if="dash.servicesCritical.length > 0">
+                <i class="fa fa-times-circle-o icon critical"></i>
+                {{dash.servicesCritical.length}}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -59,25 +107,28 @@
           <div class="row">
             <div class="col-md-12">
               <div class="btn-group" role="group">
-                <button type="button" class="btn btn-primary btn-xs">By Type</button>
-                <button type="button" class="btn btn-default btn-xs">By Tier</button>
+                <button type="button" class="btn btn-primary btn-xs" ng-class="dash.config.capacityByType ? 'btn-primary' : 'btn-default'" ng-click="dash.switchCapacityCategory(!dash.config.capacityByType)">By Type</button>
+                <button type="button" class="btn btn-default btn-xs" ng-class="dash.config.capacityByTier ? 'btn-primary' : 'btn-default'" ng-click="dash.switchCapacityCategory(!dash.config.capacityByTier)">By Tier</button>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-3">
-              <div class="free-space">
+              <div class="capacity-info">
                 <span class="free-space-value">
-                  {{dash.totalFreeSize.size}} {{dash.totalFreeSize.unit}}
+                  {{dash.totalCapacity.free}} {{dash.totalCapacity.unit}}
                 </span>
                 Available
+                <span class="total-space">
+                  {{dash.totalCapacity.free+dash.totalCapacity.used}} {{dash.totalCapacity.unit}} Total
+                </span>
               </div>
             </div>
             <div class="col-md-9">
-              <c3chart bindto-id="cluster-donut" chart-columns="dash.cluster.types" chart-data="dash.cluster.usages">
-                <chart-donut title="{{dash.totalUsedSize.percentage}}% Used" width="50"> </chart-donut>
+              <c3chart bindto-id="cluster-donut" chart-columns="dash.totalCapacity.legends" chart-data="dash.totalCapacity.values">
+                <chart-donut title="Usage" width="50"></chart-donut>
                 <chart-legend show-legend="true" legend-position="right"> </chart-legend>
-                <chart-events on-click-data="dash.selectClusterUsage(data)"> </chart-events>
+                <chart-events on-click-data="dash.selectClusterCapacityLegend(data)"> </chart-events>
                 <chart-size chart-height="300"></chart-size>
               </c3chart>
             </div>
@@ -86,7 +137,7 @@
             <div class="col-md-12">
               <div class="usage-trending">
                 <div class="usage-trending-content">
-                  <c3chart bindto-id="cluster-trend" chart-columns="dash.cluster.trends.cols" chart-data="dash.cluster.trends.values">
+                  <c3chart bindto-id="cluster-trend" chart-columns="dash.trendCapacity.legends" chart-data="dash.trendCapacity.values">
                     <chart-axis>
                       <chart-axis-x show="false"> </chart-axis-x>
                       <chart-axis-y show="false"> </chart-axis-y>
@@ -98,9 +149,12 @@
                   </c3chart>
                 </div>
                 <div class="usage-trending-footer">
-                  <span>Last 30 days - Total Used</span>
+                  <span ng-if="dash.trendCapacity.selected.isTotal">Last 30 days - Total Used</span>
+                  <span ng-if="!dash.trendCapacity.selected.isTotal">
+                    Last 30 days - Used by {{dash.trendCapacity.selected.type}}
+                  </span>
                   <span class="pull-right">
-                    {{dash.totalUsedSize.size}} {{dash.totalUsedSize.unit}}
+                    {{dash.trendCapacity.selected.used}} {{dash.totalCapacity.unit}}
                   </span>
                 </div>
               </div>

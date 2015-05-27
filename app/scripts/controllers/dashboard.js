@@ -2,70 +2,179 @@
 	'use strict;'
 	define(['lodash', 'c3'], function(_, c3) {
         window.c3 = c3;
-		var DashboardController = function($scope, $location, $log, ClusterService) {
+		var DashboardController = function($scope, $location, $log, ClusterService, ServerService, PoolService, VolumeService) {
             var self = this;
+            self.config = { capacityByType: true, capacityByTier: false };
+            self.clusters = [];
+            self.clustersWarning = [];
+            self.clustersCritical = [];
+            self.hosts = [];
+            self.hostsWarning = [];
+            self.hostsCritical = [];
+            self.volumes = [];
+            self.volumesWarning = [];
+            self.volumesCritical = [];
+            self.pools = [];
+            self.poolsWarning = [];
+            self.poolsCritical = [];
+            self.services = [];
+            self.servicesWarning = [];
+            self.servicesCritical = [];
+
+            self.clusterTypes = [
+                { id:1, name: 'Block', color: '#48b3ea', type: 'donut' },
+                { id:2, name: 'File', color: '#0088ce' ,type: 'donut' },
+                { id:3, name: 'Object', color: '#00659c', type: 'donut' },
+                { id:9, name: 'Free', color: '#969696', type: 'donut' }
+            ];
+            self.storageTiers = [
+                { id:1, name: 'Default', color: '#48b3ea', type: 'donut' },
+                { id:2, name: 'Faster', color: '#0088ce', type: 'donut' },
+                { id:3, name: 'Slower', color: '#00659c', type: 'donut' },
+                { id:9, name: 'Free', color: '#969696', type: 'donut' }
+            ];
+
+            self.totalCapacity = { free: 0, used: 0, unit: 'TB', usedPercentage:100 };
+            self.totalCapacity.legends = self.clusterTypes;
+            self.totalCapacity.values = [];
+            self.totalCapacity.byType = [];
+            self.totalCapacity.byTier = [];
+
+            self.trendCapacity = {};
+            self.trendCapacity.legends = [
+                { id:1, name: 'Used', color: '#39a5dc', type: 'area-spline' }
+            ];
+            self.trendCapacity.values = [];
+            self.trendCapacity.selected = { used: 0, isTotal: true, type: '' };
+
+
+            this.calaculateTotalCapacity = function() {
+                var byType = [0, 0, 0]; // block, file, object
+                var byTier = [0, 0, 0]; // default, fast, slower
+                var totalFree = 0;
+                var totalUsed = 0;
+
+                _.each(self.clusters, function(cluster) {
+                    var used = byType[cluster.storage_type-1];
+                    used = used + cluster.capacity.used;
+                    byType[cluster.storage_type-1] = used;
+                    byTier[0] = byTier[0] + used;
+                    totalFree = totalFree + cluster.capacity.free;
+                    totalUsed = totalUsed + cluster.capacity.used;
+                });
+
+                 self.totalCapacity.byType = [
+                    { '1': byType[0] },
+                    { '2': byType[1] },
+                    { '3': byType[2] },
+                    { '9': totalFree }
+                ];
+
+                 self.totalCapacity.byTier = [
+                    { '1': byTier[0] },
+                    { '2': byTier[1] },
+                    { '3': byTier[2] },
+                    { '9': totalFree }
+                ];
+
+                self.totalCapacity.free = totalFree;
+                self.totalCapacity.used = totalUsed;
+                self.totalCapacity.usedPercentage = ((totalFree * 100) / (totalUsed + totalFree)).toFixed(0);
+
+                if(self.config.capacityByType) {
+                    self.totalCapacity.legends = self.clusterTypes;
+                    self.totalCapacity.values = self.totalCapacity.byType;
+                }
+                else {
+                    self.totalCapacity.legends = self.storageTiers;
+                    self.totalCapacity.values = self.totalCapacity.byTier;
+                }
+                self.trendCapacity.values = self.getRandomList('1', 50, totalUsed-2, totalUsed);
+                self.trendCapacity.selected.used = totalUsed;
+            };
+
             ClusterService.getList().then(function(clusters) {
                 if(clusters.length === 0) {
                     $location.path('/first');
                 }
+                self.clusters = clusters;
+
+                _.each(self.clusters, function(cluster) {
+                    if(cluster.cluster_status === 1 || cluster.cluster_status === 2) {
+                        self.clustersWarning.push(cluster);
+                    }
+                    else if(cluster.cluster_status === 5) {
+                        self.clustersCritical.push(cluster);
+                    }
+                    var free = parseInt(_.random(6, 15.2).toFixed(2));
+                    var used = parseInt(_.random(6, 15.2).toFixed(2));
+                    cluster.capacity = { free: free, used: used };
+                    cluster.capacity.total = cluster.capacity.free + cluster.capacity.used;
+                });
+                self.calaculateTotalCapacity();
             });
 
-            this.cluster = {};
-            this.cluster.types = [
-                { id:1, name: 'File', color: '#39a5dc', type: 'donut' },
-                { id:2, name: 'Block', color: '#0088ce' ,type: 'donut' },
-                { id:3, name: 'Object', color: '#00659c', type: 'donut' },
-                { id:9, name: 'Free', color: '#969696', type: 'donut' }
-            ];
+            ServerService.getList().then(function(hosts) {
+                self.hosts = hosts;
+                _.each(self.hosts, function(host) {
+                    if(host.node_status == 2) {
+                        self.hostsWarning.push(host);
+                    }
+                    host.cpu = _.random(100);
+                    host.memory = _.random(100);
+                });
+            });
 
-            this.cluster.usages = [
-                {'1': 2.5},
-                {'2': 3.5},
-                {'3': 2.0},
-                {'9': 2.5}
-            ];
+            VolumeService.getList().then(function(volumes) {
+                self.volumes = volumes;
+                self.services = [];
+                _.each(self.volumes, function(volume) {
+                    if(volume.volume_status === 1) {
+                        volumesWarning.push(volume);
+                    }
+                    else if(volume.volume_status === 2) {
+                        volumesCritical.push(volume);
+                    }
+                });
+            });
 
-            this.totalFreeSize = { size:2.5, unit: 'TB', percentage: 23.8 };
-            this.totalUsedSize = { size:8.0, unit: 'TB', percentage: 76.2 };
-            this.totalSize = { size:10.5, unit: 'TB' };
+            PoolService.getList().then(function(pools) {
+                self.pools = pools;
+            });
 
-            this.cluster.trends = {};
-            this.cluster.trends.cols = [
-                { id:1, name: 'Used', color: '#39a5dc', type: 'area' }
-            ];
-            this.cluster.trends.values = [
-                { '1': 10 },
-                { '1': 12 },
-                { '1': 14 },
-                { '1': 16 },
-                { '1': 18 },
-            ];
-
-            this.selectClusterUsageCategory = function(byType) {
-                if(byType) {
-
-                }
-                else {
-
+            this.switchCapacityCategory = function(execute) {
+                if(execute) {
+                    self.config.capacityByType = !self.config.capacityByType;
+                    self.config.capacityByTier = !self.config.capacityByTier;
+                    if(self.config.capacityByType) {
+                        self.totalCapacity.legends = self.clusterTypes;
+                        self.totalCapacity.values = self.totalCapacity.byType;
+                    }
+                    else {
+                        self.totalCapacity.legends = self.storageTiers;
+                        self.totalCapacity.values = self.totalCapacity.byTier;
+                    }
                 }
             }
 
-            this.selectClusterUsage = function(data) {
-                $log.info(data);
-                this.cluster.trends.values = this.getRandomList('1', 50, 100);
+            this.selectClusterCapacityLegend = function(data) {
+                var isFreeSelected = data.id === '9';
+                var used = isFreeSelected ? self.totalCapacity.used : data.value;
+                self.trendCapacity.values = this.getRandomList('1', 50, used-2, used);
+                self.trendCapacity.selected.used = used;
+                self.trendCapacity.selected.isTotal = isFreeSelected;
+                self.trendCapacity.selected.type = data.name;
             };
 
-            this.getRandomList = function(key, count, max) {
+            this.getRandomList = function(key, count, min, max) {
                 var list = [];
                 _.each(_.range(count), function(index) {
                     var value = {};
-                    value[key] = _.random(0, max);
+                    value[key] = _.random(min, max, true);
                     list.push(value);
                 });
                 return list;
             };
-
-            this.cluster.trends.values = this.getRandomList('1', 50, 100);
 
             this.iopsList = [
                 { name: 'MyCeph1', value: 354000 },
@@ -123,6 +232,6 @@
                 }
             };
 		}
-		return ['$scope', '$location', '$log', 'ClusterService', DashboardController];
+		return ['$scope', '$location', '$log', 'ClusterService', 'ServerService', 'VolumeService', 'PoolService', DashboardController];
 	});
 })();

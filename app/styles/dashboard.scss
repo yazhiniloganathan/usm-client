@@ -15,10 +15,6 @@
         display: block;
     }
 
-    .content {
-        margin-top: 5px;
-    }
-
     .ok {
         color: green;
     }
@@ -27,13 +23,13 @@
         color: orange;
     }
 
-    .error {
+    .critical {
         color: red;
     }
 }
 
 .dashboard-card-single {
-    padding: 10px;
+    padding: 5px 10px;
 }
 
 .dashboard-card-multiple {
@@ -51,24 +47,43 @@
 .dashboard-card-status {
     min-height: 80px;
     text-align: center;
+
+    .icon {
+        padding-right: 5px;
+    }
+
+    .content {
+        font-size: 20px;
+    }
+
+    li + li {
+        border-left: 1px solid #E0E0E0;
+        margin-left: 5px;
+        padding-left: 10px;
+    }
 }
 
 .dashboard-card-capacity {
     min-height: 450px;
 
-    .free-space {
+    .capacity-info {
         text-align: center;
         margin-top: 30px;
         font-size: 11px;
     }
 
     .free-space-value {
-        font-size: 20px;
+        font-size: 30px;
+        display: block;
+    }
+
+    .total-space {
+        font-size: 15px;
         display: block;
     }
 
     .c3-chart-arcs-title {
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .usage-trending {
