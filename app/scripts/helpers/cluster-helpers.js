@@ -16,8 +16,9 @@
                 deploymentTypes: [
                     { id:1, type:'Demo (2 nodes)', nodeCount:2 },
                     { id:2, type:'Minimum (3 nodes)', nodeCount:3 },
-                    { id:3, type:'Standard (6 nodes)', nodeCount:6 },
-                    { id:4, type:'Big (more than 6 nodes)',nodeCount:6}
+                    { id:3, type:'Basic (more than 3 nodes)', nodeCount:3 },
+                    { id:4, type:'Standard (6 nodes)', nodeCount:6 },
+                    { id:5, type:'Big (more than 6 nodes)',nodeCount:6}
                 ],
                 workloads: [
                     { id:0, type: 'Generic' },
@@ -32,7 +33,9 @@
                 deploymentTypes: [
                     { id:1, type:'Demo (2 nodes)', nodeCount:2 },
                     { id:2, type:'Minimum (3 nodes)', nodeCount:3 },
-                    { id:3, type:'Standard (10 nodes)', nodeCount:10 }
+                    { id:3, type:'Basic (more than 3 nodes)', nodeCount:3 },
+                    { id:4, type:'Standard (10 nodes)', nodeCount:10 }
+                    { id:5, type:'Big (more than 10 nodes)',nodeCount:10}
                 ],
                 workloads: [
                     { id:0, type: 'Generic' },
