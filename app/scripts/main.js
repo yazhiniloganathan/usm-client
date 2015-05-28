@@ -70,7 +70,8 @@
             'c3-angular': '../bower_components/c3-angular/c3-angular.min',
             'c3': '../bower_components/c3/c3',
             'd3': '../bower_components/d3/d3',
-            'ng-autofocus': '../bower_components/ng-autofocus/autofocus.min'
+            'ng-autofocus': '../bower_components/ng-autofocus/autofocus.min',
+            'numeral': '../bower_components/numeral/min/numeral.min'
         }
     });
 

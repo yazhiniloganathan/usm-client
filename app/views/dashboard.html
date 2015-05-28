@@ -175,9 +175,9 @@
                       </div>
                       <table class="table table-striped table-content">
                         <tbody>
-                          <tr ng-repeat="iops in dash.iopsList">
-                            <td> {{iops.name}} </td>
-                            <td> {{iops.value}} </td>
+                          <tr ng-repeat="cluster in dash.clusters | orderBy: '-perf.iops' | limitTo: 5">
+                            <td> {{cluster.cluster_name}} </td>
+                            <td> {{cluster.perf.iopsFormatted}} </td>
                           </tr>
                         </tbody>
                       </table>
@@ -195,9 +195,9 @@
                       </div>
                       <table class="table table-striped table-content">
                         <tbody>
-                          <tr ng-repeat="bandwidth in dash.bandwidthList">
-                            <td> {{bandwidth.name}} </td>
-                            <td> {{bandwidth.value}} </td>
+                          <tr ng-repeat="cluster in dash.clusters | orderBy: '-perf.bandwidth' | limitTo: 5">
+                            <td> {{cluster.cluster_name}} </td>
+                            <td> {{cluster.perf.bandwidthFormatted}} </td>
                           </tr>
                         </tbody>
                       </table>
@@ -223,9 +223,9 @@
                       </div>
                       <table class="table table-striped table-content">
                         <tbody>
-                          <tr ng-repeat="cpu in dash.cpuList">
-                            <td> {{cpu.name}} </td>
-                            <td> {{cpu.value}}% </td>
+                          <tr ng-repeat="host in dash.hosts | orderBy: '-perf.cpu' | limitTo: 5">
+                            <td> {{host.node_name}} </td>
+                            <td> {{host.perf.cpu}}% </td>
                           </tr>
                         </tbody>
                       </table>
@@ -243,9 +243,9 @@
                       </div>
                       <table class="table table-striped table-content">
                         <tbody>
-                          <tr ng-repeat="memory in dash.memoryList">
-                            <td> {{memory.name}} </td>
-                            <td> {{memory.value}}% </td>
+                          <tr ng-repeat="host in dash.hosts | orderBy: '-perf.memmory' | limitTo: 5">
+                            <td> {{host.node_name}} </td>
+                            <td> {{host.perf.memory}}% </td>
                           </tr>
                         </tbody>
                       </table>

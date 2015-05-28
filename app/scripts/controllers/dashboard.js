@@ -1,6 +1,6 @@
 (function () {
 	'use strict;'
-	define(['lodash', 'c3'], function(_, c3) {
+	define(['lodash', 'numeral', 'c3'], function(_, numeral, c3) {
         window.c3 = c3;
 		var DashboardController = function($scope, $location, $log, ClusterService, ServerService, PoolService, VolumeService) {
             var self = this;
@@ -110,6 +110,17 @@
                     var used = parseInt(_.random(6, 15.2).toFixed(2));
                     cluster.capacity = { free: free, used: used };
                     cluster.capacity.total = cluster.capacity.free + cluster.capacity.used;
+
+                    var iops = _.random(30000,60000);
+                    var iopsFormatted = numeral(iops).format('0,0');
+                    var bandwidth = _.random(5000, 15000);
+                    var bandwidthFormatted = numeral(bandwidth).format('0,0');
+                    cluster.perf = {
+                        iops: iops,
+                        iopsFormatted: iopsFormatted,
+                        bandwidth: bandwidth,
+                        bandwidthFormatted: bandwidthFormatted
+                    };
                 });
                 self.calaculateTotalCapacity();
             });
@@ -120,8 +131,9 @@
                     if(host.node_status == 2) {
                         self.hostsWarning.push(host);
                     }
-                    host.cpu = _.random(100);
-                    host.memory = _.random(100);
+                    var cpu = _.random(70, 100);
+                    var memory = _.random(70, 100);
+                    host.perf = { cpu: cpu, memory: memory };
                 });
             });
 
