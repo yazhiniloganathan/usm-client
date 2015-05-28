@@ -17,7 +17,9 @@
             }
 
             $scope.logoutUser = function()   {
-               UserService.logout();
+               UserService.logout().then(function(logout)  {
+                    document.location = '';
+                });
             }
 
             $scope.getDiscoveredHosts = function() {
