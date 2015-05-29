@@ -28,6 +28,16 @@ define(['lodash'], function(_) {
                     return volumes;
                 });
             },
+            // **getListByCluster
+            // **@returns** a promise with all volumes of the cluster.
+            getListByCluster: function(clusterId) {
+                return this.restangular.all('volumes').getList().then(function(volumes) {
+                    return _.filter(volumes, function(volume) {
+                        return volume.cluster === clusterId;
+                    });
+                });
+            },
+
             // **get**
             // **@returns** a promise with volume metadata.
             get: function(id) {

@@ -1,0 +1,128 @@
+ .blade-view {
+    background: none repeat scroll 0 0 #fff;
+    margin-left: 0 !important;
+    width: 100%;
+    overflow: unset;
+    position: relative;
+    min-height: 158px;
+    margin-top: 15px;
+    margin-bottom : 15px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px #c5c5c5;
+    border: 1px solid lightgray;
+ }
+
+ .blade-view .vertical-line-for-gluster {
+    background-color: dimgray;
+    min-height: 157px;
+    padding: 14px;
+    position: absolute;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+ }
+
+ .blade-view .vertical-line-for-ceph {
+    background-color: gainsboro;
+    min-height: 157px;
+    padding: 14px;
+    position: absolute;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+ }
+
+ .blade-view .set-top-margin {
+    margin-top: 43px;
+ }
+
+ .blade-view .heading {
+    font-size: 18px;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+ }
+
+ .blade-view .sub-heading {
+    font-size: 13px;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+ }
+
+ .blade-view .set-margin {
+    font-size: 22px;
+    margin-left: 18px;
+    margin-top: 2px;
+ }
+
+ .blade-view .cross-mark {
+    color: red;
+ }
+
+ .blade-view .ok-mark {
+    color: green;
+ }
+
+ .blade-view .exclamation-mark {
+    color: red;
+    font-size: 20px;
+    margin-right: 9px;
+ }
+
+ .blade-view .percentage-heading {
+    color: green;
+    font-size: 40px;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    margin-top: -22px;
+ }
+
+ .blade-view .percentage-used {
+    font-size: 13px;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    margin-left: 8px;
+ }
+
+ .blade-view .disk-info-cart {
+    margin-top: -12px;
+ }
+
+ .blade-view .adjust-area-spline {
+    margin-top: -17px;
+ }
+
+ .blade-view .adjust-gauge {
+    margin-top: -16px;
+ }
+
+ .blade-view .add-cursor-pointer {
+   cursor: pointer;
+ }
+
+ .blade-view .cluster-dropdown-menu {
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 11px;
+    text-align: inherit;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+ }
+
+ .blade-view .vertical-text-for-gluster {
+    color: white;
+    float: left;
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: -36px;
+    margin-top: 51px;
+    text-transform: uppercase;
+    transform: rotate(270deg);
+ }
+
+ .blade-view .vertical-text-for-ceph {
+    color: black;
+    float: left;
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: -22px;
+    margin-top: 51px;
+    text-transform: uppercase;
+    transform: rotate(270deg);
+ }
