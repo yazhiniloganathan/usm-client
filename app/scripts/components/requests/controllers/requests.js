@@ -5,6 +5,8 @@
         var RequestsController = function($scope, $interval, UserService, RequestTrackingService, ServerService, UtilService, RequestService, $log, $timeout) {
             $scope.tasks = [];
             $scope.discoveredHostsLength = 0;
+            $scope.discoveredHosts = [];
+
             $scope.reloadTasks = function() {
                 RequestTrackingService.getTrackedRequests().then(function(tasks) {
                     $scope.tasks = tasks;
@@ -23,19 +25,33 @@
             }
 
             $scope.getDiscoveredHosts = function() {
-                $scope.discoveredHosts = [];
+    
+                $scope.discoveredHosts = _.filter($scope.discoveredHosts, function(host)    {
+                    return host.state !== "ACCEPTED";
+                });
+
                 ServerService.getDiscoveredHosts().then(function(freeHosts) {
                    _.each(freeHosts, function(freeHost) {
-                    var host = {
-                        hostname: freeHost.node_name,
-                        ipaddress: freeHost.management_ip,
-                        state: "UNACCEPTED",
-                        selected: false
-                    };
-                    $scope.discoveredHosts.push(host);
+                        var host = {
+                            hostname: freeHost.node_name,
+                            ipaddress: freeHost.management_ip,
+                            state: "UNACCEPTED",
+                            selected: false
+                        };
+
+                        var isPresent = false;
+                       
+                        isPresent = _.some($scope.discoveredHosts, function(dHost)  {
+                            return dHost.hostname === host.hostname;
+                        });
+
+                        if(!isPresent)  {
+                            $scope.discoveredHosts.push(host);
+                        }
                    });
                 });
             }
+
             $scope.getAlert=function() {
                  $scope.alerts=["Notification1","Notification2","Notification3","Notification4"];
                  return alerts;
@@ -88,10 +104,10 @@
                 });
             };
 
-            //$interval($scope.reloadTasks, 5000);
-            //$interval($scope.reloadDiscoveredHostsLength, 5000);
+            $interval($scope.reloadTasks, 5000);
+            $interval($scope.reloadDiscoveredHostsLength, 5000);
         };
 
         return ['$scope', '$interval', 'UserService', 'RequestTrackingService', 'ServerService', 'UtilService', 'RequestService', '$log', '$timeout', RequestsController];
     });
-})();
+})();.,,
