@@ -112,7 +112,7 @@
                     if(result.status === 202) {
                         RequestTrackingService.add(result.data, 'Creating volume \'' + volume.volume_name + '\'');
                         var modal = ModalHelpers.SuccessfulRequest($modal, {
-                            title: 'Create Volume Request is Successful',
+                            title: 'Create Volume Request is Submitted',
                             container: '.usmClientApp'
                         });
                         modal.$scope.$hide = _.wrap(modal.$scope.$hide, function($hide) {

@@ -23,6 +23,7 @@
               <th>Cluster</th>
               <th>Type</th>
               <th>Copies</th>
+              <th>Capacity</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -33,6 +34,9 @@
               <td>{{volume.cluster_name}}</td>
               <td>{{volumes.getVolumeType(volume.volume_type)}}</td>
               <td>{{volume.replica_count}}</td>
+              <td>
+                {{volume.capacity.freeFormatted}} Free of {{volume.capacity.totalFormatted}} Total
+              </td>
               <td>{{volumes.getVolumeState(volume.volume_status)}}</td>
             </tr>
           </tbody>

@@ -52,6 +52,13 @@ define(['lodash'], function(_) {
                     return bricks;
                 });
             },
+            // **getCapacity**
+            // **@returns** a promise with volume capacity.
+            getCapacity: function(id) {
+                return this.restangular.one('volumes', id).one('utilization').get().then(function(capacity) {
+                    return { total: capacity.fs_size, free: capacity.fs_free };
+                });
+            },
             // **create**
             // **@param** volume - Information about the volume and list of bricks.
             // **@returns** a promise which returns a request id to track the task.
@@ -63,6 +70,12 @@ define(['lodash'], function(_) {
             // **@returns** a promise which returns a request id to track the task.
             expand: function(volume) {
                 return this.restangularFull.all('bricks').post(volume);
+            },
+            // **start**
+            // **@param** id - Volume Identifier.
+            // **@returns** a promise with status code.
+            start: function(id) {
+                return this.restangularFull.one('volumes', id).one('start').get();
             }
         });
         return new Service();

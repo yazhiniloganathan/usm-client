@@ -1,7 +1,7 @@
 (function() {
     'use strict';
-    define(['lodash', 'helpers/volume-helpers'], function(_, VolumeHelpers) {
-        var VolumeController = function($scope, $location, $interval, ClusterService, VolumeService) {
+    define(['lodash', 'numeral', 'helpers/volume-helpers'], function(_, numeral, VolumeHelpers) {
+        var VolumeController = function($scope, $q, $location, $interval, ClusterService, VolumeService) {
             ClusterService.getList().then(function(clusters) {
                 if(clusters.length === 0) {
                     $location.path('/first');
@@ -9,16 +9,22 @@
             });
 
             var self = this;
+            self.reloading = false;
             this.list = [];
             this.selectAllVolumes = false;
 
-            var timer = $interval(reloadData, 5000);
+            var timer = $interval(reloadData, 10000);
             $scope.$on('$destroy', function() {
                 $interval.cancel(timer);
             });
             reloadData();
 
             function reloadData() {
+                if(self.reloading) {
+                    return;
+                }
+
+                self.reloading = true;
                 VolumeService.getList().then(function(volumes) {
                     var selectedVolumes = _.filter(self.list, function(volume){
                         return volume.selected;
@@ -29,9 +35,31 @@
                         });
                         volume.selected = !_.isUndefined(selected);
                     });
-                    self.list = volumes;
+
+                    var requests = [];
+                    _.each(volumes, function(volume) {
+                        requests.push(VolumeService.getCapacity(volume.volume_id));
+                    });
+                    $q.all(requests).then(function(capacityList) {
+                        var index = 0;
+                        _.each(capacityList, function(capacity) {
+                            volumes[index].capacity = capacity;
+                            volumes[index].capacity.freeFormatted = self.formatSize(capacity.free);
+                            volumes[index].capacity.totalFormatted = self.formatSize(capacity.total);
+                            index++;
+                        });
+                        self.list = volumes;
+                        self.reloading = false;
+                    });
+                    if(self.list.length === 0) {
+                        self.list = volumes;
+                    }
                 });
-            }
+            };
+
+            this.formatSize = function(size) {
+                return numeral(size).format('0.0 b');
+            };
 
             this.getVolumeType = function(id) {
                 return VolumeHelpers.getVolumeType(id).type;
@@ -60,6 +88,6 @@
                 return false;
             };
         };
-        return ['$scope', '$location', '$interval', 'ClusterService', 'VolumeService', VolumeController];
+        return ['$scope', '$q', '$location', '$interval', 'ClusterService', 'VolumeService', VolumeController];
     });
 })();
