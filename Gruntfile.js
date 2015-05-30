@@ -385,7 +385,11 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
-      }
+      },
+      uglify: {
+        src: '.tmp/concat/scripts/main.js',
+        dest: '<%= yeoman.dist %>/scripts/main.js'
+      },
     },
 
     // Run some tasks in parallel to speed up the build process
@@ -510,7 +514,7 @@ module.exports = function (grunt) {
     'copy:fonts',
     'cdnify',
     'cssmin',
-    'uglify',
+    'copy:uglify', // This is done to speedup the build.
     'rev',
     'usemin',
     'htmlmin'
