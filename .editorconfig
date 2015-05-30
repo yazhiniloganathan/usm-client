@@ -6,10 +6,13 @@ root = true
 
 
 [*]
-
-# Change these settings to your own preference
 indent_style = space
+
+[*.html]
 indent_size = 2
+
+[*.{js,scss}]
+indent_size = 4
 
 # We recommend you to keep these unchanged
 end_of_line = lf
