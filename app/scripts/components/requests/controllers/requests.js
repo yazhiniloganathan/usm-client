@@ -25,7 +25,7 @@
             }
 
             $scope.getDiscoveredHosts = function() {
-    
+
                 $scope.discoveredHosts = _.filter($scope.discoveredHosts, function(host)    {
                     return host.state !== "ACCEPTED";
                 });
@@ -40,7 +40,7 @@
                         };
 
                         var isPresent = false;
-                       
+
                         isPresent = _.some($scope.discoveredHosts, function(dHost)  {
                             return dHost.hostname === host.hostname;
                         });
@@ -110,4 +110,4 @@
 
         return ['$scope', '$interval', 'UserService', 'RequestTrackingService', 'ServerService', 'UtilService', 'RequestService', '$log', '$timeout', RequestsController];
     });
-})();.,,
+})();
