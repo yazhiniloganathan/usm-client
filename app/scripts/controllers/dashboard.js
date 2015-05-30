@@ -48,7 +48,7 @@
             self.trendCapacity.selected = { used: 0, isTotal: true, type: '' };
 
 
-            this.calaculateTotalCapacity = function() {
+            this.calculateTotalCapacity = function() {
                 var byType = [0, 0, 0]; // block, file, object
                 var byTier = [0, 0, 0]; // default, fast, slower
                 var totalFree = 0;
@@ -113,7 +113,7 @@
 
                     var iops = _.random(30000,60000);
                     var iopsFormatted = numeral(iops).format('0,0');
-                    var bandwidth = _.random(5000, 15000);
+                    var bandwidth = _.random(500, 1500);
                     var bandwidthFormatted = numeral(bandwidth).format('0,0');
                     cluster.perf = {
                         iops: iops,
@@ -122,7 +122,7 @@
                         bandwidthFormatted: bandwidthFormatted
                     };
                 });
-                self.calaculateTotalCapacity();
+                self.calculateTotalCapacity();
             });
 
             ServerService.getList().then(function(hosts) {

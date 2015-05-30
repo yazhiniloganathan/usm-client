@@ -13,7 +13,7 @@
       </div>
       <div ng-class="cluster.step == 3 ? 'active' : (cluster.step > 3 ? 'visited' : 'default')">
         <div class="wizard-step-dot"><i class="fa fa-circle"></i></div>
-        <div class="step-text">3. Edit Options</div>
+        <div class="step-text">3. Provision Storage</div>
       </div>
       <div ng-class="cluster.step == 4 ?  'active' : (cluster.step > 4 ? 'visited' : 'default')">
         <div class="wizard-step-dot-last"><i class="fa fa-circle"></i></div>
@@ -41,7 +41,7 @@
         <div ng-include src="'views/clusters-new-summary.html'"> </div>
       </div>
     </div>
-    
+
     <div>
       <button type="button" class="btn btn-default" ng-show='cluster.isCancelAvailable()' ng-click='cluster.cancel()'>Cancel</button>
       <button type="button" class="btn btn-default" ng-show='!cluster.isCancelAvailable()' ng-click='cluster.moveStep(-1)'>&lt;&nbsp;&nbsp;Back</button>
