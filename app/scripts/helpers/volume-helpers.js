@@ -20,12 +20,17 @@
         var copyCountRecomended = 3;
 
         var tierList = [
-            { id:1, type:'Default'}
+            { id:1, type:'Hot'}
         ];
 
         var targetSizeUnits = [
             { id:1, unit: 'GB' },
             { id:2, unit: 'TB' }
+        ];
+
+        var disperseOptions = [
+            { id:1, type: 'RAID-6', desc: '8 + 2 (8 data disks + 2 parity disks)' },
+            { id:2, type: 'RAID-6 (E)', desc: '8 + 3 (8 data disks + 3 parity disks)' }
         ];
 
         var findPairDisks = function(diskPool) {
@@ -133,6 +138,9 @@
             },
             getTargetSizeUnits: function() {
                 return targetSizeUnits;
+            },
+            getDisperseOptions: function() {
+                return disperseOptions;
             },
             getStorageDervicesForVolumeBasic: getStorageDervicesForVolumeBasic,
             getVolumeSize: getVolumeSize

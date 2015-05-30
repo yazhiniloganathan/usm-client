@@ -14,17 +14,43 @@
 
                 if(self.clusters.length > 0) {
                     self.cluster = self.clusters[0];
+                    self.calaculateClusterFreeSpace();
                 }
             });
 
+            this.type = 1;
             this.copyCountList = VolumeHelpers.getCopiesList();
             this.copyCount = VolumeHelpers.getRecomenedCopyCount();
             this.targetSizeUnits = VolumeHelpers.getTargetSizeUnits();
             this.targetSizeUnit = this.targetSizeUnits[0];
             this.tierList = VolumeHelpers.getTierList();
             this.tier = this.tierList[0];
+            this.maxAvailableSpace = false;
+            this.cacheTierByPercentage = 1;
+            this.disperseOptions = VolumeHelpers.getDisperseOptions();
+            this.disperseOption = this.disperseOptions[0];
             this.storageDevices = [];
             this.actualSize = 0;
+
+            this.calaculateClusterFreeSpace = function() {
+                self.cluster.capacity = { free:0, unit: 'GB' };
+                ServerService.getListByCluster(self.cluster.cluster_id).then(function(hosts) {
+                    var deviceRequests = [];
+                    _.each(hosts, function(host){
+                        deviceRequests.push(ServerService.getStorageDevicesFree(host.node_id, host.node_name));
+                    });
+                    $q.all(deviceRequests).then(function(devicesList) {
+                        var capacity = 0;
+                        _.each(devicesList, function(devices) {
+                            var free = _.reduce(devices, function(size, device) {
+                                return device.size + size;
+                            }, 0);
+                            capacity = capacity + free;
+                        });
+                        self.cluster.capacity = { free: capacity, unit: 'GB' };
+                    });
+                });
+            };
 
             this.findStorageDevices = function() {
                 self.storageDevices = [];
@@ -48,7 +74,7 @@
 
             this.moveStep = function(nextStep) {
                 this.step = this.step + nextStep;
-                if(this.step === 2) {
+                if(this.step === 3) {
                     this.findStorageDevices();
                 }
             };
@@ -58,7 +84,7 @@
             };
 
             this.isSubmitAvailable = function() {
-                return this.step === 2;
+                return this.step === 3;
             };
 
             this.cancel = function() {
