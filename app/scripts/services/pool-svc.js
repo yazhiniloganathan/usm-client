@@ -28,6 +28,15 @@ define(['lodash'], function(_) {
                     return osds;
                 });
             },
+            // **getListByCluster
+            // **@returns** a promise with all pools of the cluster.
+            getListByCluster: function(clusterId) {
+                return this.restangular.all('pools').getList().then(function(pools) {
+                    return _.filter(pools, function(pool) {
+                        return pool.cluster === clusterId;
+                    });
+                });
+            },
             // **get**
             // **@returns** a promise with pool metadata.
             get: function(id) {
