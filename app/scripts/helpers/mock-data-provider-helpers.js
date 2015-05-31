@@ -28,9 +28,9 @@
                 lowest: 3
             },
             memory: {
-                average: 34,
-                highest: 75,
-                lowest: 8
+                average: 81,
+                highest: 98,
+                lowest: 27
             },
             management_network: {
                 inbound: 301,
@@ -147,9 +147,20 @@
                 return cluster.cluster_name === cluster_name;
             });
             return tempCluster === undefined ? byDefaultCluster : tempCluster;
-        }
+        };
+
+        function  getRandomList(key, count, min, max) {
+            var list = [];
+            _.each(_.range(count), function(index) {
+                var value = {};
+                value[key] = _.random(min, max);
+                list.push(value);
+            });
+            return list;
+        };
         return {
-            getMockCluster: getMockCluster
+            getMockCluster: getMockCluster,
+            getRandomList: getRandomList
         };
     });
 })();

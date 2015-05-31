@@ -116,10 +116,10 @@
                         self.clustersCritical.push(cluster);
                     }
 
-                    cluster.capacity = { totalGB: 0, usedGB:0, freeGB: 0 };
+                    cluster.capacity = { totalGB: 0, usedGB: 0, freeGB: 0 };
                     ClusterService.getCapacity(cluster.cluster_id).then(function(sizeGB) {
                         cluster.capacity.totalGB = sizeGB,
-                        cluster.capacity.usedGB = sizeGB * 0.4;
+                        cluster.capacity.usedGB = cluster.used,
                         cluster.capacity.freeGB = cluster.capacity.totalGB - cluster.capacity.usedGB;
                         self.calculateTotalCapacity();
                     });

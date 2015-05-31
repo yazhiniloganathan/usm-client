@@ -2,22 +2,31 @@
     <div class="top-box card">
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="vertical-bar-cluster-name">{{clusterdetail.mockCluster.cluster_type}}</div>
+                <div class="vertical-bar-cluster-name">{{clusterdetail.cluster.type.type}}</div>
                 <div class="border-right pad-me">
                     <div class="row">
-                        <div class="cluster-name"> {{clusterdetail.mockCluster.cluster_name}} </div>
+                        <div class="cluster-name"> {{clusterdetail.cluster.name}} </div>
                         <div class="col-md-3">
-                            <div class="cluster-name-subline"> {{clusterdetail.mockCluster.description}} </div>
+                            <div class="cluster-name-subline"> Generic </div>
                             <div class="title"> Utilization </div>
-                            <div class="free-space"> <span class="card-big-text">
-                  {{clusterdetail.mockCluster.utilization.total - clusterdetail.mockCluster.utilization.used}} TB
-                </span> Available
-                                <br/> <span class="bold">{{clusterdetail.mockCluster.utilization.used}}</span> TB Used
-                                <br/> <span class="bold">{{clusterdetail.mockCluster.utilization.total}}</span> TB Total </div>
+                            <div class="free-space">
+                              <span class="card-big-text">
+                                {{clusterdetail.formatSize(clusterdetail.capacity.free)}}
+                              </span>
+                              Available
+                              <br/>
+                              <span class="bold">
+                                {{clusterdetail.formatSize(clusterdetail.capacity.used)}}
+                              </span> Used
+                              <br/>
+                              <span class="bold">
+                                {{clusterdetail.formatSize(clusterdetail.capacity.total)}}
+                              </span> Total
+                            </div>
                         </div>
                         <div class="col-md-9">
-                            <c3chart bindto-id="cluster-donut" chart-columns="clusterdetail.cluster.types" chart-data="clusterdetail.cluster.usages">
-                                <chart-donut title="{{clusterdetail.mockCluster.utilization.used/clusterdetail.mockCluster.utilization.total*100 | number:1}}% Used" width="40"> </chart-donut>
+                            <c3chart bindto-id="cluster-donut" chart-columns="clusterdetail.capacity.legends" chart-data="clusterdetail.capacity.values">
+                                <chart-donut title="Usage" width="40"> </chart-donut>
                                 <chart-legend show-legend="true" legend-position="right"> </chart-legend>
                                 <chart-size chart-height="200"></chart-size>
                             </c3chart>
@@ -27,7 +36,7 @@
                         <div class="col-md-12">
                             <div class="usage-trending">
                                 <div class="usage-trending-content">
-                                    <c3chart bindto-id="cluster-trend" chart-columns="clusterdetail.cluster.utilizationTrends.cols" chart-data="clusterdetail.cluster.utilizationTrends.values">
+                                    <c3chart bindto-id="cluster-trend" chart-columns="clusterdetail.capacity.trends.cols" chart-data="clusterdetail.capacity.trends.values">
                                         <chart-axis>
                                             <chart-axis-x show="false"> </chart-axis-x>
                                             <chart-axis-y show="false"> </chart-axis-y>
@@ -48,18 +57,22 @@
                     <div class="title"> Performance </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <div class="iops-count"> <span class="card-big-text">
-                  {{clusterdetail.mockCluster.iops.read + clusterdetail.mockCluster.iops.write}}K IOPS
-                </span><span class="card-big-text">
-                  {{clusterdetail.mockCluster.iops.read}}K
-                </span> reads/s <span class="card-big-text">
-                  {{clusterdetail.mockCluster.iops.write}}K
-                </span> writes/s </div>
+                            <div class="iops-count">
+                              <span class="card-big-text">
+                                {{clusterdetail.iops.total}}K IOPS
+                              </span>
+                              <span class="card-big-text">
+                                {{clusterdetail.iops.reads}}K
+                              </span> reads/s
+                              <span class="card-big-text">
+                                {{clusterdetail.iops.writes}}K
+                              </span> writes/s
+                            </div>
                         </div>
                         <div class="col-md-9">
                             <c3chart bindto-id="gauge-iops-chart">
-                                <chart-column column-id="IOPS" column-values="{{clusterdetail.mockCluster.iops.read + clusterdetail.mockCluster.iops.write}}" column-type="gauge" column-color="{{clusterdetail.getStatusColor((clusterdetail.mockCluster.iops.read + clusterdetail.mockCluster.iops.write)/1000*100)}}" />
-                                <chart-gauge min="0" max="1000" units="{{clusterdetail.mockCluster.iops.read + clusterdetail.mockCluster.iops.write}}K IOPS" width="30" />
+                                <chart-column column-id="IOPS" column-values="{{clusterdetail.iops.total}}" column-type="gauge" column-color="{{clusterdetail.getStatusColor((clusterdetail.iops.total)/1000*100)}}" />
+                                <chart-gauge min="0" max="1000" units="{{clusterdetail.iops.total}}K IOPS" width="30" />
                                 <chart-size chart-height="200"></chart-size>
                             </c3chart>
                         </div>
@@ -68,7 +81,7 @@
                         <div class="col-md-12">
                             <div class="usage-trending">
                                 <div class="usage-trending-content">
-                                    <c3chart bindto-id="cluster-iops-trend" chart-columns="clusterdetail.cluster.iopsTrends.cols" chart-data="clusterdetail.cluster.iopsTrends.values">
+                                    <c3chart bindto-id="cluster-iops-trend" chart-columns="clusterdetail.iops.trends.cols" chart-data="clusterdetail.iops.trends.values">
                                         <chart-axis>
                                             <chart-axis-x show="false"> </chart-axis-x>
                                             <chart-axis-y show="false"> </chart-axis-y>
@@ -182,49 +195,119 @@
             </div>
             </div>
         </div>
-    <div class="row center-content" ng-if="clusterdetail.mockCluster.cluster_type === 'gluster'">
+    <div class="row center-content" ng-if="clusterdetail.cluster.type.type === 'Gluster'">
         <div class="col-md-4">
             <div class="card">
-                <div class="card-title">{{clusterdetail.mockCluster.entity.hosts.count}} Hosts</div>
-                <div class="card-content"> <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.mockCluster.entity.hosts.warning + clusterdetail.mockCluster.entity.hosts.critical) == 0"></i> <span ng-if="clusterdetail.mockCluster.entity.hosts.warning > 0"><i class="fa fa-exclamation-triangle warning"></i> {{clusterdetail.mockCluster.entity.hosts.warning}}</span> <span ng-if="clusterdetail.mockCluster.entity.hosts.critical > 0"><i class="fa fa-times-circle-o critical"></i> {{clusterdetail.mockCluster.entity.hosts.critical}}</span> </div>
+                <div class="card-title">{{clusterdetail.hosts.total}} Hosts</div>
+                <div class="card-content">
+                  <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.hosts.warning + clusterdetail.hosts.critical) == 0"></i>
+                  <span ng-if="clusterdetail.hosts.warning > 0">
+                    <i class="fa fa-exclamation-triangle warning"></i>
+                    {{clusterdetail.hosts.warning}}
+                  </span>
+                  <span ng-if="clusterdetail.hosts.critical > 0">
+                    <i class="fa fa-times-circle-o critical"></i>
+                    {{clusterdetail.hosts.critical}}
+                  </span>
+                </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card equal-space">
-                <div class="card-title">{{clusterdetail.mockCluster.entity.volumes.count}} Volumes</div>
-                <div class="card-content"> <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.mockCluster.entity.volumes.warning + clusterdetail.mockCluster.entity.volumes.critical) == 0"></i> <span ng-if="clusterdetail.mockCluster.entity.volumes.warning > 0"><i class="fa fa-exclamation-triangle warning"></i> {{clusterdetail.mockCluster.entity.volumes.warning}}</span> <span ng-if="clusterdetail.mockCluster.entity.volumes.critical > 0"><i class="fa fa-times-circle-o critical"></i> {{clusterdetail.mockCluster.entity.volumes.critical}}</span> </div>
+                <div class="card-title">{{clusterdetail.volumes.total}} Volumes</div>
+                <div class="card-content">
+                  <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.volumes.warning + clusterdetail.volumes.critical) == 0"></i>
+                  <span ng-if="clusterdetail.volumes.warning > 0">
+                    <i class="fa fa-exclamation-triangle warning"></i>
+                    {{clusterdetail.volumes.warning}}
+                  </span>
+                  <span ng-if="clusterdetail.volumes.critical > 0">
+                    <i class="fa fa-times-circle-o critical"></i>
+                    {{clusterdetail.volumes.critical}}
+                  </span>
+                </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card equal-space">
-                <div class="card-title">{{clusterdetail.mockCluster.entity.bricks.count}} Bricks</div>
-                <div class="card-content"> <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.mockCluster.entity.bricks.warning + clusterdetail.mockCluster.entity.bricks.critical) == 0"></i> <span ng-if="clusterdetail.mockCluster.entity.bricks.warning > 0"><i class="fa fa-exclamation-triangle warning"></i> {{clusterdetail.mockCluster.entity.bricks.warning}}</span> <span ng-if="clusterdetail.mockCluster.entity.bricks.critical > 0"><i class="fa fa-times-circle-o critical"></i> {{clusterdetail.mockCluster.entity.bricks.critical}}</span> </div>
+                <div class="card-title">{{clusterdetail.bricks.total}} Bricks</div>
+                <div class="card-content">
+                  <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.bricks.warning + clusterdetail.bricks.critical) == 0"></i>
+                  <span ng-if="clusterdetail.bricks.warning > 0">
+                    <i class="fa fa-exclamation-triangle warning"></i>
+                    {{clusterdetail.bricks.warning}}
+                  </span>
+                  <span ng-if="clusterdetail.bricks.critical > 0">
+                    <i class="fa fa-times-circle-o critical"></i>
+                    {{clusterdetail.bricks.critical}}
+                  </span>
+                </div>
             </div>
         </div>
     </div>
-    <div class="row center-content" ng-if="clusterdetail.mockCluster.cluster_type === 'ceph'">
+    <div class="row center-content" ng-if="clusterdetail.cluster.type.type === 'Ceph'">
         <div class="col-md-3">
             <div class="card">
-                <div class="card-title">{{clusterdetail.mockCluster.entity.hosts.count}} Hosts</div>
-                <div class="card-content"> <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.mockCluster.entity.hosts.warning + clusterdetail.mockCluster.entity.hosts.critical) == 0"></i> <span ng-if="clusterdetail.mockCluster.entity.hosts.warning > 0"><i class="fa fa-exclamation-triangle warning"></i> {{clusterdetail.mockCluster.entity.hosts.warning}}</span> <span ng-if="clusterdetail.mockCluster.entity.hosts.critical > 0"><i class="fa fa-times-circle-o critical"></i> {{clusterdetail.mockCluster.entity.hosts.critical}}</span> </div>
+                <div class="card-title">{{clusterdetail.hosts.total}} Hosts</div>
+                <div class="card-content">
+                  <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.hosts.warning + clusterdetail.hosts.critical) == 0"></i>
+                  <span ng-if="clusterdetail.hosts.warning > 0">
+                    <i class="fa fa-exclamation-triangle warning"></i>
+                    {{clusterdetail.hosts.warning}}
+                  </span>
+                  <span ng-if="clusterdetail.hosts.critical > 0">
+                    <i class="fa fa-times-circle-o critical"></i>
+                    {{clusterdetail.hosts.critical}}
+                  </span>
+                </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card equal-space">
-                <div class="card-title">{{clusterdetail.mockCluster.entity.pools.count}} Pools</div>
-                <div class="card-content"> <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.mockCluster.entity.pools.warning + clusterdetail.mockCluster.entity.pools.critical) == 0"></i> <span ng-if="clusterdetail.mockCluster.entity.pools.warning > 0"><i class="fa fa-exclamation-triangle warning"></i> {{clusterdetail.mockCluster.entity.pools.warning}}</span> <span ng-if="clusterdetail.mockCluster.entity.pools.critical > 0"><i class="fa fa-times-circle-o critical"></i> {{clusterdetail.mockCluster.entity.pools.critical}}</span> </div>
+                <div class="card-title">{{clusterdetail.pools.total}} Pools</div>
+                <div class="card-content">
+                  <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.pools.warning + clusterdetail.pools.critical) == 0"></i>
+                  <span ng-if="clusterdetail.pools.warning > 0">
+                    <i class="fa fa-exclamation-triangle warning"></i>
+                    {{clusterdetail.pools.warning}}
+                  </span>
+                  <span ng-if="clusterdetail.pools.critical > 0">
+                    <i class="fa fa-times-circle-o critical"></i>
+                    {{clusterdetail.pools.critical}}
+                  </span>
+                </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card equal-space">
-                <div class="card-title">{{clusterdetail.mockCluster.entity.pgs.count}} PGs</div>
-                <div class="card-content"> <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.mockCluster.entity.pgs.warning + clusterdetail.mockCluster.entity.pgs.critical) == 0"></i> <span ng-if="clusterdetail.mockCluster.entity.pgs.warning > 0"><i class="fa fa-exclamation-triangle warning"></i> {{clusterdetail.mockCluster.entity.pgs.warning}}</span> <span ng-if="clusterdetail.mockCluster.entity.pgs.critical > 0"><i class="fa fa-times-circle-o critical"></i> {{clusterdetail.mockCluster.entity.pgs.critical}}</span> </div>
+                <div class="card-title">{{clusterdetail.pgs.total}} PGs</div>
+                <div class="card-content">
+                  <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.pgs.warning + clusterdetail.pgs.critical) == 0"></i>
+                  <span ng-if="clusterdetail.pgs.warning > 0">
+                    <i class="fa fa-exclamation-triangle warning"></i>
+                    {{clusterdetail.pgs.warning}}
+                  </span>
+                  <span ng-if="clusterdetail.pgs.critical > 0">
+                    <i class="fa fa-times-circle-o critical"></i>
+                    {{clusterdetail.pgs.critical}}
+                  </span>
+                </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card equal-space">
-                <div class="card-title">{{clusterdetail.mockCluster.entity.osds.count}} OSDs</div>
-                <div class="card-content"> <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.mockCluster.entity.osds.warning + clusterdetail.mockCluster.entity.osds.critical) == 0"></i> <span ng-if="clusterdetail.mockCluster.entity.osds.warning > 0"><i class="fa fa-exclamation-triangle warning"></i> {{clusterdetail.mockCluster.entity.osds.warning}}</span> <span ng-if="clusterdetail.mockCluster.entity.osds.critical > 0"><i class="fa fa-times-circle-o critical"></i> {{clusterdetail.mockCluster.entity.osds.critical}}</span> </div>
+                <div class="card-title">{{clusterdetail.osds.total}} OSDs</div>
+                <div class="card-content">
+                  <i class="fa fa-check-circle-o ok" ng-if="(clusterdetail.osds.warning + clusterdetail.osds.critical) == 0"></i>
+                  <span ng-if="clusterdetail.osds.warning > 0">
+                    <i class="fa fa-exclamation-triangle warning"></i>
+                    {{clusterdetail.osds.warning}}
+                  </span>
+                  <span ng-if="clusterdetail.osds.critical > 0">
+                    <i class="fa fa-times-circle-o critical"></i>
+                    {{clusterdetail.osds.critical}}
+                  </span>
+                </div>
             </div>
         </div>
     </div>
