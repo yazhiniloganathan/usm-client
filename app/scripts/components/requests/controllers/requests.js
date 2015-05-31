@@ -4,6 +4,7 @@
     define(['lodash'], function(_) {
         var RequestsController = function($scope, $interval, UserService, RequestTrackingService, ServerService, UtilService, RequestService, $log, $timeout) {
             $scope.tasks = [];
+            $scope.alerts = ["Brick 2 is Down","Notification2","Notification3","Notification4"];
             $scope.discoveredHostsLength = 0;
             $scope.discoveredHosts = [];
 
@@ -50,11 +51,6 @@
                         }
                    });
                 });
-            }
-
-            $scope.getAlert=function() {
-                 $scope.alerts=["Notification1","Notification2","Notification3","Notification4"];
-                 return alerts;
             }
 
             $scope.acceptHost = function(host) {
