@@ -1,6 +1,6 @@
 <div class="cluster-detail dashboard row">
     <div class="top-box card">
-        <div class="row border-bottom">
+        <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="vertical-bar-cluster-name">{{clusterdetail.mockCluster.cluster_type}}</div>
                 <div class="border-right pad-me">
@@ -49,17 +49,17 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="iops-count"> <span class="card-big-text">
-                  {{clusterdetail.mockCluster.iops.read + clusterdetail.mockCluster.iops.write}}
-                </span> IOPS <span class="card-big-text">
-                  {{clusterdetail.mockCluster.iops.read}}
+                  {{clusterdetail.mockCluster.iops.read + clusterdetail.mockCluster.iops.write}}K IOPS
+                </span><span class="card-big-text">
+                  {{clusterdetail.mockCluster.iops.read}}K
                 </span> reads/s <span class="card-big-text">
-                  {{clusterdetail.mockCluster.iops.write}}
+                  {{clusterdetail.mockCluster.iops.write}}K
                 </span> writes/s </div>
                         </div>
                         <div class="col-md-9">
                             <c3chart bindto-id="gauge-iops-chart">
                                 <chart-column column-id="IOPS" column-values="{{clusterdetail.mockCluster.iops.read + clusterdetail.mockCluster.iops.write}}" column-type="gauge" column-color="{{clusterdetail.getStatusColor((clusterdetail.mockCluster.iops.read + clusterdetail.mockCluster.iops.write)/1000*100)}}" />
-                                <chart-gauge min="0" max="1000" units="IOPS" width="30" />
+                                <chart-gauge min="0" max="1000" units="{{clusterdetail.mockCluster.iops.read + clusterdetail.mockCluster.iops.write}}K IOPS" width="30" />
                                 <chart-size chart-height="200"></chart-size>
                             </c3chart>
                         </div>
@@ -85,8 +85,10 @@
                 </div>
             </div>
         </div>
-        <div class="row center-content">
+    </div>
+            <div class="row center-content">
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="card">              
                 <div class="card-title"> CPU </div>
                 <div class="col-md-6">
                     <c3chart bindto-id="donut-plot1-chart">
@@ -109,8 +111,10 @@
                         <div class="col-md-6 bold">{{clusterdetail.mockCluster.cpu.lowest}} %</div>
                     </div>
                 </div>
+                </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="equal-space card">              
                 <div class="card-title"> Memory </div>
                 <div class="col-md-6">
                     <c3chart bindto-id="donut-plot2-chart">
@@ -133,14 +137,16 @@
                         <div class="col-md-6 bold">{{clusterdetail.mockCluster.memory.lowest}} %</div>
                     </div>
                 </div>
+                </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="equal-space card">
                 <div class="card-title"> Management Network </div>
                 <div class="col-md-6">
                     <c3chart bindto-id="gauge-kbps-chart">
                         <chart-column column-id="MBps" column-values="{{clusterdetail.mockCluster.management_network.inbound + clusterdetail.mockCluster.management_network.outbound}}" column-type="gauge" column-color="{{clusterdetail.getStatusColor((clusterdetail.mockCluster.management_network.inbound + clusterdetail.mockCluster.management_network.outbound)/1000*100)}}" />
-                        <chart-gauge min="0" max="1000" units="MBps" width="10" />
-                        <chart-size chart-height="90"></chart-size>
+                        <chart-gauge min="0" max="1000" units="{{clusterdetail.mockCluster.management_network.inbound + clusterdetail.mockCluster.management_network.outbound}} KBps" width="10" />
+                        <chart-size chart-height="100"></chart-size>
                     </c3chart>
                 </div>
                 <div class="col-md-6 left-content">
@@ -152,14 +158,16 @@
                         <div class="col-md-6 bold">{{clusterdetail.mockCluster.management_network.outbound}} KBps</div>
                     </div>
                 </div>
+                </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="equal-space card">
                 <div class="card-title"> Cluster network </div>
                 <div class="col-md-6">
                     <c3chart bindto-id="gauge-kbps1-chart">
                         <chart-column column-id="Data Rate" column-values="{{clusterdetail.mockCluster.cluster_network.inbound+clusterdetail.mockCluster.cluster_network.outbound}}" column-type="gauge" column-color="{{clusterdetail.getStatusColor((clusterdetail.mockCluster.cluster_network.inbound + clusterdetail.mockCluster.cluster_network.outbound)/10000*100)}}" />
-                        <chart-gauge min="0" max="10000" units="MBps" width="10" />
-                        <chart-size chart-height="90"></chart-size>
+                        <chart-gauge min="0" max="10000" units="{{clusterdetail.mockCluster.cluster_network.inbound+clusterdetail.mockCluster.cluster_network.outbound}} KBps" width="10" />
+                        <chart-size chart-height="100"></chart-size>
                     </c3chart>
                 </div>
                 <div class="col-md-6 left-content">
@@ -172,8 +180,8 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
-    </div>
     <div class="row center-content" ng-if="clusterdetail.mockCluster.cluster_type === 'gluster'">
         <div class="col-md-4">
             <div class="card">

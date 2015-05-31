@@ -25,50 +25,31 @@
                 {
                     id: 1,
                     name: 'Used',
-                    color: '#8893E0',
-                    type: 'area'
+                    color: '#39a5dc',
+                    type: 'area-spline'
                 }
-            ];
-            this.cluster.utilizationTrends.values = [
-                { '1': 10 }, {'1': 12 },{'1': 14 },{'1': 16 },{'1': 18},
             ];
             this.cluster.iopsTrends = {};
             this.cluster.iopsTrends.cols = [
                 {
                     id: 1,
                     name: 'Using',
-                    color: '#8893E0',
-                    type: 'area'
+                    color: '#39a5dc',
+                    type: 'area-spline'
                 }
             ];
-            this.cluster.iopsTrends.values = [
-                {
-                    '1': 14
-                },
-                {
-                    '1': 16
-                },
-                {
-                    '1': 18
-                },
-                {
-                    '1': 19
-                },
-                {
-                    '1': 10
-                },
-            ];
-            this.getRandomList = function(key, count, max) {
+            
+            this.getRandomList = function(key, count, min, max) {
                 var list = [];
                 _.each(_.range(count), function(index) {
                     var value = {};
-                    value[key] = _.random(0, max);
+                    value[key] = _.random(min, max);
                     list.push(value);
                 });
                 return list;
             };
-            this.cluster.iopsTrends.values = this.getRandomList('1', 50, 100);
-            this.cluster.utilizationTrends.values = this.getRandomList('1', 50, 100);
+            this.cluster.iopsTrends.values = this.getRandomList('1', 50, 60, 65);
+            this.cluster.utilizationTrends.values = this.getRandomList('1', 50, 60, 65);
             this.getStatusColor = function(value) {
                 if (value >= 90) return '#E35C5C';
                 if (value >= 80) return '#FF8C1B';
