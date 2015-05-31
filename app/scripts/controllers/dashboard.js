@@ -2,7 +2,7 @@
 	'use strict;'
 	define(['lodash', 'numeral', 'c3'], function(_, numeral, c3) {
         window.c3 = c3;
-		var DashboardController = function($scope, $location, $log, ClusterService, ServerService, PoolService, VolumeService) {
+		var DashboardController = function($scope, $location, $log, ClusterService, ServerService, VolumeService, PoolService) {
             var self = this;
             self.config = { capacityByType: true, capacityByTier: false };
             self.clusters = [];
@@ -135,13 +135,24 @@
                         bandwidthFormatted: bandwidthFormatted
                     };
 
-                    VolumeService.getListByCluster(cluster.cluster_id).then(function(volumes) {
-                        cluster.volumes = volumes;
-                    });
-
-                    PoolService.getListByCluster(cluster.cluster_id).then(function(pools) {
-                        cluster.pools = pools;
-                    });
+                    if(cluster.cluster_type === 1) {
+                        VolumeService.getListByCluster(cluster.cluster_id).then(function(volumes) {
+                            cluster.volumes = volumes;
+                            cluster.volumes.push({ id: 100, usage: 75 });
+                            _.each(_.range(cluster.volumes.length, 25), function(index) {
+                                cluster.volumes.push({id: _.random(0, 100), usage: _.random(0, 70)});
+                            });
+                        });
+                    }
+                    else {
+                        PoolService.getListByCluster(cluster.cluster_id).then(function(pools) {
+                            cluster.pools = pools;
+                            cluster.pools.push({ id: 100, usage: 75 });
+                            _.each(_.range(cluster.pools.length, 25), function(index) {
+                                cluster.pools.push({id: _.random(0, 100), usage: _.random(0, 70)});
+                            });
+                        });
+                    }
                 });
                 self.calculateTotalCapacity();
             });
@@ -210,15 +221,6 @@
                 });
                 return list;
             };
-
-            this.clusterList = [];
-            _.each(_.range(6), function(index) {
-                var cluster = {name: 'MyCeph'+index, pools: [], volumes: []};
-                _.each(_.range(25), function(index) {
-                    cluster.pools.push({id: _.random(0, 100), usage: _.random(0, 100)});
-                });
-                self.clusterList.push(cluster);
-            });
 
             this.getHeatLevel = function(usage) {
                 if(usage > 90) {
