@@ -15,13 +15,23 @@
             this.storageType = this.storageTypes[0];
 
             this.clusterTypes = ClusterHelpers.getClusterTypes();
-            this.clusterType = this.clusterTypes[0];
+            this.clusterType = this.clusterTypes[1];
 
             this.workloads = this.clusterType.workloads;
             this.workload = this.workloads[0];
 
             this.deploymentTypes = this.clusterType.deploymentTypes;
             this.deploymentType = this.deploymentTypes[0];
+
+            this.onStorageTypeChanged = function() {
+                if(this.storageType.id === 1 || this.storageType.id === 3 ) {
+                    this.clusterType = this.clusterTypes[1];
+                }
+                else {
+                    this.clusterType = this.clusterTypes[0];
+                }
+                this.onClusterTypeChanged();
+            };
 
             this.onClusterTypeChanged = function() {
                 this.deploymentTypes = this.clusterType.deploymentTypes;

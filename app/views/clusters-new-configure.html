@@ -12,7 +12,7 @@
     <div class="form-group">
       <label class="col-md-2 control-label" for="storageType">Storage Type</label>
       <div class="col-md-4">
-        <select pf-select ng-model="cluster.storageType" id="storageType" class="form-control" ng-options="storageType.type for storageType in cluster.storageTypes">
+        <select pf-select ng-model="cluster.storageType" id="storageType" class="form-control" ng-options="storageType.type for storageType in cluster.storageTypes" ng-change="cluster.onStorageTypeChanged()">
         </select>
       </div>
     </div>
