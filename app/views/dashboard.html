@@ -116,14 +116,14 @@
             <div class="col-md-3">
               <div class="capacity-info">
                 <span class="free-space-value">
-                  {{dash.totalCapacity.free}} {{dash.totalCapacity.unit}}
+                  {{dash.totalCapacity.freeFormatted}}
                 </span>
                 Available
                 <span class="used-total-space">
-                  {{dash.totalCapacity.used}} {{dash.totalCapacity.unit}} Used
+                  {{dash.totalCapacity.usedFormatted}} Used
                 </span>
                 <span class="used-total-space">
-                  {{dash.totalCapacity.free+dash.totalCapacity.used}} {{dash.totalCapacity.unit}} Total
+                  {{dash.totalCapacity.totalFormatted}} Total
                 </span>
               </div>
             </div>
@@ -157,7 +157,7 @@
                     Last 30 days - Used by {{dash.trendCapacity.selected.type}}
                   </span>
                   <span class="pull-right">
-                    {{dash.trendCapacity.selected.used}} {{dash.totalCapacity.unit}}
+                    {{dash.trendCapacity.selected.usedFormatted}}
                   </span>
                 </div>
               </div>

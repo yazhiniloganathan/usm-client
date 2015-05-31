@@ -34,7 +34,10 @@
                 { id:9, name: 'Free', color: '#969696', type: 'donut' }
             ];
 
-            self.totalCapacity = { free: 0, used: 0, unit: 'TB', usedPercentage:100 };
+            self.totalCapacity = {
+                freeGB: 0, usedGB: 0, totalGB: 0,
+                freeFormatted: '0 B', usedFormatted: '0 B', totalFormatted: '0 B'
+            };
             self.totalCapacity.legends = self.clusterTypes;
             self.totalCapacity.values = [];
             self.totalCapacity.byType = [];
@@ -51,35 +54,40 @@
             this.calculateTotalCapacity = function() {
                 var byType = [0, 0, 0]; // block, file, object
                 var byTier = [0, 0, 0]; // default, fast, slower
-                var totalFree = 0;
-                var totalUsed = 0;
+                var totalFreeGB = 0;
+                var totalUsedGB = 0;
 
                 _.each(self.clusters, function(cluster) {
                     var used = byType[cluster.storage_type-1];
-                    used = used + cluster.capacity.used;
+                    used = used + cluster.capacity.usedGB;
                     byType[cluster.storage_type-1] = used;
                     byTier[0] = byTier[0] + used;
-                    totalFree = totalFree + cluster.capacity.free;
-                    totalUsed = totalUsed + cluster.capacity.used;
+                    totalFreeGB = totalFreeGB + cluster.capacity.freeGB;
+                    totalUsedGB = totalUsedGB + cluster.capacity.usedGB;
                 });
 
                  self.totalCapacity.byType = [
                     { '1': byType[0] },
                     { '2': byType[1] },
                     { '3': byType[2] },
-                    { '9': totalFree }
+                    { '9': totalFreeGB }
                 ];
 
                  self.totalCapacity.byTier = [
                     { '1': byTier[0] },
                     { '2': byTier[1] },
                     { '3': byTier[2] },
-                    { '9': totalFree }
+                    { '9': totalFreeGB }
                 ];
 
-                self.totalCapacity.free = totalFree;
-                self.totalCapacity.used = totalUsed;
-                self.totalCapacity.usedPercentage = ((totalFree * 100) / (totalUsed + totalFree)).toFixed(0);
+                self.totalCapacity.freeGB = totalFreeGB;
+                self.totalCapacity.usedGB = totalUsedGB;
+                self.totalCapacity.totalGB = totalFreeGB + totalUsedGB;
+                //self.totalCapacity.usedPercentage = ((totalFreeGB * 100) / (totalUsedGB + totalFreeGB)).toFixed(0);
+                self.totalCapacity.freeFormatted = numeral(totalFreeGB * 1073741824).format('0 b');
+                self.totalCapacity.usedFormatted = numeral(totalUsedGB * 1073741824).format('0 b');
+                self.totalCapacity.totalFormatted = numeral((totalFreeGB + totalUsedGB) * 1073741824).format('0 b');
+
 
                 if(self.config.capacityByType) {
                     self.totalCapacity.legends = self.clusterTypes;
@@ -89,8 +97,9 @@
                     self.totalCapacity.legends = self.storageTiers;
                     self.totalCapacity.values = self.totalCapacity.byTier;
                 }
-                self.trendCapacity.values = self.getRandomList('1', 50, totalUsed-2, totalUsed);
-                self.trendCapacity.selected.used = totalUsed;
+                self.trendCapacity.values = self.getRandomList('1', 50, totalUsedGB-(totalUsedGB * 0.1), totalUsedGB);
+                self.trendCapacity.selected.used = totalUsedGB;
+                self.trendCapacity.selected.usedFormatted = numeral(totalUsedGB * 1073741824).format('0 b');
             };
 
             ClusterService.getList().then(function(clusters) {
@@ -99,6 +108,7 @@
                 }
                 self.clusters = clusters;
 
+                var requests = [];
                 _.each(self.clusters, function(cluster) {
                     if(cluster.cluster_status === 1 || cluster.cluster_status === 2) {
                         self.clustersWarning.push(cluster);
@@ -106,10 +116,14 @@
                     else if(cluster.cluster_status === 5) {
                         self.clustersCritical.push(cluster);
                     }
-                    var free = parseInt(_.random(6, 15.2).toFixed(2));
-                    var used = parseInt(_.random(6, 15.2).toFixed(2));
-                    cluster.capacity = { free: free, used: used };
-                    cluster.capacity.total = cluster.capacity.free + cluster.capacity.used;
+
+                    cluster.capacity = { totalGB: 0, usedGB:0, freeGB: 0 };
+                    ClusterService.getCapacity(cluster.cluster_id).then(function(sizeGB) {
+                        cluster.capacity.totalGB = sizeGB,
+                        cluster.capacity.usedGB = sizeGB * 0.4;
+                        cluster.capacity.freeGB = cluster.capacity.totalGB - cluster.capacity.usedGB;
+                        self.calculateTotalCapacity();
+                    });
 
                     var iops = _.random(30000,60000);
                     var iopsFormatted = numeral(iops).format('0,0');
@@ -128,7 +142,7 @@
             ServerService.getList().then(function(hosts) {
                 self.hosts = hosts;
                 _.each(self.hosts, function(host) {
-                    if(host.node_status == 2) {
+                    if(host.node_status === 1) {
                         self.hostsWarning.push(host);
                     }
                     var cpu = _.random(70, 100);
@@ -171,15 +185,17 @@
 
             this.selectClusterCapacityLegend = function(data) {
                 var isFreeSelected = data.id === '9';
-                var used = isFreeSelected ? self.totalCapacity.used : data.value;
-                self.trendCapacity.values = this.getRandomList('1', 50, used-2, used);
-                self.trendCapacity.selected.used = used;
+                var usedGB = isFreeSelected ? self.totalCapacity.usedGB : data.value;
+                self.trendCapacity.values = this.getRandomList('1', 50, usedGB-(usedGB * 0.1), usedGB);
+                self.trendCapacity.selected.used = usedGB;
+                self.trendCapacity.selected.usedFormatted = numeral(usedGB * 1073741824).format('0 b');
                 self.trendCapacity.selected.isTotal = isFreeSelected;
                 self.trendCapacity.selected.type = data.name;
             };
 
             this.getRandomList = function(key, count, min, max) {
                 var list = [];
+                min = min > 0 ? min : 0;
                 _.each(_.range(count), function(index) {
                     var value = {};
                     value[key] = _.random(min, max, true);

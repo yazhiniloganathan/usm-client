@@ -28,13 +28,11 @@ define(['lodash'], function(_) {
                     return servers;
                 });
             },
-            // **getList**
+            // **getListByCluster**
             // **@returns** a promise with all servers.
             getListByCluster: function(clusterId) {
-                return this.restangular.all('hosts').getList().then(function(servers) {
-                    return _.filter(servers, function(server) {
-                        return server.cluster === clusterId;
-                    });
+                return this.restangular.one('clusters', clusterId).all('hosts').getList().then(function(servers) {
+                    return servers;
                 });
             },
             // **getFreeHosts**
@@ -94,6 +92,15 @@ define(['lodash'], function(_) {
             getStorageDevices: function(hostId) {
                 return this.restangular.one('hosts', hostId).all('storage-devices').getList().then(function(devices) {
                     return devices;
+                });
+            },
+            // **getDiskStorageDevices**
+            // **@returns** a promise with all storage devices in the server.
+            getDiskStorageDevices: function(hostId) {
+                return this.restangular.one('hosts', hostId).all('storage-devices').getList().then(function(devices) {
+                    return _.filter(devices, function(device) {
+                        return device.device_type === 'disk';
+                    });
                 });
             },
             // **getStorageDevicesFree**

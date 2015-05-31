@@ -23,7 +23,7 @@ define(['lodash'], function(_) {
     // All service methods should return $q style promises.
     // @see https://docs.angularjs.org/api/ng/service/$q
     //
-    var ClusterService = function(Restangular, $location, ErrorService) {
+    var ClusterService = function(Restangular, $q, $location, ServerService, ErrorService) {
         // This custom response extractor handles the paginated response
         // from our Calamari Django JSON API.
         var djangoPaginationResponseExtractor = function(response /*, operation, what, url */ ) {
@@ -106,6 +106,30 @@ define(['lodash'], function(_) {
                     });
                 });
             },
+            // **getCapacity**
+            // **@returns** a promise with the cluster capacity for the specific
+            // cluster based on it's id.
+            getCapacity: function(id) {
+                return this.restangular.one('clusters', id).get().then(function(cluster) {
+                    return ServerService.getListByCluster(cluster.cluster_id).then(function(servers) {
+                        var requests = [];
+                        _.each(servers, function(server) {
+                            requests.push(ServerService.getDiskStorageDevices(server.node_id));
+                        });
+                        return $q.all(requests).then(function(devicesList) {
+                            var capacity = 0;
+                            _.each(devicesList, function(devices) {
+                                var size = _.reduce(devices, function(size, device) {
+                                    return device.size + size;
+                                }, 0);
+                                capacity = capacity + size;
+                            });
+                            return capacity;
+                        });
+                    });
+                });
+            },
+
             // **cluster**
             // A base function that defines the root of all cluster specific
             // API requests.  It's designed to be called by other services.
@@ -165,5 +189,5 @@ define(['lodash'], function(_) {
         var service = new Service();
         return service;
     };
-    return ['Restangular', '$location', 'ErrorService', ClusterService];
+    return ['Restangular', '$q', '$location', 'ServerService', 'ErrorService', ClusterService];
 });
