@@ -1,14 +1,14 @@
     /* global define */
     (function() {
         'use strict';
-        define(['lodash', 'helpers/volume-helpers', 'helpers/modal-helpers'], function(_, VolumeHelpers, ModalHelpers) {
+        define(['lodash', 'numeral', 'helpers/volume-helpers', 'helpers/modal-helpers'], function(_, numeral, VolumeHelpers, ModalHelpers) {
 
             var VolumeExpandController = function($scope, $q, $log, $location, $routeParams, $modal, ClusterService, ServerService, VolumeService, RequestTrackingService) {
                 this.step = 1;
                 var self = this;
-                self.capacity = { 
-                    percentage: 80,
-                    used: 16,
+                self.capacity = {
+                    percentage: 0,
+                    usedGB: 16,
                     total: 20,
                     unit: 'GB'
                 };
@@ -23,10 +23,11 @@
                 this.actualSize = 0;
 
                 this.calculateCapacity = function() {
-                    this.newcapacity.total = this.capacity.total + parseInt(this.targetSize);
-                    this.newcapacity.used = this.capacity.used;
-                    var percentage = (this.newcapacity.used * 100) / this.newcapacity.total;
+                    var targetSize = this.targetSize.length > 0 ? parseInt(this.targetSize) : 0;
+                    this.newcapacity.totalGB = this.capacity.totalGB + targetSize;
+                    var percentage = (this.newcapacity.usedGB * 100) / this.newcapacity.totalGB;
                     this.newcapacity.percentage = Math.round(percentage, -1);
+                    this.newcapacity.totalFormatted = numeral(this.newcapacity.totalGB * 1073741824).format('0 b');
                 };
 
                 this.getCapacityProgressColor = function(percentage) {
@@ -113,7 +114,7 @@
                 };
 
                 //Initialize the data
-                var promises = [VolumeService.get(this.volumeId), VolumeService.getBricks(this.volumeId)];
+                var promises = [VolumeService.get(this.volumeId), VolumeService.getCapacity(this.volumeId)];
 
                 $q.all(promises).then(function(results) {
                     var volume = results[0];
@@ -122,19 +123,27 @@
                     self.cluster = volume.cluster;
                     self.cluster_name = volume.cluster_name;
                     self.status = volume.status;
-                    self.capacity = { 
-                        percentage: 80,
-                        used: 16,
-                        total: 20,
-                        unit: "GB"
+
+                    var capacity = results[1];
+                    self.capacity = {
+                        freeGB: capacity.free / 1073741824,
+                        totalGB: capacity.total / 1073741824,
+                        usedGB: capacity.totalGB - capacity.freeGB,
                     };
-                    self.newcapacity = { 
-                        percentage: 80,
-                        used: 16,
-                        total: 20,
-                        unit: "GB"
+                    self.capacity.usedGB = self.capacity.totalGB - self.capacity.freeGB;
+                    var percentage = (self.capacity.usedGB * 100) / self.capacity.totalGB;
+                    self.capacity.percentage = Math.round(percentage, -1);
+                    self.capacity.totalFormatted = numeral(capacity.total).format('0 b');
+                    self.capacity.usedFormatted = numeral(capacity.total - capacity.free).format('0 b');
+
+                    self.newcapacity = {
+                        freeGB: self.capacity.freeGB,
+                        usedGB: self.capacity.usedGB,
+                        totalGB: self.capacity.totalGB,
+                        percentage: self.capacity.percentage,
+                        usedFormatted: self.capacity.usedFormatted,
+                        totalFormatted: self.capacity.totalFormatted
                     };
-                    self.bricks = results[1];
                 });
             };
             return ['$scope', '$q', '$log', '$location', '$routeParams', '$modal', 'ClusterService', 'ServerService', 'VolumeService', 'RequestTrackingService', VolumeExpandController];

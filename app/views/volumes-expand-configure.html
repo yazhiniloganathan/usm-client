@@ -34,8 +34,7 @@
       <div class="col-md-4">
         <div class="progress-description">
           {{volume.capacity.percentage}}% full 
-          ({{volume.capacity.used}} of {{volume.capacity.total}} 
-          {{volume.capacity.unit}})
+          ({{volume.capacity.usedFormatted}} of {{volume.capacity.totalFormatted}})
         </div>
         <div class="progress volume-size-progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{'width': volume.capacity.percentage + '%', 'background-color': volume.getCapacityProgressColor(volume.capacity.percentage)}">
@@ -60,8 +59,7 @@
       <div class="col-md-4">
         <div class="progress-description">
           {{volume.newcapacity.percentage}}% full 
-          ({{volume.newcapacity.used}} of {{volume.newcapacity.total}} 
-          {{volume.newcapacity.unit}})
+          ({{volume.newcapacity.usedFormatted}} of {{volume.newcapacity.totalFormatted}})
         </div>
         <div class="progress volume-size-progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{'width': volume.newcapacity.percentage + '%', 'background-color': volume.getCapacityProgressColor(volume.newcapacity.percentage)}">

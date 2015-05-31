@@ -53,7 +53,7 @@ define(['lodash'], function(_) {
                 });
             },
             // **getCapacity**
-            // **@returns** a promise with volume capacity.
+            // **@returns** a promise with volume capacity in bytes.
             getCapacity: function(id) {
                 return this.restangular.one('volumes', id).one('utilization').get().then(function(capacity) {
                     return { total: capacity.fs_size, free: capacity.fs_free };
