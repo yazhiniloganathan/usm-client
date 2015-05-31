@@ -10,6 +10,17 @@
 @import 'login-page';
 @import 'blade-view';
 @import 'volume';
+@import 'cluster-detail';
+
+.ok {
+  color: #4AD170;
+}
+.critical {
+   color: #E35C5C;
+ }
+.warning {
+   color: #FF8C1B;
+ }
 
 .navbar-product-name {
     font-size: 15px;

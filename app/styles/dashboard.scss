@@ -14,18 +14,6 @@
     .title {
         display: block;
     }
-
-    .ok {
-        color: green;
-    }
-
-    .warning {
-        color: orange;
-    }
-
-    .critical {
-        color: red;
-    }
 }
 
 .dashboard-card-single {
@@ -136,7 +124,6 @@
 }
 
 .dashboard-card-pools {
-    min-height: 220px;
 
     .legends {
         padding-top: 20px;
