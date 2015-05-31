@@ -91,7 +91,7 @@
                 if(host.state === "ACCEPTED") {
                     host.selected = selection;
                     if(host.selected) {
-                        ServerService.getStorageDevicesFree(host.id).then(function(disks) {
+                        ServerService.getStorageDevicesFree(host.id, host.hostname).then(function(disks) {
                             host.disks = disks;
                             self.countDisks();
                         });
