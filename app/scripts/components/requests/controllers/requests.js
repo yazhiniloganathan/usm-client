@@ -3,10 +3,22 @@
     'use strict';
     define(['lodash'], function(_) {
         var RequestsController = function($scope, $interval, UserService, RequestTrackingService, ServerService, UtilService, RequestService, $log, $timeout) {
+            $scope.alerts = [];
             $scope.tasks = [];
-            $scope.alerts = ["Brick 2 is Down","Notification2","Notification3","Notification4"];
             $scope.discoveredHostsLength = 0;
             $scope.discoveredHosts = [];
+
+            $scope.reloadAlerts = function() {
+                ServerService.getList().then(function(hosts) {
+                    var alerts = [];
+                    _.each(hosts, function(host) {
+                        if(host.node_status === 1) {
+                            alerts.push('Host ' + host.node_name + ' is down');
+                        }
+                    });
+                    $scope.alerts = alerts;
+                });
+            };
 
             $scope.reloadTasks = function() {
                 RequestTrackingService.getTrackedRequests().then(function(tasks) {
@@ -100,6 +112,7 @@
                 });
             };
 
+            $interval($scope.reloadAlerts, 6000);
             $interval($scope.reloadTasks, 5000);
             $interval($scope.reloadDiscoveredHostsLength, 5000);
         };

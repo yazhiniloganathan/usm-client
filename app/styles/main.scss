@@ -210,14 +210,20 @@
         margin-bottom: 5px;
     }
 }
+
 .alert-dropdown {
-    width:250px;
+    width:300px;
     right: 20px;
     left: auto !important;
 
     .header {
         padding: 10px;
         border-bottom: 1px solid #BCA4A4;
+        font-size: 14px;
+    }
+
+    .count {
+        background-color: #E35C5C;
     }
 
     .content {
@@ -229,8 +235,13 @@
         padding: 4px;
     }
 
-    .task-progress {
-        margin-bottom: 5px;
+    .task-item-text {
+        display: inline;
+    }
+
+    .icon {
+        padding: 5px;
+        font-size: 15px;
     }
 }
 
@@ -241,7 +252,7 @@
     position:relative;
 }
 
-.notification-text { 
+.notification-text {
     top: 1px;
     left: 16px;
     position: absolute;
