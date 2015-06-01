@@ -40,6 +40,10 @@
                             gauge_values : _.random(20, 70)/10,
                             alerts : mockCluster.alerts
                         };
+                        if(tempCluster.used === 0) {
+                            tempCluster.areaSpline_values = [{ '1': 0 }, { '1': 0 }];
+                            tempCluster.gauge_values = 0.5;
+                        }
                         if($scope.getClusterTypeTitle(cluster.cluster_type) === 'Gluster') {
                             VolumeService.getListByCluster(cluster.cluster_id).then(function (volumes) {
                                  tempCluster.no_of_volumes_or_pools = volumes.length;

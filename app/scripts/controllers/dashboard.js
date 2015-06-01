@@ -83,9 +83,9 @@
                 self.totalCapacity.usedGB = totalUsedGB;
                 self.totalCapacity.totalGB = totalFreeGB + totalUsedGB;
                 //self.totalCapacity.usedPercentage = ((totalFreeGB * 100) / (totalUsedGB + totalFreeGB)).toFixed(0);
-                self.totalCapacity.freeFormatted = numeral(totalFreeGB * 1073741824).format('0 b');
-                self.totalCapacity.usedFormatted = numeral(totalUsedGB * 1073741824).format('0 b');
-                self.totalCapacity.totalFormatted = numeral((totalFreeGB + totalUsedGB) * 1073741824).format('0 b');
+                self.totalCapacity.freeFormatted = numeral(totalFreeGB * 1073741824).format('0.0 b');
+                self.totalCapacity.usedFormatted = numeral(totalUsedGB * 1073741824).format('0.0 b');
+                self.totalCapacity.totalFormatted = numeral((totalFreeGB + totalUsedGB) * 1073741824).format('0.0 b');
 
 
                 if(self.config.capacityByType) {
@@ -98,7 +98,7 @@
                 }
                 self.trendCapacity.values = self.getRandomList('1', 50, totalUsedGB-(totalUsedGB * 0.1), totalUsedGB);
                 self.trendCapacity.selected.used = totalUsedGB;
-                self.trendCapacity.selected.usedFormatted = numeral(totalUsedGB * 1073741824).format('0 b');
+                self.trendCapacity.selected.usedFormatted = numeral(totalUsedGB * 1073741824).format('0.0 b');
             };
 
             ClusterService.getList().then(function(clusters) {
@@ -177,7 +177,6 @@
 
             VolumeService.getList().then(function(volumes) {
                 self.volumes = volumes;
-                self.services = [];
                 _.each(self.volumes, function(volume) {
                     if(volume.volume_status === 1) {
                         volumesWarning.push(volume);
@@ -192,9 +191,9 @@
                 self.pools = pools;
             });
 
-            self.services.push({});
-            self.services.push({});
-            self.services.push({});
+            _.each(_.range(0, 10), function(index) {
+                self.services.push({ id: index });
+            });
 
             this.switchCapacityCategory = function(execute) {
                 if(execute) {
