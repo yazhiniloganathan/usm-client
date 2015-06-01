@@ -62,17 +62,17 @@
                                 {{clusterdetail.iops.total | number : 2}}K IOPS
                               </span>
                               <span class="card-big-text">
-                                {{clusterdetail.iops.reads}}K
+                                {{clusterdetail.iops.reads}}M
                               </span> reads/s
                               <span class="card-big-text">
-                                {{clusterdetail.iops.writes}}K
+                                {{clusterdetail.iops.writes}}M
                               </span> writes/s
                             </div>
                         </div>
                         <div class="col-md-9">
                             <c3chart bindto-id="gauge-iops-chart">
                                 <chart-column column-id="IOPS" column-values="{{clusterdetail.iops.total}}" column-type="gauge" column-color="{{clusterdetail.getStatusColor((clusterdetail.iops.total)/1000*100)}}" />
-                                <chart-gauge min="0" max="10" units="{{clusterdetail.iops.total | number :2}}K IOPS" width="30" />
+                                <chart-gauge min="0" max="10" units="{{clusterdetail.iops.total | number :2}}M IOPS" width="30" />
                                 <chart-size chart-height="200"></chart-size>
                             </c3chart>
                         </div>
@@ -181,8 +181,8 @@
                 <div class="card-title"> Cluster network </div>
                 <div class="col-md-7">
                     <c3chart bindto-id="gauge-kbps1-chart">
-                        <chart-column column-id="Data Rate" column-values="{{clusterdetail.mockCluster.cluster_network.inbound+clusterdetail.mockCluster.cluster_network.outbound}}" column-type="gauge" column-color="{{clusterdetail.getStatusColor((clusterdetail.mockCluster.cluster_network.inbound + clusterdetail.mockCluster.cluster_network.outbound)/1000*100)}}" />
-                        <chart-gauge min="0" max="1000" units="{{clusterdetail.mockCluster.cluster_network.inbound+clusterdetail.mockCluster.cluster_network.outbound}} Mbps" width="10" />
+                        <chart-column column-id="Data Rate" column-values="{{clusterdetail.mockCluster.cluster_network.inbound+clusterdetail.mockCluster.cluster_network.outbound}}" column-type="gauge" column-color="{{clusterdetail.getStatusColor((clusterdetail.mockCluster.cluster_network.inbound + clusterdetail.mockCluster.cluster_network.outbound)/100*100)}}" />
+                        <chart-gauge min="0" max="100" units="{{clusterdetail.mockCluster.cluster_network.inbound+clusterdetail.mockCluster.cluster_network.outbound}} Gbps" width="10" />
                         <chart-tooltip show-tooltip="false"></chart-tooltip>
                         <chart-size chart-height="100"></chart-size>
                     </c3chart>

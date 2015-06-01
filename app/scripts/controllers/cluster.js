@@ -37,7 +37,7 @@
                             used : cluster.used,
                             areaSpline_cols : [{ id:1, name: 'Used', color: '#39a5dc', type: 'area-spline' }],
                             areaSpline_values : mockCluster.areaSpline_values,
-                            gauge_values : mockCluster.gauge_values[0]['1'],
+                            gauge_values : _.random(20, 70)/10,
                             alerts : mockCluster.alerts
                         };
                         if($scope.getClusterTypeTitle(cluster.cluster_type) === 'Gluster') {
