@@ -149,14 +149,14 @@
             return tempCluster === undefined ? byDefaultCluster : tempCluster;
         };
 
-        function  getRandomList(key, count, min, max) {
+        function  getRandomList(key, count, min, max, sort) {
             var list = [];
             _.each(_.range(count), function(index) {
                 var value = {};
                 value[key] = _.random(min, max);
                 list.push(value);
             });
-            return list;
+            return sort ? _.sortBy(list, key) : list;
         };
         return {
             getMockCluster: getMockCluster,

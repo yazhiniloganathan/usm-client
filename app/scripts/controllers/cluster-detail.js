@@ -39,7 +39,7 @@
                         { '1': self.capacity.used },
                         { '9': self.capacity.free }
                     ];
-                    self.capacity.trends.values = MockDataProviderHelpers.getRandomList('1', 50, self.capacity.used * 0.9, self.capacity.used);
+                    self.capacity.trends.values = MockDataProviderHelpers.getRandomList('1', 50, self.capacity.used * 0.1, self.capacity.used, true);
                 });
             });
 
