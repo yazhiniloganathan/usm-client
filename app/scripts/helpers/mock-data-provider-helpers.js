@@ -19,12 +19,12 @@
                 lowest : 8
             },
             management_network: {
-                inbound: 16,
-                outbound: 5
+                inbound: _.random(3,10),
+                outbound:_.random(13,25),
             },
             cluster_network: {
-                inbound: 22.5,
-                outbound: 11.2
+                inbound: _.random(10,20),
+                outbound: _.random(25,40),
             }
         };
         // Mock clusters with hard coded data.

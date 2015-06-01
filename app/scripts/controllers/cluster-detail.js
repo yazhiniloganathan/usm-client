@@ -80,7 +80,7 @@
                     brickPromises.push(VolumeService.getBricks(volume.volume_id));
                 });
                 self.volumes.critical = critical;
-                self.volumes.warning = warning; 
+                self.volumes.warning = warning;
                 return $q.all(brickPromises);
             }).then(function(bricks) {
                 var total = 0, warning = 0, critical = 0;
@@ -97,7 +97,7 @@
                 });
                 self.bricks.total = total;
                 self.bricks.critical = critical;
-                self.bricks.warning = warning; 
+                self.bricks.warning = warning;
             });
 
             this.cluster.volumes = [];
@@ -106,12 +106,14 @@
             });
 
             this.formatSize = function(bytes) {
-                return numeral(bytes).format('0 b');
+                return numeral(bytes).format('0.0 b');
             }
 
-            this.mockCluster = {};
-            var mockCluster = MockDataProviderHelpers.getMockCluster();
-            this.mockCluster = mockCluster;
+            this.mockCluster = MockDataProviderHelpers.getMockCluster();
+            this.mockCluster.management_network.inbound = _.random(3,10);
+            this.mockCluster.management_network.outbound = _.random(13,25);
+            this.mockCluster.cluster_network.inbound = _.random(10,20);
+            this.mockCluster.cluster_network.outbound = _.random(25,40);
 
             this.getStatusColor = function(value) {
                 if (value >= 90) return '#E35C5C';
