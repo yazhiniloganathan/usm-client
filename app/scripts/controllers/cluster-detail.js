@@ -2,7 +2,7 @@
     'use strict;'
     define(['lodash', 'numeral', 'c3', 'helpers/cluster-helpers', 'helpers/mock-data-provider-helpers'], function(_, numeral, c3, ClusterHelpers, MockDataProviderHelpers) {
         window.c3 = c3;
-        var ClusterDetailController = function($scope, $location, $log, $routeParams, ClusterService, ServerService) {
+        var ClusterDetailController = function($q, $scope, $location, $log, $routeParams, ClusterService, ServerService, VolumeService) {
             var self = this;
             self.id = $routeParams.id;
             this.cluster = {};
@@ -19,7 +19,7 @@
             ];
             this.capacity.trends.values = [];
 
-            this.iops = { reads: _.random(300, 500), writes: _.random(200, 300) };
+            this.iops = { reads: _.random(200, 400)/100, writes: _.random(200, 500)/100 };
             this.iops.total = this.iops.reads + this.iops.writes;
             this.iops.trends = {};
             this.iops.trends.cols = [
@@ -39,6 +39,7 @@
                         { '1': self.capacity.used },
                         { '9': self.capacity.free }
                     ];
+                    self.capacity.legends[0].color = self.getStatusColor(self.capacity.used/self.capacity.total*100);
                     self.capacity.trends.values = MockDataProviderHelpers.getRandomList('1', 50, self.capacity.used * 0.1, self.capacity.used, true);
                 });
             });
@@ -59,6 +60,45 @@
                     }
                 });
                 self.hosts.critical = critical;
+            });
+
+            var brickPromises = [];
+            VolumeService.getListByCluster(self.id).then(function(volumes){
+                self.volumes.total = volumes.length;
+                var warning = 0, critical = 0;
+                _.each(volumes, function(volume) {
+                    if(volume.volume_status === 1) {
+                        warning++;
+                    }
+                    else if(volume.volume_status === 2 || volume.volume_status === 3){
+                        critical++;
+                    }
+                    brickPromises.push(VolumeService.getBricks(volume.volume_id));
+                });
+                self.volumes.critical = critical;
+                self.volumes.warning = warning; 
+                return $q.all(brickPromises);
+            }).then(function(bricks) {
+                var total = 0, warning = 0, critical = 0;
+                _.each(bricks,function(bricklist){
+                    _.each(bricklist, function(brick) {
+                        if(brick.brick_status === 1) {
+                            warning++;
+                        }
+                        else if(brick.brick_status === 2 || brick.brick_status === 3){
+                            critical++;
+                        }
+                            total++;
+                    });
+                });
+                self.bricks.total = total;
+                self.bricks.critical = critical;
+                self.bricks.warning = warning; 
+            });
+
+            this.cluster.volumes = [];
+            _.each(_.range(0, 25), function(index) {
+                self.cluster.volumes.push({id: _.random(0, 100), utilization: _.random(0, 100), performance: _.random(0, 100), uptime: _.random(0, 100)});
             });
 
             this.formatSize = function(bytes) {
@@ -86,6 +126,6 @@
                 }
             };
         }
-        return ['$scope', '$location', '$log', '$routeParams', 'ClusterService', 'ServerService', ClusterDetailController];
+        return ['$q', '$scope', '$location', '$log', '$routeParams', 'ClusterService', 'ServerService', 'VolumeService', ClusterDetailController];
     });
 })();
