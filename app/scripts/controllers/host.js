@@ -30,6 +30,7 @@
                             return host.node_id === selectedHost.node_id;
                         });
                         host.selected = !_.isUndefined(selected);
+                        host.status = host.node_status === 2 ? 'Up' : 'Down';
                     });
                     self.list = hosts;
                 });
