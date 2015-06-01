@@ -17,7 +17,7 @@
                 $interval.cancel(timer);
             });
             reloadData();
-            
+
             var reloading = false;
             function reloadData() {
                 if(reloading) {
@@ -51,7 +51,7 @@
                         }
                         tempClusters.push(tempCluster);
                     });
-                    
+
                     var hosts = [];
                     var sizes = [];
                     _.each(tempClusters, function(cluster) {

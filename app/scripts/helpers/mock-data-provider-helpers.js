@@ -30,19 +30,18 @@
         // Mock clusters with hard coded data.
         var mockClusters = [
             {
-                cluster_name : "gluster" ,
-                alerts : 1 ,
+                cluster_name : "Cluster10" ,
+                alerts : 0 ,
                 areaSpline_values : [ { '1': 5 }, { '1': 9 }, { '1': 50 }, { '1': 80 }, { '1': 82 }] ,
-                gauge_values : [{ '1': 9 }] ,
                 cpu : {
                     average : 28 ,
                     highest : 79 ,
                     lowest : 5
                 },
                 memory : {
-                    average : 31 ,
-                    highest : 85 ,
-                    lowest : 9
+                    average : 84 ,
+                    highest : 91 ,
+                    lowest : 45
                 },
                 management_network : {
                     inbound : 305 ,
@@ -54,38 +53,13 @@
                 }
             },
             {
-                cluster_name : "new" ,
-                alerts : 0 ,
+                cluster_name : "Cluster11" ,
+                alerts : 1 ,
                 areaSpline_values : [ { '1': 2 }, { '1': 5 }, { '1': 20 }, { '1': 30 }, { '1': 60 }] ,
-                gauge_values : [{ '1': 7 }] ,
                 cpu : {
-                    average : 35 ,
-                    highest : 65 ,
-                    lowest : 2
-                },
-                memory : {
-                    average : 38 ,
-                    highest : 84 ,
-                    lowest : 5
-                },
-                management_network : {
-                    inbound : 320 ,
-                    outbound : 300
-                },
-                cluster_network : {
-                    inbound : 421 ,
-                    outbound : 312
-                }
-            },
-            {
-                cluster_name : "newone" ,
-                alerts : 0 ,
-                areaSpline_values : [ { '1': 2 }, { '1': 20 }, { '1': 20 }, { '1': 30 }, { '1': 60 }] ,
-                gauge_values : [{ '1': 6 }] ,
-                cpu : {
-                    average : 35 ,
-                    highest : 65 ,
-                    lowest : 2
+                    average : 85 ,
+                    highest : 95 ,
+                    lowest : 26
                 },
                 memory : {
                     average : 38 ,
