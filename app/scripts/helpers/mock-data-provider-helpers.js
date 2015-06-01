@@ -14,8 +14,8 @@
                 lowest : 3
             },
             memory : {
-                average : 34 ,
-                highest : 75 ,
+                average : 81 ,
+                highest : 85 ,
                 lowest : 8
             },
             management_network: {
@@ -46,11 +46,11 @@
                 },
                 management_network : {
                     inbound : 305 ,
-                    outbound : 250 
+                    outbound : 250
                 },
                 cluster_network : {
                     inbound : 311 ,
-                    outbound : 288 
+                    outbound : 288
                 }
             },
             {
@@ -70,11 +70,11 @@
                 },
                 management_network : {
                     inbound : 320 ,
-                    outbound : 300 
+                    outbound : 300
                 },
                 cluster_network : {
                     inbound : 421 ,
-                    outbound : 312 
+                    outbound : 312
                 }
             },
             {
@@ -94,11 +94,11 @@
                 },
                 management_network : {
                     inbound : 320 ,
-                    outbound : 300 
+                    outbound : 300
                 },
                 cluster_network : {
                     inbound : 421 ,
-                    outbound : 312 
+                    outbound : 312
                 }
             }
         ];

@@ -169,8 +169,8 @@
                     if(host.node_status === 1) {
                         self.hostsWarning.push(host);
                     }
-                    var cpu = _.random(70, 100);
-                    var memory = _.random(70, 100);
+                    var cpu = _.random(70, 85);
+                    var memory = _.random(70, 85);
                     host.perf = { cpu: cpu, memory: memory };
                 });
             });
@@ -191,6 +191,10 @@
             PoolService.getList().then(function(pools) {
                 self.pools = pools;
             });
+
+            self.services.push({});
+            self.services.push({});
+            self.services.push({});
 
             this.switchCapacityCategory = function(execute) {
                 if(execute) {
