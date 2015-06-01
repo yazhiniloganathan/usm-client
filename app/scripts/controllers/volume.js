@@ -9,22 +9,19 @@
             });
 
             var self = this;
-            self.reloading = false;
+            self.first = true;
             this.list = [];
-            this.selectAllVolumes = false;
+            this.capacityMap = {};
 
-            var timer = $interval(reloadData, 10000);
+            var timer1 = $interval(reloadData, 5000);
+            var timer2 = $interval(reloadCapacity, 60000);
             $scope.$on('$destroy', function() {
-                $interval.cancel(timer);
+                $interval.cancel(timer1);
+                $interval.cancel(timer2);
             });
             reloadData();
 
             function reloadData() {
-                if(self.reloading) {
-                    return;
-                }
-
-                self.reloading = true;
                 VolumeService.getList().then(function(volumes) {
                     var selectedVolumes = _.filter(self.list, function(volume){
                         return volume.selected;
@@ -36,29 +33,55 @@
                         volume.selected = !_.isUndefined(selected);
                     });
 
-                    var requests = [];
-                    _.each(volumes, function(volume) {
-                        requests.push(VolumeService.getCapacity(volume.volume_id));
-                    });
-                    $q.all(requests).then(function(capacityList) {
-                        var index = 0;
-                        _.each(capacityList, function(capacity) {
-                            volumes[index].capacity = capacity;
-                            volumes[index].capacity.freeFormatted = self.formatSize(capacity.free);
-                            volumes[index].capacity.totalFormatted = self.formatSize(capacity.total);
-                            index++;
-                        });
-                        self.list = volumes;
-                        self.reloading = false;
-                    });
-                    if(self.list.length === 0) {
-                        self.list = volumes;
+                    self.list = volumes;
+
+                    if(self.first) {
+                        reloadCapacity();
                     }
+                    else {
+                        self.updateCapacity();
+                    }
+                    self.first = false;
                 });
             };
 
+            function reloadCapacity() {
+                var volumes = self.list.slice(0);
+                if(volumes.length === 0) {
+                    return;
+                }
+
+                var updateCapacity = function(capacity) {
+                    capacity.freeFormatted = self.formatSize(capacity.free);
+                    capacity.totalFormatted = self.formatSize(capacity.total);
+                    self.capacityMap[capacity.volumeId] = capacity;
+                };
+
+                var findCapacity = function(volumes, volume) {
+                    VolumeService.getCapacity(volume.volume_id).then(function (capacity) {
+                        updateCapacity(capacity);
+                        if(volumes.length > 0) {
+                            var nextVolume = volumes[0];
+                            findCapacity(_.rest(volumes), nextVolume);
+                        }
+                        else {
+                            self.updateCapacity();
+                        }
+
+                    });
+                };
+                var volume = volumes[0];
+                findCapacity(_.rest(volumes), volume);
+            }
+
+            this.updateCapacity = function() {
+                _.each(self.list, function(volume) {
+                    volume.capacity = self.capacityMap[volume.volume_id];
+                });
+            }
+
             this.formatSize = function(size) {
-                return numeral(size).format('0.0 b');
+                return numeral(size ? size : 0).format('0.0 b');
             };
 
             this.getVolumeType = function(id) {
