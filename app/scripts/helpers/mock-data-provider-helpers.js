@@ -18,13 +18,13 @@
                 highest : 75 ,
                 lowest : 8
             },
-            management_network : {
-                inbound : 301 ,
-                outbound : 288 
+            management_network: {
+                inbound: 16,
+                outbound: 5
             },
-            cluster_network : {
-                inbound : 402 ,
-                outbound : 327 
+            cluster_network: {
+                inbound: 225,
+                outbound: 112
             }
         };
         // Mock clusters with hard coded data.
