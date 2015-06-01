@@ -111,7 +111,8 @@
                     }
                 });
             };
-
+            
+            $interval($scope.getDiscoveredHosts, 3000);
             $interval($scope.reloadAlerts, 6000);
             $interval($scope.reloadTasks, 5000);
             $interval($scope.reloadDiscoveredHostsLength, 5000);
