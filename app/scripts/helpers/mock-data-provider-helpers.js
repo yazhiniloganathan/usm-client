@@ -23,8 +23,8 @@
                 outbound: 5
             },
             cluster_network: {
-                inbound: 225,
-                outbound: 112
+                inbound: 22.5,
+                outbound: 11.2
             }
         };
         // Mock clusters with hard coded data.

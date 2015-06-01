@@ -2,7 +2,7 @@
     'use strict;'
     define(['lodash', 'numeral', 'c3', 'helpers/cluster-helpers', 'helpers/mock-data-provider-helpers'], function(_, numeral, c3, ClusterHelpers, MockDataProviderHelpers) {
         window.c3 = c3;
-        var ClusterDetailController = function($q, $scope, $location, $log, $routeParams, ClusterService, ServerService, VolumeService) {
+        var ClusterDetailController = function($q, $scope, $location, $log, $routeParams, ClusterService, ServerService, VolumeService, PoolService) {
             var self = this;
             self.id = $routeParams.id;
             this.cluster = {};
@@ -19,7 +19,7 @@
             ];
             this.capacity.trends.values = [];
 
-            this.iops = { reads: _.random(200, 400)/100, writes: _.random(200, 500)/100 };
+            this.iops = { reads: _.random(200, 700)/100, writes: _.random(100, 200)/100 };
             this.iops.total = this.iops.reads + this.iops.writes;
             this.iops.trends = {};
             this.iops.trends.cols = [
@@ -60,6 +60,10 @@
                     }
                 });
                 self.hosts.critical = critical;
+            });
+
+            PoolService.getListByCluster(self.id).then(function(pools) {
+                self.pools.total = pools.length;
             });
 
             var brickPromises = [];
@@ -126,6 +130,6 @@
                 }
             };
         }
-        return ['$q', '$scope', '$location', '$log', '$routeParams', 'ClusterService', 'ServerService', 'VolumeService', ClusterDetailController];
+        return ['$q', '$scope', '$location', '$log', '$routeParams', 'ClusterService', 'ServerService', 'VolumeService', 'PoolService', ClusterDetailController];
     });
 })();

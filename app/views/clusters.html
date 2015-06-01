@@ -66,7 +66,7 @@
         <div class="adjust-gauge" ng-if="cluster.cluster_status != 4">
           <c3chart bindto-id="gauge-iops-chart-{{$index}}">
             <chart-column column-id="IOPS-{{$index}}" column-values="{{cluster.gauge_values}}" column-type="gauge" column-color="{{getClusterGaugeColor(cluster.gauge_values)}}" />
-             <chart-gauge min="0" max="10" units="{{cluster.gauge_values}}K IOPS" width="20" />
+             <chart-gauge min="0" max="10" units="{{cluster.gauge_values}}M IOPS" width="20" />
               <chart-size chart-height="80"></chart-size>
           </c3chart>
         </div>
