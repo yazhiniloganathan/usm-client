@@ -4,7 +4,7 @@
 			<center ng-if="first.discoveredHosts.length > 0"><label>The following hosts are discovered.</label></center>
 			<div class="row">
                <div class="col-md-offset-6 col-md-6">
-                 <button class="pull-right" ng-if="first.discoveredHosts.length > 1" ng-click="first.acceptAllHosts();">Accept All</button>
+                 <button class="pull-right btn btn-default" ng-if="first.discoveredHosts.length > 1" ng-click="first.acceptAllHosts();">Accept All</button>
                </div>
             </div>
 		    <div class="row host-row" ng-repeat="discoveredHost in first.discoveredHosts">
@@ -24,7 +24,7 @@
 		</div>
 		<center>
 	        <h3><strong>You don't have any clusters<strong></h3>
-			<button type="button" class="btn btn-default" ng-click="first.createCluster()">Create Cluster</button>
+			<button type="button" class="btn btn-primary" ng-click="first.createCluster()">Create Cluster</button>
 			or
 			<button type="button" class="btn btn-default">Import Cluster</button>
 	    </center>
