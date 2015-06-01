@@ -110,22 +110,20 @@ define(['lodash'], function(_) {
             // **@returns** a promise with the cluster capacity for the specific
             // cluster based on it's id.
             getCapacity: function(id) {
-                return this.restangular.one('clusters', id).get().then(function(cluster) {
-                    return ServerService.getListByCluster(cluster.cluster_id).then(function(servers) {
-                        var requests = [];
-                        _.each(servers, function(server) {
-                            requests.push(ServerService.getDiskStorageDevices(server.node_id));
+                return ServerService.getListByCluster(id).then(function(servers) {
+                    var requests = [];
+                    _.each(servers, function(server) {
+                        requests.push(ServerService.getDiskStorageDevices(server.node_id));
+                    });
+                    return $q.all(requests).then(function(devicesList) {
+                        var capacity = 0;
+                        _.each(devicesList, function(devices) {
+                            var size = _.reduce(devices, function(size, device) {
+                                return device.size + size;
+                            }, 0);
+                            capacity = capacity + size;
                         });
-                        return $q.all(requests).then(function(devicesList) {
-                            var capacity = 0;
-                            _.each(devicesList, function(devices) {
-                                var size = _.reduce(devices, function(size, device) {
-                                    return device.size + size;
-                                }, 0);
-                                capacity = capacity + size;
-                            });
-                            return capacity;
-                        });
+                        return capacity;
                     });
                 });
             },

@@ -139,8 +139,11 @@
                         VolumeService.getListByCluster(cluster.cluster_id).then(function(volumes) {
                             cluster.volumes = volumes;
                             cluster.volumes.push({ id: 100, usage: 75 });
-                            _.each(_.range(cluster.volumes.length, 25), function(index) {
+                            _.each(_.range(cluster.volumes.length, 15), function(index) {
                                 cluster.volumes.push({id: _.random(0, 100), usage: _.random(0, 70)});
+                            });
+                            _.each(_.range(cluster.volumes.length, 25), function(index) {
+                                cluster.volumes.push({id: _.random(0, 100), usage: _.random(0, 95)});
                             });
                         });
                     }
@@ -148,8 +151,11 @@
                         PoolService.getListByCluster(cluster.cluster_id).then(function(pools) {
                             cluster.pools = pools;
                             cluster.pools.push({ id: 100, usage: 75 });
-                            _.each(_.range(cluster.pools.length, 25), function(index) {
+                            _.each(_.range(cluster.pools.length, 15), function(index) {
                                 cluster.pools.push({id: _.random(0, 100), usage: _.random(0, 70)});
+                            });
+                            _.each(_.range(cluster.pools.length, 25), function(index) {
+                                cluster.pools.push({id: _.random(0, 100), usage: _.random(0, 95)});
                             });
                         });
                     }
