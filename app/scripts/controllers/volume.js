@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    define(['lodash', 'numeral', 'helpers/volume-helpers'], function(_, numeral, VolumeHelpers) {
+    define(['lodash', 'numeral', 'helpers/volume-helpers', 'helpers/mock-data-provider-helpers'], function(_, numeral, VolumeHelpers, MockDataProviderHelpers) {
         var VolumeController = function($scope, $q, $location, $interval, ClusterService, VolumeService) {
             ClusterService.getList().then(function(clusters) {
                 if(clusters.length === 0) {
@@ -12,29 +12,28 @@
             self.first = true;
             this.list = [];
             this.capacityMap = {};
-
+            
             var timer1 = $interval(reloadData, 5000);
             var timer2 = $interval(reloadCapacity, 60000);
             $scope.$on('$destroy', function() {
                 $interval.cancel(timer1);
                 $interval.cancel(timer2);
-            });
+            }); 
+
             reloadData();
 
             function reloadData() {
                 VolumeService.getList().then(function(volumes) {
-                    var selectedVolumes = _.filter(self.list, function(volume){
-                        return volume.selected;
-                    });
-                    _.each(volumes, function(volume) {
-                        var selected = _.find(selectedVolumes, function(selectedVolume){
-                            return volume.volume_id === selectedVolume.volume_id;
+                     _.each(volumes, function(volume) {
+                        var mockVolume = MockDataProviderHelpers.getMockVolume(volume.volume_name);
+                        volume.areaSpline_cols = [{ id:1, name: 'Used', color: '#39a5dc', type: 'area-spline' }];
+                        volume.areaSpline_values = mockVolume.areaSpline_values;
+                        volume.alerts = mockVolume.alerts;
+                        VolumeService.getBricks(volume.volume_id).then(function (bricks) {
+                             volume.bricks = bricks.length;
                         });
-                        volume.selected = !_.isUndefined(selected);
                     });
-
-                    self.list = volumes;
-
+                    self.list= volumes;
                     if(self.first) {
                         reloadCapacity();
                     }
@@ -54,6 +53,8 @@
                 var updateCapacity = function(capacity) {
                     capacity.freeFormatted = self.formatSize(capacity.free);
                     capacity.totalFormatted = self.formatSize(capacity.total);
+                    var percent_used = (100  - (( ( capacity.free/1073741824 ) * 100) / ( capacity.total/1073741824 ))) ;
+                    capacity.percent_used = isNaN(percent_used) ? 0 : percent_used;
                     self.capacityMap[capacity.volumeId] = capacity;
                 };
 
@@ -96,15 +97,8 @@
                 $location.path('/volumes/new');
             };
 
-            this.expand = function(volume) {
-                var selectedVolumes = _.filter(self.list, function(volume){
-                    return volume.selected;
-                });
-
-                if(selectedVolumes.length>0) {
-                    var selectedVolume = _.first(selectedVolumes);
-                    $location.path('/volumes/expand/'+selectedVolume.volume_id);
-                }
+            this.expand = function(volume_id) {
+              $location.path('/volumes/expand/'+volume_id);
             };
 
             this.isDeleteAvailable = function() {

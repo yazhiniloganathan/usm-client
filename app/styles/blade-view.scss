@@ -12,8 +12,13 @@
     border: 1px solid lightgray;
  }
 
+ .blade-view .description {
+    font-size: 13px;
+    font-weight: 600;
+ }
+
  .blade-view-with-opacity {
-   opacity: 0.3
+    opacity: 0.3
  }
 
  .blade-view .vertical-line-for-gluster {
@@ -128,4 +133,9 @@
     margin-bottom: 0;
     margin-left: -78px;
     margin-top: 51px;
+ }
+
+.blade-view .cluster_name {
+    font-size: 13px;
+    text-align: center;
  }
