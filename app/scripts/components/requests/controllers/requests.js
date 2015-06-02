@@ -25,11 +25,6 @@
                     $scope.tasks = tasks;
                 });
             }
-            $scope.reloadDiscoveredHostsLength = function() {
-                ServerService.getDiscoveredHosts().then(function(freeHosts) {
-                  $scope.discoveredHostsLength = freeHosts.length;
-                });
-            }
 
             $scope.logoutUser = function()   {
                UserService.logout().then(function(logout)  {
@@ -37,13 +32,16 @@
                 });
             }
 
-            $scope.getDiscoveredHosts = function() {
+            $scope.reloadDiscoveredHosts = function() {
 
                 $scope.discoveredHosts = _.filter($scope.discoveredHosts, function(host)    {
-                    return host.state !== "ACCEPTED";
+                    return host.state !== "ACCEPTED" && host.state !== "UNACCEPTED";
                 });
 
                 ServerService.getDiscoveredHosts().then(function(freeHosts) {
+
+                    $scope.discoveredHostsLength = freeHosts.length;
+
                    _.each(freeHosts, function(freeHost) {
                         var host = {
                             hostname: freeHost.node_name,
@@ -52,7 +50,7 @@
                             selected: false
                         };
 
-                        var isPresent = false;
+                        var isPresent = false; 
 
                         isPresent = _.some($scope.discoveredHosts, function(dHost)  {
                             return dHost.hostname === host.hostname;
@@ -74,6 +72,7 @@
                         }
                     ]
                 };
+
                 UtilService.acceptHosts(hosts).then(function(result) {
                     $log.info(result);
                     host.state = "ACCEPTING";
@@ -112,10 +111,9 @@
                 });
             };
 
-            $interval($scope.getDiscoveredHosts, 6000);
+            $interval($scope.reloadDiscoveredHosts, 5000);
             $interval($scope.reloadAlerts, 6000);
             $interval($scope.reloadTasks, 5000);
-            $interval($scope.reloadDiscoveredHostsLength, 5000);
         };
 
         return ['$scope', '$interval', 'UserService', 'RequestTrackingService', 'ServerService', 'UtilService', 'RequestService', '$log', '$timeout', RequestsController];
