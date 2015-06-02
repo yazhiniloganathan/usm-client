@@ -27,6 +27,12 @@
                 outbound: _.random(25,40),
             }
         };
+        // When volume name will not match with any exist object , than this will be by default volume.
+        var byDefaultVolume = {
+            volume_name : "default" ,
+            areaSpline_values : [ { '1': 2 }, { '1': 12 }, { '1': 50 }, { '1': 60 }, { '1': 90 }] ,
+            alerts : 0 
+        };
         // Mock clusters with hard coded data.
         var mockClusters = [
             {
@@ -76,12 +82,32 @@
                 }
             }
         ];
+        // Mock volumes with hard coded data.
+        var mockVolumes = [
+            {
+                volume_name : "v1" ,
+                areaSpline_values : [ { '1': 2 }, { '1': 12 }, { '1': 50 }, { '1': 60 }, { '1': 90 }] ,
+                alerts : 0 
+            },
+            {
+                volume_name : "v2" ,
+                areaSpline_values : [ { '1': 4 }, { '1': 8 }, { '1': 40 }, { '1': 60 }, { '1': 60 }] ,
+                alerts : 4
+            }
+        ];
         // **@returns** a cluster object with the cluster name for the specific
         function getMockCluster(cluster_name) {
             var tempCluster =  _.find(mockClusters, function(cluster) {
                     return cluster.cluster_name === cluster_name;
             });
             return tempCluster === undefined ? byDefaultCluster : tempCluster;
+        };
+        // **@returns** a volume object with the volume name for the specific
+        function getMockVolume(volume_name) {
+            var tempVolume =  _.find(mockVolumes, function(volume) {
+                    return volume.volume_name === volume_name;
+            });
+            return tempVolume === undefined ? byDefaultVolume : tempVolume;
         };
 
         function  getRandomList(key, count, min, max, sort) {
@@ -95,6 +121,7 @@
         };
         return {
             getMockCluster: getMockCluster,
+            getMockVolume: getMockVolume,
             getRandomList: getRandomList
         };
     });
