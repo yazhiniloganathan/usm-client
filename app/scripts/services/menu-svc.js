@@ -7,6 +7,7 @@
         //
         // **Constructor**
         var Service = function() {
+
             this.menus = [{
                     label: 'Dashboard',
                     id: 'dashboard',
@@ -46,6 +47,8 @@
                 }
             ];
         };
+
+
         Service.prototype = _.extend(Service.prototype, {
             // Change the active menu item
             setActive: function(menuId) {

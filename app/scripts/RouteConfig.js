@@ -25,16 +25,16 @@
                 controllerAs: 'first'
             }).when('/clusters', {
                 templateUrl: 'views/clusters.html',
-                menuId: 'cluster',
+                menuId: 'clusters',
                 controller: 'ClusterController',
             }).when('/clusters/new', {
                 templateUrl: 'views/clusters-new.html',
-                menuId: 'cluster',
+                menuId: 'clusters',
                 controller: 'ClusterNewController',
                 controllerAs: 'cluster'
             }).when('/clusters/expand/:id', {
                 templateUrl: 'views/clusters-expand.html',
-                menuId: 'cluster',
+                menuId: 'clusters',
                 controller: 'ClusterExpandController',
                 controllerAs: 'cluster'
             }).when('/clusters/detail/:id', {
