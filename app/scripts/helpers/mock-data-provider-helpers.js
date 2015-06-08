@@ -33,6 +33,11 @@
             areaSpline_values : [ { '1': 2 }, { '1': 12 }, { '1': 50 }, { '1': 60 }, { '1': 90 }] ,
             alerts : 0 
         };
+        // When host name will not match with any exist object , than this will be by default host.
+        var byDefaultHost = {
+            node_name : "default" ,
+            alerts : 0 ,
+        };
         // Mock clusters with hard coded data.
         var mockClusters = [
             {
@@ -95,6 +100,25 @@
                 alerts : 4
             }
         ];
+         // Mock hosts with hard coded data.
+        var mockHosts = [
+            {
+                node_name : "dhcp42-159.lab.eng.blr.redhat.com" ,
+                alerts : 0 ,
+            },
+            {
+                node_name : "dhcp42-135.lab.eng.blr.redhat.com" ,
+                alerts : 2 ,
+            },
+            {
+                node_name : "dhcp42-41.lab.eng.blr.redhat.com" ,
+                alerts : 3 ,
+            },
+            {
+                node_name : "dhcp42-208.lab.eng.blr.redhat.com" ,
+                alerts : 0 ,
+            }
+        ];
         // **@returns** a cluster object with the cluster name for the specific
         function getMockCluster(cluster_name) {
             var tempCluster =  _.find(mockClusters, function(cluster) {
@@ -109,6 +133,13 @@
             });
             return tempVolume === undefined ? byDefaultVolume : tempVolume;
         };
+        // **@returns** a host object with the host name for the specific
+        function getMockHost(node_name) {
+            var tempHost =  _.find(mockHosts, function(host) {
+                    return host.node_name === node_name;
+            });
+            return tempHost === undefined ? byDefaultHost : tempHost;
+        };
 
         function  getRandomList(key, count, min, max, sort) {
             var list = [];
@@ -122,6 +153,7 @@
         return {
             getMockCluster: getMockCluster,
             getMockVolume: getMockVolume,
+            getMockHost: getMockHost,
             getRandomList: getRandomList
         };
     });
