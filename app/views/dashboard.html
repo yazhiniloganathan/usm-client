@@ -174,12 +174,12 @@
                   <div class="dashboard-card-tops">
                     <div class="body">
                       <div class="title">
-                        Top Clusters - IOps
+                        Top Clusters - IOPS
                       </div>
                       <table class="table table-striped table-content">
                         <tbody>
                           <tr ng-repeat="cluster in dash.clusters | orderBy: '-perf.iops' | limitTo: 5">
-                            <td> {{cluster.cluster_name}} </td>
+                            <td class="bold"> {{cluster.cluster_name}} </td>
                             <td> {{cluster.perf.iopsFormatted}} </td>
                           </tr>
                         </tbody>
@@ -199,7 +199,7 @@
                       <table class="table table-striped table-content">
                         <tbody>
                           <tr ng-repeat="cluster in dash.clusters | orderBy: '-perf.bandwidth' | limitTo: 5">
-                            <td> {{cluster.cluster_name}} </td>
+                            <td class="bold"> {{cluster.cluster_name}} </td>
                             <td> {{cluster.perf.bandwidthFormatted}} </td>
                           </tr>
                         </tbody>
