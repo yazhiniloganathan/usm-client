@@ -17,6 +17,12 @@
     font-weight: 600;
  }
 
+ .blade-view .description-for-host {
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 31px;
+ }
+
  .blade-view-with-opacity {
     opacity: 0.3
  }
@@ -43,10 +49,20 @@
     margin-top: 43px;
  }
 
+ .blade-view .set-top-margin-for-donut {
+    margin-top: 9px;
+ }
+
  .blade-view .heading {
     font-size: 18px;
-    font-family: "Open Sans",Helvetica,Arial,sans-serif;
     font-weight: 600;
+    margin-left: 29px;
+ }
+
+ .blade-view .host-name-heading {
+    font-size: 15px;
+    font-weight: 600;
+    margin-left: 29px;
  }
 
  .blade-view .sub-heading {
@@ -63,8 +79,10 @@
  }
 
  .blade-view .exclamation-mark {
+    display: inline;
     font-size: 20px;
     margin-right: 9px;
+    position: absolute;
  }
 
  .blade-view .percentage-heading {
@@ -137,5 +155,15 @@
 
 .blade-view .cluster_name {
     font-size: 13px;
+    text-align: center;
+ }
+
+ .blade-view .version {
+    font-size: 13px;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    font-weight: 600;
+ }
+
+ .blade-view .gadget {
     text-align: center;
  }
