@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-9">
     <h3>
       Available Hosts
     </h3>
 
     <div class="row cluster-hosts-panel">
-      <div class="col-md-8">
+      <div class="col-md-6">
         <form role="form" class="search-pf has-button">
           <div class="form-group has-clear">
             <div class="search-pf-input-group">
@@ -19,7 +19,7 @@
           </div>
         </form>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="pull-right">
           <span class="avaliable-hosts-count">{{cluster.hosts.length}} Hosts</span>
           (
@@ -55,7 +55,7 @@
           <button class="btn btn-default" ng-click="isAddRow = false;">Cancel</button>
         </div>
       </div>
-      <div ng-show="cluster.newHost.errorMsg.length>0" class="col-md-12">
+      <div ng-show="cluster.newHost.errorMsg.length>0" class="col-md-12 error-msg-color">
        <label ng-bind="cluster.newHost.cautionMsg"></label>
        <span ng-bind="cluster.newHost.errorMsg"></span>
       </div>
@@ -104,24 +104,19 @@
 
   </div>
 
-  <div class="col-md-4">
+
+  <div class="col-md-3">
     <h3>Storage Capacity</h3>
     <span class="text-muted">
        Available storage in selected hosts
     </span>
     <div class="row selected-hosts-storage">
-      <div class="col-md-6">
-        <div class="box">
-          <div class="content">
-            {{cluster.getDisks().length}} Disks
-          </div>
+      <div class="col-md-6 available-storage">
+        <div>
+          <i class="fa fa-database icon"></i> <span>{{cluster.getDisks().length}} Disks</span>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="box">
-          <div class="content">
-            {{cluster.getDisksSize()}} GB Total
-          </div>
+        <div>
+          <i class="fa fa-pie-chart"></i></i> <span>{{cluster.getDisksSize()}} GB</span>
         </div>
       </div>
     </div>
