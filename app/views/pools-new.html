@@ -49,11 +49,10 @@
         </div>
       </form>
     </div>
+  </div>
+        <div class="col-md-10 col-md-offset-2">
+          <button type="button" class="btn btn-default" ng-click='pool.cancel()'>Cancel</button>
+          <button type="button" class="btn btn-primary" ng-show='pool.isSubmitAvailable()' ng-click='pool.submit()'>Create Pool</button>
+        </div>
+</div>
 
-    <div>
-      <button type="button" class="btn btn-default" ng-click='pool.cancel()'>Cancel</button>
-      <button type="button" class="btn btn-primary" ng-show='pool.isSubmitAvailable()' ng-click='pool.submit()'>Create Pool</button>
-    </div>
-
-  </div><!-- /col -->
-</div> <!-- /row -->
