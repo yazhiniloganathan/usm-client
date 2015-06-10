@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    define(['lodash', 'numeral', 'helpers/volume-helpers', 'helpers/mock-data-provider-helpers'], function(_, numeral, VolumeHelpers, MockDataProviderHelpers) {
+    define(['lodash', 'numeral', 'helpers/volume-helpers', 'helpers/mock-data-provider-helpers', 'helpers/cluster-helpers'], function(_, numeral, VolumeHelpers, MockDataProviderHelpers, ClusterHelpers) {
         var VolumeController = function($scope, $q, $location, $interval, ClusterService, VolumeService) {
             ClusterService.getList().then(function(clusters) {
                 if(clusters.length === 0) {
@@ -13,7 +13,7 @@
             this.list = [];
             this.capacityMap = {};
             
-            var timer1 = $interval(reloadData, 5000);
+            var timer1 = $interval(reloadData, 10000);
             var timer2 = $interval(reloadCapacity, 60000);
             $scope.$on('$destroy', function() {
                 $interval.cancel(timer1);
@@ -32,6 +32,11 @@
                         VolumeService.getBricks(volume.volume_id).then(function (bricks) {
                              volume.bricks = bricks.length;
                         });
+                        if(volume.cluster != null) {
+                            ClusterService.get(volume.cluster).then(function (cluster) {
+                                 volume.cluster_type = cluster.cluster_type;
+                            });
+                        }
                     });
                     self.list= volumes;
                     if(self.first) {
@@ -74,6 +79,11 @@
                 var volume = volumes[0];
                 findCapacity(_.rest(volumes), volume);
             }
+
+            this.getClusterTypeTitle = function(type) {
+                if(type !== undefined)
+                return ClusterHelpers.getClusterType(type).type;
+            };
 
             this.updateCapacity = function() {
                 _.each(self.list, function(volume) {
