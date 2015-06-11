@@ -22,26 +22,7 @@
         </select>
       </div>
     </div>
-    <!-- <div class="form-group">
-      <label class="col-md-2 control-label" for="tier">Storage Tier</label>
-      <div class="col-md-4">
-        <select pf-select ng-model="volume.tier" id="tier" class="form-control" ng-options="tier.type for tier in volume.tierList">
-        </select>
-      </div>
-    </div> -->
-    <div class="form-group">
-      <label class="col-md-2 control-label">Current Size</label>
-      <div class="col-md-4">
-        <div class="progress-description">
-          {{volume.capacity.percentage}}% full 
-          ({{volume.capacity.usedFormatted}} of {{volume.capacity.totalFormatted}})
-        </div>
-        <div class="progress volume-size-progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{'width': volume.capacity.percentage + '%', 'background-color': volume.getCapacityProgressColor(volume.capacity.percentage)}">
-          </div>
-        </div>
-      </div>
-    </div>
+
     <div class="form-group">
       <label class="col-md-2 control-label" for="targetSize">Expand Size</label>
       <div class="col-md-4">
@@ -54,12 +35,31 @@
         </div>
       </div>
     </div>
+
+    <!-- <div class="form-group">
+      <label class="col-md-2 control-label" for="tier">Storage Tier</label>
+      <div class="col-md-4">
+        <select pf-select ng-model="volume.tier" id="tier" class="form-control" ng-options="tier.type for tier in volume.tierList">
+        </select>
+      </div>
+    </div> -->
+    
+    <div class="form-group">
+      <label class="col-md-2 control-label">Current Size</label>
+      <div class="col-md-4">
+        <div class="progress-description">
+          {{volume.capacity.totalFormatted}} &nbsp;
+          <span class="text-muted">{{volume.capacity.percentage}}% used</span>
+        </div>
+      </div>
+    </div>
+   
     <div class="form-group">
       <label class="col-md-2 control-label">New Size</label>
       <div class="col-md-4">
         <div class="progress-description">
-          {{volume.newcapacity.percentage}}% full 
-          ({{volume.newcapacity.usedFormatted}} of {{volume.newcapacity.totalFormatted}})
+          {{volume.newcapacity.totalFormatted}} &nbsp;
+          <span class="text-muted">{{volume.newcapacity.percentage}}% used</span>
         </div>
         <div class="progress volume-size-progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="{'width': volume.newcapacity.percentage + '%', 'background-color': volume.getCapacityProgressColor(volume.newcapacity.percentage)}">
