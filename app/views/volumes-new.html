@@ -1,6 +1,6 @@
 <div class="row wizard-top">
   <div class="col-sm-12 col-md-12">
-    <h1>New Volume</h1>
+    <h1>Create Volume</h1>
 
     <div class="wizard">
       <div ng-class="volume.step == 1 ? 'active' : (volume.step > 1 ? 'visited' : 'default')">
@@ -34,11 +34,13 @@
       </div>
     </div>
 
-    <div>
-      <button type="button" class="btn btn-default" ng-show='volume.isCancelAvailable()' ng-click='volume.cancel()'>Cancel</button>
-      <button type="button" class="btn btn-default" ng-show='!volume.isCancelAvailable()' ng-click='volume.moveStep(-1)'>&lt;&nbsp;&nbsp;Back</button>
-      <button type="button" class="btn btn-default" ng-show='!volume.isSubmitAvailable()' ng-click='volume.moveStep(1)'>Next&nbsp;&nbsp;&gt;</button>
-      <button type="button" class="btn btn-primary" ng-show='volume.isSubmitAvailable()' ng-click='volume.submit()'>Create Volume</button>
+    <div class="row wizard-buttons">
+      <div ng-class="(volume.step !== 3) ? 'col-md-10 col-md-offset-2' : 'col-md-10'">
+        <button type="button" class="btn btn-default" ng-show='volume.isCancelAvailable()' ng-click='volume.cancel()'>Cancel</button>
+        <button type="button" class="btn btn-default" ng-show='!volume.isCancelAvailable()' ng-click='volume.moveStep(-1)'>&lt;&nbsp;&nbsp;Back</button>
+        <button type="button" class="btn btn-default" ng-show='!volume.isSubmitAvailable()' ng-click='volume.moveStep(1)'>Next&nbsp;&nbsp;&gt;</button>
+        <button type="button" class="btn btn-primary" ng-show='volume.isSubmitAvailable()' ng-click='volume.submit()'>Create Volume</button>
+      </div>
     </div>
 
   </div><!-- /col -->
