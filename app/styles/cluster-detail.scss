@@ -11,9 +11,7 @@
         background-color: gray;
         margin: -20px;
         color: #fff;
-        font-size: 14px;
         vertical-align: middle;
-        font-weight: bold;
         line-height: 1em;
         padding: 5px;
         position: absolute;
@@ -117,5 +115,13 @@
     .legend {
         font-weight: 600;
         font-size: 13px !important;
+    }
+    .rotate {
+        float: left;
+        font-size: 16px;
+        font-weight: 600;
+        margin-left: -31px;
+        margin-top: 290px;
+        transform: rotate(270deg)
     }
 }
