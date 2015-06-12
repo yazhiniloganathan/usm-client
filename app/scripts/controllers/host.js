@@ -13,7 +13,7 @@
             var self = this;
             this.list = [];
             this.selectAllHosts = false;
-            
+
             var timer = $interval(reloadData, 10000);
             $scope.$on('$destroy', function() {
                 $interval.cancel(timer);
@@ -24,14 +24,16 @@
                 ServerService.getList().then(function(hosts) {
                      _.each(hosts, function(host) {
                         var mockHost = MockDataProviderHelpers.getMockHost(host.node_name);
-                        host.node_name = host.node_name.split(".")[0]; 
+                        host.node_name = host.node_name.split(".")[0];
                         host.alerts = mockHost.alerts;
                         host.cpu_average = parseInt(Math.random()*100);
                         host.memory_average = parseInt(Math.random()*100);
                         host.cluster_type = 2;
+                        host.version = '';
                         if(host.cluster != null) {
                             ClusterService.get(host.cluster).then(function (cluster) {
                                  host.cluster_type = cluster.cluster_type;
+                                 host.version = host.cluster_type === 1 ? 'V3.7.1' : 'V9.0.1';
                             });
                         }
                     });
@@ -50,7 +52,7 @@
                     return 'OSD Host';
                 else if(node_type === 3)
                     return 'OSD and Monitor';
-                else 
+                else
                     return 'Gluster Host';
             }
 
@@ -66,7 +68,7 @@
                     console.log(result);
                 });
             };
-            
+
         };
         return ['$scope', '$interval', '$location', 'ClusterService', 'ServerService', HostController];
     });
