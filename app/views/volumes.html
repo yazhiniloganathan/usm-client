@@ -8,8 +8,8 @@
     </div>
     <div class="col-md-offset-6 col-md-3">
       <span class="pull-right"> 
-        <button class="btn btn-primary btn-lg">IMPORT</button>
-        <button class="btn btn-primary btn-lg" ng-click="volumes.create()">CREATE</button>
+        <button class="btn btn-primary btn-lg">Import</button>
+        <button class="btn btn-primary btn-lg" ng-click="volumes.create()">Create</button>
       </span>
     </div>
   </div>
@@ -38,7 +38,7 @@
       <div class="col-md-3 col-sm-4 set-top-margin">
         <div class="disk-info-cart">
           {{volume.capacity.freeFormatted}} Free <br>
-          of Total {{volume.capacity.totalFormatted}}
+          of {{volume.capacity.totalFormatted}} Total
         </div>
         <!-- Adding area-spline-graph here -->
         <div class="adjust-area-spline">
@@ -72,7 +72,7 @@
       </div>
       <div class="col-md-1 col-sm-1 set-top-margin">
         <a class="pull-right add-cursor-pointer" data-animation="am-flip-x" data-template="views/volume-menu-dropdown.tpl.html" bs-dropdown="ellipsis">
-          <i class="fa fa-ellipsis-v fa-4x"></i>
+          <i class="fa fa-ellipsis-v fa-4x elipsis-color"></i>
         </a>
       </div>
    </div>

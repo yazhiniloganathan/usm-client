@@ -8,8 +8,8 @@
     </div>
     <div class="col-md-offset-6 col-md-3">
       <span class="pull-right"> 
-        <button class="btn btn-primary btn-lg">IMPORT</button>
-        <button class="btn btn-primary btn-lg" ng-click="create()">CREATE</button>
+        <button class="btn btn-primary btn-lg">Import</button>
+        <button class="btn btn-primary btn-lg" ng-click="create()">Create</button>
       </span>
     </div>
   </div>
@@ -37,7 +37,7 @@
       <div class="col-md-3 col-sm-4 set-top-margin">
         <div class="disk-info-cart" ng-if="cluster.cluster_status != 4">
           {{cluster.free_size}} GB Free <br>
-          of Total {{cluster.total_size}} GB
+          of {{cluster.total_size}} GB Total
         </div>
         <!-- Adding area-spline-graph here -->
         <div class="adjust-area-spline" ng-if="cluster.cluster_status != 4">
@@ -92,7 +92,7 @@
       </div>
       <div class="col-md-1 col-sm-1 set-top-margin">
         <a class="pull-right add-cursor-pointer" data-animation="am-flip-x" data-template="views/cluster-menu-dropdown.tpl.html" bs-dropdown="ellipsis">
-          <i class="fa fa-ellipsis-v fa-4x"></i>
+          <i class="fa fa-ellipsis-v fa-4x elipsis-color"></i>
         </a>
       </div>
    </div>
