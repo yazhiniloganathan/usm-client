@@ -10,7 +10,6 @@
 
             var self = this;
             this.list = [];
-            this.selectAllVolumes = false;
 
             var timer = $interval(reloadData, 5000);
             $scope.$on('$destroy', function() {
@@ -20,15 +19,6 @@
 
             function reloadData() {
                 PoolService.getList().then(function(pools) {
-                    var selectedPools = _.filter(self.list, function(pool){
-                        return pool.selected;
-                    });
-                    _.each(pools, function(pool) {
-                        var selected = _.find(selectedPools, function(selectedPool){
-                            return pool.pool_id === selectedPool.pool_id;
-                        });
-                        pool.selected = !_.isUndefined(selected);
-                    });
                     self.list = pools;
                 });
             }
@@ -37,9 +27,6 @@
                 $location.path('/pools/new');
             };
 
-            this.isDeleteAvailable = function() {
-                return false;
-            };
         };
         return ['$scope', '$location', '$interval', 'ClusterService', 'PoolService', PoolController];
     });
