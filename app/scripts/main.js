@@ -44,10 +44,15 @@
                 exports: 'angular'
             },
             'c3': {
+                deps: ['angular'],
                 exports: 'c3'
             },
             'c3-angular': {
-                deps: ['c3']
+                deps: ['c3','angular']
+            },
+            'ng-autofocus': {
+                deps: ['angular'],
+                exports: 'ng-autofocus'
             }
         },
         paths: {
@@ -68,7 +73,7 @@
             'idbwrapper': '../bower_components/idbwrapper/idbstore',
             'angular-growl': '../bower_components/angular-growl-v2/build/angular-growl',
             'c3-angular': '../bower_components/c3-angular/c3-angular.min',
-            'c3': '../bower_components/c3/c3',
+            'c3': '../bower_components/c3/c3.min',
             'd3': '../bower_components/d3/d3',
             'ng-autofocus': '../bower_components/ng-autofocus/autofocus.min',
             'numeral': '../bower_components/numeral/min/numeral.min'
