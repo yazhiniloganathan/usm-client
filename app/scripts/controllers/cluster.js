@@ -35,7 +35,6 @@
                             storage_type : cluster.storage_type,
                             cluster_status : cluster.cluster_status,
                             used : cluster.used,
-                            areaSpline_cols : [{ id:1, name: 'Used', color: '#39a5dc', type: 'area-spline' }],
                             areaSpline_values : mockCluster.areaSpline_values,
                             gauge_values : _.random(20, 70)/10,
                             alerts : mockCluster.alerts
@@ -75,7 +74,16 @@
                             tempClusters[index].total_size = size;
                             tempClusters[index].free_size = size - tempClusters[index].used;
                             tempClusters[index].percent_used =  isNaN(Math.round(tempClusters[index].used*(100/size))) ? 0 : Math.round(tempClusters[index].used*(100/size));
-                            index++;
+                        if(tempClusters[index].percent_used >= 90) {
+                            tempClusters[index].areaSpline_cols = [{ id:1, name: 'Used', color: '#E35C5C', type: 'area-spline' }];
+                        }
+                        else if(tempClusters[index].percent_used >= 80 && tempClusters[index].percent_used < 90) {
+                            tempClusters[index].areaSpline_cols = [{ id:1, name: 'Used', color: '#FF8C1B', type: 'area-spline' }];
+                        }
+                        else {
+                            tempClusters[index].areaSpline_cols = [{ id:1, name: 'Used', color: '#4AD170', type: 'area-spline' }];
+                        }
+                        index++;
                         });
                         $scope.clusters = tempClusters;
                         reloading = false;

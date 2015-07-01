@@ -26,7 +26,6 @@
                 VolumeService.getList().then(function(volumes) {
                      _.each(volumes, function(volume) {
                         var mockVolume = MockDataProviderHelpers.getMockVolume(volume.volume_name);
-                        volume.areaSpline_cols = [{ id:1, name: 'Used', color: '#39a5dc', type: 'area-spline' }];
                         volume.areaSpline_values = mockVolume.areaSpline_values;
                         volume.alerts = mockVolume.alerts;
                         VolumeService.getBricks(volume.volume_id).then(function (bricks) {
@@ -38,7 +37,7 @@
                         reloadCapacity();
                     }
                     else {
-                        self.updateCapacity();
+                         self.updateCapacity();
                     }
                     self.first = false;
                 });
@@ -66,9 +65,8 @@
                             findCapacity(_.rest(volumes), nextVolume);
                         }
                         else {
-                            self.updateCapacity();
+                           self.updateCapacity();
                         }
-
                     });
                 };
                 var volume = volumes[0];
@@ -78,6 +76,16 @@
             this.updateCapacity = function() {
                 _.each(self.list, function(volume) {
                     volume.capacity = self.capacityMap[volume.volume_id];
+                    if(volume.capacity.percent_used >= 90) {
+                        volume.areaSpline_cols = [{ id:1, name: 'Used', color : '#E35C5C', type: 'area-spline' }];
+                    }
+                   else if(volume.capacity.percent_used <90 && volume.capacity.percent_used >= 80) {
+                            volume.areaSpline_cols = [{ id:1, name: 'Used', color : '#FF8C1B', type: 'area-spline' }];
+                    }
+                    else {
+                            volume.areaSpline_cols = [{ id:1, name: 'Used', color : '#4AD170', type: 'area-spline' }];
+                    }
+
                 });
             }
 
