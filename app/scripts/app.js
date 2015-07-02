@@ -2,7 +2,7 @@
 (function() {
     'use strict';
 
-    define(['lodash', 'angular', 'RouteConfig', 'ApiModule', 'components/requests/requestsModule', 'controllers/menu', 'controllers/login', 'controllers/dashboard', 'controllers/first', 'controllers/cluster', 'controllers/cluster-new', 'controllers/cluster-expand',  'controllers/cluster-detail','controllers/host', 'controllers/volume', 'controllers/volume-new', 'controllers/volume-expand', 'controllers/pool', 'controllers/pool-new', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular', 'angular-growl', 'd3', 'c3', 'c3-angular', 'ng-autofocus'], function(_, angular, RouteConfig, APIModule, RequestModule, MenuController, LoginController, DashboardController, FirstTimeController, ClusterController, ClusterNewController,ClusterExpandController, ClusterDetailController, HostController, VolumeController, VolumeNewController, VolumeExpandController, PoolController, PoolNewController, MenuService, ConfigurationService, ErrorService) {
+    define(['lodash', 'angular', 'RouteConfig', 'ApiModule', 'components/requests/requestsModule', 'controllers/menu', 'controllers/login', 'controllers/dashboard', 'controllers/first', 'controllers/cluster', 'controllers/cluster-new', 'controllers/cluster-expand', 'controllers/cluster-detail', 'controllers/host', 'controllers/host-detail', 'controllers/volume', 'controllers/volume-new', 'controllers/volume-expand', 'controllers/pool', 'controllers/pool-new', 'services/menu-svc', 'services/configuration', 'services/error', 'angular-cookies', 'angular-resource', 'angular-sanitize', 'angular-route', 'angular-strap', 'angular-strap-tpl', 'angular-animate', 'patternfly', 'angular-patternfly', 'restangular', 'angular-growl', 'd3', 'c3', 'c3-angular', 'ng-autofocus'], function(_, angular, RouteConfig, APIModule, RequestModule, MenuController, LoginController, DashboardController, FirstTimeController, ClusterController, ClusterNewController,ClusterExpandController, ClusterDetailController, HostController, HostDetailController, VolumeController, VolumeNewController, VolumeExpandController, PoolController, PoolNewController, MenuService, ConfigurationService, ErrorService) {
 
         var app = angular.module('usmClientApp', [
                'ngAnimate',
@@ -30,6 +30,7 @@
             .controller('ClusterExpandController', ClusterExpandController)
             .controller('ClusterDetailController', ClusterDetailController)
             .controller('HostController', HostController)
+            .controller('HostDetailController', HostDetailController)
             .controller('VolumeController', VolumeController)
             .controller('VolumeNewController', VolumeNewController)
             .controller('VolumeExpandController', VolumeExpandController)

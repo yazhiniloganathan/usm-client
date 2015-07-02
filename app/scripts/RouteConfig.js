@@ -47,6 +47,11 @@
                 menuId: 'hosts',
                 controller: 'HostController',
                 controllerAs: 'hosts'
+            }).when('/hosts/detail/:id', {
+                templateUrl: 'views/hosts-detail.html',
+                menuId: '',
+                controller: 'HostDetailController',
+                controllerAs: 'hostdetail'
             }).when('/volumes', {
                 templateUrl: 'views/volumes.html',
                 menuId: 'storage',
