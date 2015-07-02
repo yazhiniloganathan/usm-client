@@ -51,8 +51,7 @@
                 deps: ['c3','angular']
             },
             'ng-autofocus': {
-                deps: ['angular'],
-                exports: 'ng-autofocus'
+                deps: ['angular']
             }
         },
         paths: {
