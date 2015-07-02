@@ -49,6 +49,10 @@ define(['lodash'], function(_) {
             // **@returns** a promise which returns a request id to track the task.
             create: function(pools) {
                 return this.restangularFull.all('pools').post(pools);
+            },
+            
+            update: function(pools) {
+                return this.restangularFull.all('pools').post(pools); 
             }
         });
         return new Service();

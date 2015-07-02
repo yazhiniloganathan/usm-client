@@ -27,6 +27,10 @@
                 $location.path('/pools/new');
             };
 
+            this.edit = function(pool_id) {
+                $location.path('/pools/edit/'+pool_id);
+            };
+
         };
         return ['$scope', '$location', '$interval', 'ClusterService', 'PoolService', PoolController];
     });

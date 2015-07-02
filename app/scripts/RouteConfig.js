@@ -72,6 +72,11 @@
                 menuId: 'storage',
                 controller: 'PoolNewController',
                 controllerAs: 'pool'
+            }).when('/pools/edit/:id', {
+                templateUrl: 'views/pools-edit.html',
+                menuId: 'storage',
+                controller: 'PoolEditController',
+                controllerAs: 'pool'
             }).otherwise({
                 redirectTo: '/'
             });
