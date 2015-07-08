@@ -67,6 +67,11 @@
                 menuId: 'storage',
                 controller: 'VolumeExpandController',
                 controllerAs: 'volume'
+            }).when('/volumes/detail/:id', {
+                templateUrl: 'views/volumes-detail.html',
+                menuId: '',
+                controller: 'VolumeDetailController',
+                controllerAs: 'volumedetail'
             }).when('/pools', {
                 templateUrl: 'views/pools.html',
                 menuId: 'storage',
