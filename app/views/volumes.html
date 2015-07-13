@@ -25,7 +25,7 @@
               <span ng-if="volume.volume_status === 1">
                 <i class="fa fa-2x fa-exclamation-triangle exclamation-mark warning"></i>
               </span>
-              <div class="heading" ng-bind="volume.volume_name"></div>
+              <a ng-href="#/volumes/detail/{{volume.volume_id}}"><div class="heading" ng-bind="volume.volume_name"></div></a>
               <div class="description" ng-bind="volumes.getVolumeType(volume.volume_type)"></div>
             </div>
           </div>

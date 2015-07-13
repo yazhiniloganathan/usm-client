@@ -1,0 +1,105 @@
+<div class="cluster-detail dashboard row">
+    <div class="top-box card">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="vertical-bar-cluster-name">
+                    <div class="rotate">
+                        GLUSTER
+                    </div>
+                </div>
+                <div class="border-right pad-me">
+                    <div class="row">
+                        <div class="cluster-name"> {{volumedetail.volume.name}} </div>
+                        <div class="col-md-3">
+                            <div class="title"> Utilization </div>
+                            <div class="free-space">
+                              <span class="card-big-text">
+                                {{volumedetail.formatSize(volumedetail.capacity.free)}}
+                              </span>
+                              Available
+                              <br/>
+                              <span class="bold">
+                                {{volumedetail.formatSize(volumedetail.capacity.used)}}
+                              </span> Used
+                              <br/>
+                              <span class="bold">
+                                {{volumedetail.formatSize(volumedetail.capacity.total)}}
+                              </span> Total
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <c3chart bindto-id="cluster-donut" chart-columns="volumedetail.capacity.legends" chart-data="volumedetail.capacity.values">
+                                <chart-donut title="Usage" width="40"> </chart-donut>
+                                <chart-legend show-legend="true" legend-position="right"> </chart-legend>
+                                <chart-size chart-height="200"></chart-size>
+                            </c3chart>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="usage-trending">
+                                <div class="usage-trending-content">
+                                    <c3chart bindto-id="cluster-trend" chart-columns="volumedetail.capacity.trends.cols" chart-data="volumedetail.capacity.trends.values">
+                                        <chart-axis>
+                                            <chart-axis-x show="false"> </chart-axis-x>
+                                            <chart-axis-y show="false"> </chart-axis-y>
+                                        </chart-axis>
+                                        <chart-points show-point="false"></chart-points>
+                                        <chart-legend show-legend="false"></chart-legend>
+                                        <chart-size chart-height="80"></chart-size>
+                                        <chart-tooltip show-tooltip="true"></chart-tooltip>
+                                    </c3chart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="no-border pad-me">
+                    <div class="title"> Performance </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="iops-count">
+                              <span class="card-big-text">
+                                {{volumedetail.iops.total | number : 2}}M IOPS
+                              </span>
+                              <span class="card-big-text">
+                                {{volumedetail.iops.reads}}M
+                              </span> reads/s
+                              <span class="card-big-text">
+                                {{volumedetail.iops.writes}}M
+                              </span> writes/s
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <c3chart bindto-id="gauge-iops-chart">
+                                <chart-column column-id="IOPS" column-values="{{volumedetail.iops.total}}" column-type="gauge" column-color="{{volumedetail.getStatusColor((volumedetail.iops.total)/1000*100)}}" />
+                                <chart-gauge min="0" max="10" units="{{volumedetail.iops.total | number :2}}M IOPS" width="30" />
+                                <chart-size chart-height="200"></chart-size>
+                            </c3chart>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="usage-trending">
+                                <div class="usage-trending-content">
+                                    <c3chart bindto-id="cluster-iops-trend" chart-columns="volumedetail.iops.trends.cols" chart-data="volumedetail.iops.trends.values">
+                                        <chart-axis>
+                                            <chart-axis-x show="false"> </chart-axis-x>
+                                            <chart-axis-y show="false"> </chart-axis-y>
+                                        </chart-axis>
+                                        <chart-points show-point="false"></chart-points>
+                                        <chart-legend show-legend="false"></chart-legend>
+                                        <chart-size chart-height="80"></chart-size>
+                                        <chart-tooltip show-tooltip="false"></chart-tooltip>
+                                    </c3chart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
