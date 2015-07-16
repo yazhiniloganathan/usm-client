@@ -13,23 +13,26 @@
                     id: 'dashboard',
                     href: '/dashboard',
                     hasSubMenus: false,
+                    icon: 'fa-tachometer',
                     active: true
                 }, {
                     label: 'Clusters',
                     id: 'clusters',
                     href: '/clusters',
                     hasSubMenus: false,
+                    icon: 'fa-cubes',
                     active: false
                 }, {
                     label: 'Hosts',
                     id: 'hosts',
                     href: '/hosts',
                     hasSubMenus: false,
+                    icon: 'fa-desktop',
                     active: false
                 }, {
                     label: 'Storage',
                     id: 'storage',
-                    href: '/storage',
+                    icon: 'fa-hdd-o',
                     hasSubMenus: true,
                     subMenus: [
                         {
