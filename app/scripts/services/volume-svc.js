@@ -71,6 +71,10 @@ define(['lodash'], function(_) {
             expand: function(volume) {
                 return this.restangularFull.all('bricks').post(volume);
             },
+
+            delete: function(id) {
+                return this.restangular.one('volumes', id).remove();
+            },
             // **start**
             // **@param** id - Volume Identifier.
             // **@returns** a promise with status code.

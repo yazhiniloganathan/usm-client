@@ -114,6 +114,10 @@
             this.isDeleteAvailable = function() {
                 return false;
             };
+
+            this.remove = function(volume_id) {
+                return VolumeService.delete(volume_id);
+            };
         };
         return ['$scope', '$q', '$location', '$interval', 'ClusterService', 'VolumeService', VolumeController];
     });
